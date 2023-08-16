@@ -48,7 +48,7 @@ export const CardGrid = styled.div`
   width: 24%;
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
+  row-gap: 15px;
   @media (max-width: 1024px) {
     width: 48%;
   }

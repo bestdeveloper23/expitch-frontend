@@ -23,8 +23,8 @@ export default function About() {
   }
   return (
     <>
+      <Gridbackground src="../../images/grid.svg"></Gridbackground>
       <Container>
-        <Gridbackground src="../../images/grid.svg"></Gridbackground>
         <Line>
           <Texts>
             <Title color={theme.colors.gray900}>{i18n.t("about.title1")}</Title><Title color={theme.colors.primary}>{i18n.t("about.title2")}</Title>

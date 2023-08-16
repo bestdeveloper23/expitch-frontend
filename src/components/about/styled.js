@@ -418,4 +418,5 @@ export const Gridbackground = styled.img`
   position: absolute;
   width: 80%;
   height: auto;
+  z-index: -1;
 `

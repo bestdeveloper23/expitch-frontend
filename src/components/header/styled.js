@@ -6,6 +6,7 @@ export const Container = styled.section`
   margin: 0;
   position: relative;
   border-bottom: 1px solid #E5E7EB;
+  background-color: white;
 `;
 
 export const NavBar = styled.div`
