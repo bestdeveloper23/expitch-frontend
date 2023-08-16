@@ -1,4 +1,4 @@
-import styled, {css } from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Container = styled.div`
 
@@ -37,13 +37,6 @@ export const Texts = styled.div`
 `;
 
 export const Paragraph = styled.p`
-@font-face {
-  font-family: 'DM Sans';
-  src: url('../fonts/DMSans-VariableFont.ttf') format('ttf');
-  /* Add more src declarations for other file formats if needed */
-  font-weight: normal;
-  font-style: normal;
- }
   @media (min-width: 600px) {
    font-family: 'DM Sans', sans-serif;
    font-weight: 400;
@@ -53,26 +46,19 @@ export const Paragraph = styled.p`
   }
  
   @media (min-width: 1400px) {
-   font-family: "DM Sans";
+    font-family: 'DM Sans', sans-serif;
    font-weight: 400;
    font-size: 22px;
    line-height: 26px;
   }
   max-width: 70%;
-  color: ${(props)=> props.color};
+  color: ${(props) => props.color};
   position: relative;
   margin: auto;
   padding: 50px 0px;
 `;
 
 export const Paragraph2 = styled.span`
-  @font-face {
-    font-family: 'DM Sans';
-    src: url('../assets/fonts/DMSans-VariableFont.ttf') format('ttf');
-    /* Add more src declarations for other file formats if needed */
-    font-weight: normal;
-    font-style: normal;
-  }
   @media (min-width: 600px) {
     font-family: 'DM Sans', sans-serif;
     font-weight: 600;
@@ -81,12 +67,12 @@ export const Paragraph2 = styled.span`
   }
   
   @media (min-width: 1400px) {
-    font-family: "DM Sans";
+   font-family: 'DM Sans', sans-serif;
     font-weight: 600;
     font-size: 18px;
     line-height: 22px;
   }
-  color: ${(props)=> props.color};
+  color: ${(props) => props.color};
   padding: 10px;
 `
 
@@ -96,7 +82,7 @@ export const Links = styled.div`
   gap: 10px;
   justify-content: space-evenly;
   @media (min-width: 800px) {
-   font-family: "DM Sans";
+    font-family: 'DM Sans', sans-serif;
    font-weight: 400;
    font-size: 22px;
    line-height: 26px;
@@ -111,24 +97,26 @@ export const TestButton = styled.button`
   border: none;
   border-radius: 12px;
   cursor: pointer;
+  font-family: 'DM Sans';
+  font-size: 18px;
 `
 
 export const Title = styled.span`
   font-weight: 300;
-  font-size: 40px;
+  font-size: 46px;
   line-height: 50px;
   @media (min-width: 600px) {
     font-weight: 500;
-    font-size: 50px;
+    font-size: 60px;
     line-height: 58px;
   }
 
   @media (min-width: 1400px) {
     font-weight: 600;
-    font-size: 56px;
+    font-size: 64x;
     line-height: 66px;
   }
- color: ${(props)=> props.color};
+ color: ${(props) => props.color};
 `;
 
 export const PlayButton = styled.img`
@@ -154,7 +142,7 @@ export const Righttitle = styled.p`
   font-size: 15.2px;
   line-height: 17.96px;
  }
-
+ font-family: 'DM Sans';
  @media (min-width: 1400px) {
   font-weight: 400;
   font-size: 15.2px;
@@ -163,20 +151,11 @@ export const Righttitle = styled.p`
  font-weight: 400;
   font-size: 15.2px;
   line-height: 17.96px;
-  margin: 10px;
  text-align: start;
- color: ${(props)=> props.color};
+ color: ${(props) => props.color};
 `
 
 export const Rightparagraph = styled.p`
-@font-face {
-  font-family: 'DM Sans';
-  src: url('../fonts/DMSans-VariableFont.ttf') format('ttf');
-  /* Add more src declarations for other file formats if needed */
-  font-weight: normal;
-  font-style: normal;
- }
-
  font-family: 'DM Sans', sans-serif;
  @media (min-width: 600px) {
   font-weight: 400;
@@ -189,7 +168,7 @@ export const Rightparagraph = styled.p`
   font-size: 12.44px;
   line-height: 15.2px;
  }
- color: ${(props)=> props.color};
+ color: ${(props) => props.color};
  position: relative;
 `
 
@@ -229,6 +208,7 @@ export const List = styled.li`
 `;
 
 export const Feature = styled.summary`
+  font-family: 'DM Sans';
   position: relative;
   display: flex;
   align-items: center;
@@ -239,17 +219,24 @@ export const Feature = styled.summary`
   color: ${(props) => props.color};
 `;
 
+export const ResponseIcon = styled.img`
+  pointer-events: none;
+  width: 12px;
+  height: auto;
+`
+
 export const Response = styled.details`
   padding: 10px;
   text-align: left;
   line-height: 1.6;
   font-weight: 400;
-`; 
+  font-family: 'DM Sans';
+`;
 
 export const Featuredetail = styled.p`
-  padding: 20px 0px;
-  line-height: 1.6;
-  font-size: 12px;
+  padding-top: 15px;
+  line-height: 15.2px;
+  font-size: 12.44px;
   color: ${(props) => props.color};
   
 `;
@@ -268,6 +255,7 @@ export const Grade = styled.div`
     background-color: ${bgcolor};
     color: ${color};
   `}
+  pointer-events: none;
 `
 
 export const Shadow1 = styled.span`
@@ -279,7 +267,7 @@ export const Shadow1 = styled.span`
  width: 100%;
  height: 100%;
  background: rgb(255,255,255);
- background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 40%, rgba(255,255,255,0) 80%);
+ background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 40%, rgba(255,255,255,0) 100%);
 `
 
 export const Shadow2 = styled.span`
@@ -294,7 +282,7 @@ export const Shadow2 = styled.span`
  background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 5%, rgba(255,255,255,0) 20%);
 `
 
-export const LoadingBar = styled.img`
+export const AudioBar = styled.img`
   @media (max-width: 800px) {
     width: 40%;
     text-align: center;
@@ -310,6 +298,19 @@ export const LoadingBar = styled.img`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+`
+
+export const LoadingBar = styled.div`
+  position: relative;
+  width: 100%;
+`
+
+export const SoundImage = styled.img`
+  width: 100%;
+`
+
+export const Soundborder = styled.img`
+
 `
 
 export const CardContainer = styled.div`
@@ -333,32 +334,24 @@ export const Card = styled.div`
   }
 `
 
-export const CardIcon = styled.p`
+export const CardIcon = styled.img`
   @media (min-width: 400px){
-    font-size: 26px;
-    font-weight: 500;
-    line-height: 30px;
+    width: 26px;
+
   }
   @media (min-width: 800px){
-    font-size: 30px;
-    font-weight: 600;
-    line-height: 34px;
+    width: 30px;
+
   }
   @media (min-width: 1024px){
-    font-size: 36px;
-    font-weight: 600;
-    line-height: 40px;
+    width: 36px;
+
   }
   @media (min-width: 1400px){
-    font-size: 40px;
-    font-weight: 600;
-    line-height: 44px;
+    width: 40px;
+
   }
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 24px;
-  color: var(#111827 #111827);
-  align-self: stretch;
+  width: 20px;
 `
 
 export const CardTitle = styled.p`
@@ -373,9 +366,51 @@ export const CardParagraph = styled.p`
   font-weight: 400;
   color: ${(props) => props.color};
 `
+
+export const TrustedContainer = styled.div`
+  padding: 0;
+  max-height: 124px;
+  width: 100%;
+  background-color: ${(props) => props.bgcolor};
+`
+
+export const TrustedsubContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  @media (min-width: 800px) {
+    margin: auto;
+    padding-inline: 30px;
+   }
+   @media (min-width: 1400px) {
+    max-width: 1204px;
+    margin: auto;
+    
+    padding-inline: 30px;
+   }
+   padding: 30px 10px;
+`
+
 export const Trusted = styled.img`
-  width: 100vw;
+  width: 30%;
   height: auto;
+  @media (min-width: 400px){
+    width: 20%;
+
+  }
+  @media (min-width: 800px){
+    width: 80px;
+
+  }
+  @media (min-width: 1024px){
+    width: 100px;
+
+  }
+  @media (min-width: 1400px){
+    width: 139px;
+
+  }
 `
 export const Gridbackground = styled.img`
   left: 0;

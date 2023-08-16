@@ -12,14 +12,14 @@ export const NavBar = styled.div`
 
   @media (min-width: 600px) {
     min-height: 80px;
-    padding-inline: 30px;
+    padding: 10ox 30px;
   }
   
   @media (min-width: 1400px) {
     max-width: 1204px;
     min-height: 94px;
   }
-  padding-inline: 10px;
+  padding: 10px 10px;
   max-width: 1204px;
   margin: auto;
   display: flex;
@@ -30,6 +30,9 @@ export const Logo = styled.img`
   width: 82px;
   height: auto;
   cursor: pointer;
+  @media (max-width: 800px){
+    width: 20vw;
+  }
 `
 export const Notice = styled.div`
   background-color: #000;
@@ -53,14 +56,13 @@ export const Links = styled.a`
   display: flex;
   cursor: pointer;
   color: ${(props) => props.color};
+  font-family: 'DM Sans';
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
   align-items: center;
-  a {
-    margin-right: 1rem;
-    padding: 0.7rem 1rem;
-    font-size: 0.9rem;
-    @media (max-width: 800px) {
-      margin: 1.4rem;
-    }
+  @media (max-width: 800px){
+    font-size: 12px;
   }
 `;
 
@@ -87,4 +89,11 @@ export const TestButton = styled.button`
   border: none;
   border-radius: 12px;
   cursor: pointer;
+  font-family: 'DM Sans';
+  font-size: 18px;
+  @media (max-width: 800px){
+    padding: 3px 5px;
+    border-radius: 5px;
+    font-size: 12px;
+  }
 `

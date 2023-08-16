@@ -2,30 +2,56 @@ import styled from "styled-components";
 import HeartIcon from '../../assets/images/heart.svg'
 import ChatIcon from '../../assets/images/chat-bubble-oval-left.svg'
 
-export const Container = styled.div`
-    background: #111827;
+import BackgroundSVG from "../../assets/images/Group5.png"
+
+export const ColorBgContainer = styled.div`
+    background: ${props => props.backgroundcolor};
     padding-bottom: 100px;
 `;
-
-export const Title = styled.div`
-    padding-bottom: 100px;
+export const SvgBgContainer = styled.div`
+    background-image: url(${BackgroundSVG});
+    background-repeat: no-repeat;
+    background-size: 100vw;
+`
+export const TitleTag = styled.div`
     text-align: center;
+    margin: auto;
+    max-width: 1232px;
+    padding: 50px 0px;
+    
+    @media (min-width: 600px) {
+        padding: 70px 0px;
+    }
+    @media (min-width: 800px) {
+        padding: 100px 0px;
+    };
+    @media (min-width: 1400px) {
+        padding: 150px 0px;
+       };
 `
 
 export const Features = styled.div`
-    margin-top: 50px;
+
+    @media (min-width: 800px) {
+    margin: auto;
+    padding: 0px 30px;
+   }
+   @media (min-width: 1400px) {
+    max-width: 1204px;
+    margin: auto;
+    
+    padding: 0px 30px;
+   }
 `
 
 export const F = styled.div`
-    margin-top: 50px;
-    padding-left: 10%;
-    padding-right: 10%;
+    margin: 50px 0px;
 
     @media (min-width: 1024px) {
-        min-height: 80px;
         display: grid;
-        grid-template-columns: 50% 50%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10%;
+        margin: 100px 0px;
        }
 `
 export const PitchForm = styled.div`
@@ -33,6 +59,9 @@ export const PitchForm = styled.div`
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+    @media (max-width: 1024px){
+        margin: 50px 0px;
+    }
 `
 export const Player = styled.div`
     color: white;
@@ -76,18 +105,20 @@ export const PlayerTime = styled.div`
     width: 200px;
 `
 export const TextBox = styled.div`
+    font-family: 'DM Sans', sans-serif;
+    width: ${props => props.width};
     max-width: 100%;
     height: ${props => props.height};
     border: 1px solid #405A94;
     background-color: #1E2A45;
-    border-top: ${props => props.borderTop};
-    border-left: ${props => props.borderLeft};
-    border-right: ${props => props.borderRight};
-    border-bottom: ${props => props.borderBottom};
+    border-top: ${props => props.bordertop};
+    border-left: ${props => props.borderleft};
+    border-right: ${props => props.borderright};
+    border-bottom: ${props => props.borderbottom};
     padding: 20px 30px 20px 30px;
     white-space: pre-line;
     word-wrap: break-word;
-    border-radius: ${props => props.borderRadius};
+    border-radius: ${props => props.borderradius};
     overflow: scroll;
     color: white;
     font-size: 18px;
@@ -118,6 +149,7 @@ export const PitchTextFormTopBar = styled.div`
     border-bottom: none;
     border-radius: 15px 15px 0 0;
     height: 35px;
+    width: calc(100% - 22px);
     background-color: #2A3754;
     padding: 5px 20px 5px 0px;
 `
@@ -134,13 +166,66 @@ export const PitchTextFormBottomBar = styled.div`
     position: relative;
     top: ${props => props.top};
 `
+export const Title = styled.span`
+    font-weight: 600;
+    color: white;
+    font-size: 25px;
+    @media (min-width: 800px) {
+        font-size: 37px;
+    };
+    @media (min-width: 1400px) {
+        font-size: 42px;
+    };
+`
 export const FormTitle = styled.span`
     color: ${props => props.color};
-    font-size: ${props => props.fontSize};
+    font-size: ${props => props.fontsize};
 `
+
+export const BigTitle = styled.span`
+    color: ${props => props.color};
+    font-size: 50px;
+    @media (min-width: 600px) {
+        font-size: 100px;
+    }
+    @media (min-width: 800px) {
+        font-size: 150px;
+    };
+    @media (min-width: 1400px) {
+        font-size: 200px;
+       };
+`
+export const MidTitle = styled.span`
+    font-weight: 600;
+    color: ${props => props.color};
+    font-size: 26px;
+    @media (min-width: 600px) {
+        font-size: 36px;
+    }
+    @media (min-width: 800px) {
+        font-size: 46px;
+    };
+    @media (min-width: 1400px) {
+        font-size: 56px;
+       };
+`
+export const FitMeNow = styled.span`
+    color: ${props => props.color};
+    font-size: 25px;
+    @media (min-width: 800px) {
+        font-size: 37px;
+    };
+    @media (min-width: 1400px) {
+        font-size: 42px;
+       };
+`
+
 export const GridRows = styled.div`
     display: grid;
     grid-template-rows: repeat(${props => props.rows}, minmax(0, 1fr));
+    @media (max-width: 1024px){
+        margin-top: 100px
+    }
 `
 export const GridColumns = styled.div`
     display: grid;
@@ -148,8 +233,7 @@ export const GridColumns = styled.div`
 `
 export const Rotate = styled.div`
     transform: rotate(${props => props.rotate}deg);
-    // width: 0px;
-    position: relative;
+    position: absolute;
     left: ${props => props.left};
     top: ${props => props.top};
     right: ${props => props.right};
@@ -162,10 +246,14 @@ export const CustomSVG = styled.img`
     }
 `
 export const Grade = styled.div`
+    position: ${props => props.position};
+    top: 50%;
+    transform: ${props => props.transform};
+    left: ${props => props.left};
     width: ${props => props.size || '50'}px;
     height: ${props => props.size || '50'}px;
     border: 1px solid ${props => props.color || 'green'};
-    background-color: ${props => props.backgroundColor || 'rgba(0,255,0,0.1)'};
+    background-color: ${props => props.backgroundcolor || 'rgba(0,255,0,0.1)'};
     color: ${props => props.color || 'green'};
     font-size: ${props => props.size / 2 || '25'}px;
     display: flex;
@@ -178,12 +266,13 @@ export const DContainer = styled.div`
     padding: ${props => props.padding};
     margin: ${props => props.margin};
     display: ${props => props.display || "block"};
-    justify-content: ${props => props.justifyContent};
-    align-items: ${props => props.alignItems};
-    flex-direction: ${props =>props.flexDirection};
+    justify-content: ${props => props.justifycontent};
+    align-items: ${props => props.alignitems};
+    flex-direction: ${props =>props.flexdirection};
     flex-wrap: ${props =>props.flexWrap};
-    align-content: ${props =>props.alignContent};
+    align-content: ${props =>props.aligncontent};
     gap: ${props =>props.gap};
+    position: ${props =>props.position};
 `
 export const Box = styled.div`
 

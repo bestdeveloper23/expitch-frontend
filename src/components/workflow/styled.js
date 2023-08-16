@@ -32,19 +32,21 @@ export const Container2 = styled.div`
 `
 export const VideoDiv = styled.div`
  width: 50%;
+ margin-right: 50px;
  position: relative;
  @media (max-width: 800px) {
   width: 100%;
+  margin: 0;
  }
 `
 
 export const Video = styled.video`
- width: 90%;
+ width: 100%;
  height: auto;
  @media (max-width: 800px){
   width: 100%;
+  padding-bottom: 50px;
  }
- padding-bottom: 50px;
 `
 export const Play = styled.div`
  position: absolute;
@@ -55,20 +57,23 @@ export const Play = styled.div`
  flex-direction: column;
  justify-content: center;
  align-items: center;
- display: none;
 `
 
 export const PlayButton = styled.button`
+  display: ${(props) => props.isvisible == true ? "block" : "none"};
+  opacity: ${(props) => props.iconvisible == true ? 1: 0};
  background: transparent;
- width: 50px;
- height: 50px;
+ width: 100px;
+ height: 100px;
  img{
   width: 100%;
   height: 100%;
  }
+ border: none;
 `
 export const Playtag = styled.p`
- font-family: "DM Sans";
+  display: ${(props) => props.isvisible == true ? "block" : "none"};
+ font-family: 'DM Sans', sans-serif;
  border: none;
  font-size: 18px;
  font-weight: 400;
@@ -98,18 +103,19 @@ export const CardTextDiv = styled.p`
  width: 85%;
 `
 export const CardNumber = styled.h4`
+  font-family: 'DM Sans', sans-serif;
  width: 5%;
  font-size: 32px;
  font-weight: 600;
  color: ${(props)=> props.color};
 `
 export const CardText = styled.span`
+font-family: 'DM Sans', sans-serif;
  font-size: 26px;
  font-weight: 400;
  color: ${(props)=> props.color};
 `
-export const CardIcon = styled.p`
- width: 10%;
- font-size: 32px;
- height: auto;
+export const CardIcon = styled.img`
+  width: 32px;
+  height: auto;
 `

@@ -80,6 +80,7 @@ const StringsComuns = {
           workflow: {
             title: "How it works?",
             button: {
+              text: "Play",
               title: "See how it works"
             },
             card1: {
@@ -115,10 +116,14 @@ const StringsComuns = {
             analysis: {
               title: "Ananlysis",
               paragraph1: "Get comprehensive ",
-              paragraph2: " and export",
+              paragraph2: " and export ",
               paragraph3: " for pitch improvement",
               highlight1: "evaluations",
               highlight2: "recommendations",
+              button: {
+                download: "Download",
+                copy: "Copy"
+              },
               feature: {
                 title: "Features and Benefits",
                 evaluation: "Evaluation",
@@ -135,9 +140,95 @@ const StringsComuns = {
               paragraph2: " those shared by our ",
               highlight1: "exploring",
               highlight2: "community",
-              
             }
-          }
+          },
+          inspiring: {
+            title: "Inspiring Voices,",
+            red_title: "Incredible Results",
+            card1: {
+              content:
+                "Using this platform has been a game-changer for our team. The detailed analysis and recommendations have significantly improved our pitching skills. Highly recommended!",
+              name: "John",
+            },
+            card2: {
+              content:
+                "I was skeptical at first, but after using this website, I saw a noticeable improvement in my pitch delivery. The personalized feedback and grades helped me identify areas for improvement. It's an invaluable resource!",
+              name: "Sarah",
+            },
+            card3: {
+              content:
+                "As an investor, I've come across countless pitches. This platform provides a unique and objective evaluation of pitches, making it easier for me to identify the most promising opportunities. It saves me time and helps me make better investment decisions.",
+              name: "David ",
+            },
+            card4: {
+              content:
+                "The pitch analysis feature on this website is fantastic! It not only evaluates your pitch but also provides recommendations to enhance your delivery, content, and overall impact. It has been a tremendous help in refining my pitches.",
+              name: "Emily",
+            },
+            card5: {
+              content:
+                "I recommend this website to all my clients who want to improve their pitching skills. The comprehensive analysis, along with the grades and recommendations, gives them a clear roadmap for enhancing their pitches. It's a must-have tool for anyone looking to make a strong impression.",
+              name: "Mark ",
+            },
+            card6: {
+              content:
+                "I've seen incredible progress in the entrepreneurs I mentor who have used this platform. The analysis provided is insightful, and the recommendations are spot-on. It's an excellent resource for honing presentation skills and gaining confidence.",
+              name: "Jessica ",
+            },
+            card7: {
+              content:
+                "This platform has revolutionized the way I approach sales pitches. The analysis provided helped me understand my strengths and weaknesses, allowing me to tailor my pitches for maximum impact. It's an invaluable tool for anyone in sales.",
+              name: "Michael",
+            },
+            card8: {
+              content:
+                "I love how user-friendly and effective this website is. The pitch analysis feature is incredibly accurate and provides actionable insights. It has helped me refine my messaging, improve my storytelling, and ultimately achieve better results in my marketing campaigns.",
+              name: "Rachel",
+            },
+          },
+    
+          research: {
+            title: "Research-based intelligence",
+            paragraph:
+              "Founded in the heart of Lassonde School of Engineering at York University, our laboratory is dedicated to pioneering research and development in AI-powered venture tools. For over two decades since 1999, our dynamic team has been making significant strides in academia, innovation, and entrepreneurship, further enriching the landscape of these fields.",
+            link: "Read the research",
+            member_1: {
+              name: "Yan Katcharovski",
+              responsible: "Founder & Head of Research",
+              university: "M.A.Sc - Engineering York University",
+            },
+            member_2: {
+              name: "Dr. Andrew Maxwell",
+              responsible: "Research Supervisor",
+              university: "Ph.D - Tech. Entrepreneurship University of Waterloo",
+            },
+            member_3: {
+              name: "Semi Hasaj",
+              responsible: "ML Advisor",
+              university: "MBAn - Business Analytics MIT, C3.ai",
+            },
+            member_4: {
+              name: "Ron Tal",
+              responsible: "ML Advisor",
+              university: "Ph.D - Engineering YorkU, Ex-Uber, Coinbase",
+            },
+          },
+          experiment: {
+            title: "Grow your pitch perfect startup today!",
+            button: "Test my pitch",
+            content: "It's totally free!",
+          },
+    
+          footer: {
+            links: {
+              link_1: "How it works?",
+              link_2: "About us",
+              link_3: "Login",
+              link_4: "Test my pitch",
+            },
+            content: "© 2023 Expitch, Inc. All rights reserved.",
+          },
+    
         },
     }
 }

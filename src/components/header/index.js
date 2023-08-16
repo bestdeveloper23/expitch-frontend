@@ -27,17 +27,17 @@ export default function Header() {
       <Notice isopen={isOpen_notice}>
         {i18n.t("header.title")}
       </Notice>
-      
+
       <CloseButton onClick={handleClick} isopen={isOpen_notice}>
-        <svg            
-            width="13.5"
-            height="13.5"
-            viewBox="0 0 13.5 13.5"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        <svg
+          width="13.5"
+          height="13.5"
+          viewBox="0 0 13.5 13.5"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
-            <line x1="0" y1="0" x2="13.5" y2="13.5" stroke="#9CA3AF" strokeWidth="2" />
-            <line x1="13.5" y1="0" x2="0" y2="13.5" stroke="#9CA3AF" strokeWidth="2" />
+          <line x1="0" y1="0" x2="13.5" y2="13.5" stroke="#9CA3AF" strokeWidth="2" />
+          <line x1="13.5" y1="0" x2="0" y2="13.5" stroke="#9CA3AF" strokeWidth="2" />
         </svg>
       </CloseButton>
       <NavBar>

@@ -1,0 +1,91 @@
+import {
+  Section,
+  SectionTitle,
+  Card,
+  CardContent,
+  Image,
+  Container,
+  CardUserName,
+  CardGrid,
+  Empty,
+  ImageWrapper,
+  RedText,
+  SectionWrap,
+} from "./styled";
+import { i18n } from "./../../translate/i18n";
+import avatar_1 from "../../assets/images/avatar/avatar_1.svg";
+import avatar_2 from "../../assets/images/avatar/avatar_2.svg";
+import avatar_3 from "../../assets/images/avatar/avatar_3.svg";
+import avatar_4 from "../../assets/images/avatar/avatar_4.svg";
+import avatar_5 from "../../assets/images/avatar/avatar_5.svg";
+import avatar_6 from "../../assets/images/avatar/avatar_6.svg";
+import avatar_7 from "../../assets/images/avatar/avatar_7.svg";
+import avatar_8 from "../../assets/images/avatar/avatar_8.svg";
+import { theme } from "../../theme/theme";
+
+export default function Inspiring() {
+
+  return (
+    <Section>
+      <SectionWrap>
+        <SectionTitle>{i18n.t("inspiring.title")}</SectionTitle>
+        <SectionTitle color={theme.colors.primary}>{i18n.t("inspiring.red_title")}</SectionTitle>
+      </SectionWrap>
+      <Container>
+        <CardGrid>
+        <Empty/>
+          <Card>
+            <Image src={avatar_1} />
+            <CardContent>{i18n.t("inspiring.card1.content")}</CardContent>
+            <CardUserName>{i18n.t("inspiring.card1.name")}</CardUserName>
+          </Card>
+          <Card>
+            <Image src={avatar_5} />
+            <CardContent>{i18n.t("inspiring.card5.content")}</CardContent>
+            <CardUserName>{i18n.t("inspiring.card5.name")}</CardUserName>
+          </Card>
+        </CardGrid>
+        <CardGrid>
+          <Card>
+            <Image src={avatar_2} />
+            <CardContent>{i18n.t("inspiring.card2.content")}</CardContent>
+            <CardUserName>{i18n.t("inspiring.card2.name")}</CardUserName>
+          </Card>
+          <Card>
+            <Image src={avatar_6} />
+            <CardContent>{i18n.t("inspiring.card6.content")}</CardContent>
+            <CardUserName>{i18n.t("inspiring.card6.name")}</CardUserName>
+          </Card>
+          <Empty/>
+        </CardGrid>
+        <CardGrid>
+          <Empty/>
+          <Card>
+            <Image src={avatar_3} />
+            <CardContent>{i18n.t("inspiring.card3.content")}</CardContent>
+            <CardUserName>{i18n.t("inspiring.card3.name")}</CardUserName>
+          </Card>
+          <Card>
+            <Image src={avatar_7} />
+            <CardContent>{i18n.t("inspiring.card7.content")}</CardContent>
+            <CardUserName>{i18n.t("inspiring.card7.name")}</CardUserName>
+          </Card>
+        </CardGrid>
+        <CardGrid>
+          <Card>
+            <Image src={avatar_4} />
+            <CardContent>{i18n.t("inspiring.card4.content")}</CardContent>
+            <CardUserName>{i18n.t("inspiring.card4.name")}</CardUserName>
+          </Card>
+          <Card>
+            <Image src={avatar_8} />
+            <CardContent>{i18n.t("inspiring.card8.content")}</CardContent>
+            <CardUserName>{i18n.t("inspiring.card8.name")}</CardUserName>
+          </Card>
+          <Empty/>
+        </CardGrid>
+
+      </Container>
+    </Section>
+  );
+}

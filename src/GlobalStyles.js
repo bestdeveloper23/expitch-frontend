@@ -4,8 +4,16 @@ export const GlobalStyles = createGlobalStyle`
 
   @font-face {
     font-family: 'Darker Grotesque';
-    src: url('./fonts/DarkerGrotesque-Light.ttf') format('ttf');
+    src: url('./fonts/DarkerGrotesque-Regular.ttf') format('truetype');
     /* Add more src declarations for other file formats if needed */
+  }
+
+  @font-face {
+    font-family: 'DM Sans';
+    src: url('../fonts/DMSans_Regular.ttf') format('truetype');
+    /* Add more src declarations for other file formats if needed */
+    font-weight: normal;
+    font-style: normal;
   }
 
   body {
