@@ -5,14 +5,14 @@ import ChatIcon from '../../assets/images/chat-bubble-oval-left.svg'
 import BackgroundSVG from "../../assets/images/Group5.png"
 
 export const ColorBgContainer = styled.div`
-    background: ${props => props.backgroundcolor};
+    background: 
+            radial-gradient(ellipse at 50% -30%, rgba(17, 24, 39, 0),  rgba(17, 24, 39, 1)90%),
+            radial-gradient(ellipse at 50% 20%, rgba(231, 21, 97, 0.3), transparent 120%),
+            url("../../images/grid.svg") 0% -20%/80% auto no-repeat,
+            linear-gradient(0deg, rgba(17, 24, 39, 1) 0%, rgba(17, 24, 39, 1) 100%);
     padding-bottom: 100px;
 `;
-export const SvgBgContainer = styled.div`
-    background-image: url(${BackgroundSVG});
-    background-repeat: no-repeat;
-    background-size: 100vw;
-`
+
 export const TitleTag = styled.div`
     text-align: center;
     margin: auto;
@@ -185,6 +185,7 @@ export const FormTitle = styled.span`
 export const BigTitle = styled.span`
     color: ${props => props.color};
     font-size: 50px;
+    font-weight: 600;
     @media (min-width: 600px) {
         font-size: 100px;
     }
@@ -300,13 +301,13 @@ export const Avatar = (props) => {
                             display="flex"
                         >
                             <CustomSVG src={HeartIcon} width="20px" height="20px"></CustomSVG>
-                            <FormTitle color='white' fontSize="18px">456</FormTitle>
+                            <FormTitle color='white' fontsize="18px">456</FormTitle>
                         </DContainer>
                         <DContainer
                             display="flex"
                         >
                             <CustomSVG src={ChatIcon} width="20px" height="20px"></CustomSVG>
-                            <FormTitle color='white' fontSize="18px">1k</FormTitle>
+                            <FormTitle color='white' fontsize="18px">1k</FormTitle>
                         </DContainer>
                     </>
                 ):(<></>)}
@@ -315,7 +316,7 @@ export const Avatar = (props) => {
                 margom="20px 0 0 0"
             >
                 <FormTitle
-                    fontSize="15px"
+                    fontsize="15px"
                     color={props.titleState ? "white" : "#3D568C"}
                 >{props.avatarTitle}</FormTitle>
             </DContainer>

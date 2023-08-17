@@ -122,6 +122,7 @@ export const Title = styled.span`
 export const PlayButton = styled.img`
   width: 20px;
   height: auto;
+  cursor: pointer;
 `
 
 export const RightColumn = styled.div`
@@ -416,7 +417,7 @@ export const Gridbackground = styled.img`
   left: 0;
   top: 0;
   position: absolute;
-  width: 80%;
+  width: 1204px;
   height: auto;
   z-index: -1;
 `

@@ -60,8 +60,8 @@ export const Play = styled.div`
 `
 
 export const PlayButton = styled.button`
-  display: ${(props) => props.isvisible == true ? "block" : "none"};
-  opacity: ${(props) => props.iconvisible == true ? 1: 0};
+  display: ${(props) => props.isvisible === true ? "block" : "none"};
+  opacity: ${(props) => props.iconvisible === true ? 1: 0};
  background: transparent;
  width: 100px;
  height: 100px;
@@ -70,6 +70,7 @@ export const PlayButton = styled.button`
   height: 100%;
  }
  border: none;
+ cursor: pointer;
 `
 export const Playtag = styled.p`
   display: ${(props) => props.isvisible == true ? "block" : "none"};

@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
-export const Section = styled.div`
-  background: ${(props) => props.bg};
+export const Section = styled.div` 
+  background: radial-gradient(ellipse at 50% -40%, rgba(231, 21, 97, 0.25), transparent 70%),
+              radial-gradient(ellipse at 50% -50%, rgba(17, 24, 39, 0),  rgba(17, 24, 39, 1)90%),
+              url("../../images/grid.svg") 0% 20%/50% auto no-repeat,
+              linear-gradient(0deg, rgba(17, 24, 39, 1) 0%, rgba(17, 24, 39, 1) 100%);
   padding: 156px 0;
 `;
 

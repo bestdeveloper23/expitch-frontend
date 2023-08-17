@@ -30,7 +30,9 @@ export default function About() {
             <Title color={theme.colors.gray900}>{i18n.t("about.title1")}</Title><Title color={theme.colors.primary}>{i18n.t("about.title2")}</Title>
             <Paragraph color={theme.colors.gray900}>{i18n.t("about.paragraph")}</Paragraph>
             <Links>
-              <TestButton>{i18n.t("routes.test")}</TestButton><Paragraph2>{i18n.t("about.paragraph2")}</Paragraph2><PlayButton src="../images/play-circle.svg" alt="play"></PlayButton>
+              <TestButton>{i18n.t("routes.test")}</TestButton>
+              <Paragraph2>{i18n.t("about.paragraph2")}</Paragraph2>
+              <PlayButton src="../images/play-circle.svg" alt="play"></PlayButton>
             </Links>
           </Texts>
           <RightColumn>
@@ -38,7 +40,7 @@ export default function About() {
             <Righttitle color={theme.colors.gray900}>{i18n.t("about.pitch.title")}</Righttitle>
             <Rightparagraph color={theme.colors.gray900}>{i18n.t("about.pitch.paragraph")}
               <Shadow1 />
-              <AudioBar src="../../images/loading.svg"></AudioBar>
+              <AudioBar src="../../images/loading.svg" alt="audio"></AudioBar>
             </Rightparagraph>
 
             <Container2>
@@ -106,13 +108,13 @@ export default function About() {
       </Container>
       <TrustedContainer bgcolor={theme.colors.gray900}>
         <TrustedsubContainer>
-          <Trusted src="../../images/about/1.svg"></Trusted>
-          <Trusted src="../../images/about/2.svg"></Trusted>
-          <Trusted src="../../images/about/3.svg"></Trusted>
-          <Trusted src="../../images/about/4.svg"></Trusted>
-          <Trusted src="../../images/about/5.svg"></Trusted>
-          <Trusted src="../../images/about/6.svg"></Trusted>
-          <Trusted src="../../images/about/7.svg"></Trusted>
+          <Trusted src="../../images/about/1.svg" alt="icon"></Trusted>
+          <Trusted src="../../images/about/2.svg" alt="icon"></Trusted>
+          <Trusted src="../../images/about/3.svg" alt="icon"></Trusted>
+          <Trusted src="../../images/about/4.svg" alt="icon"></Trusted>
+          <Trusted src="../../images/about/5.svg" alt="icon"></Trusted>
+          <Trusted src="../../images/about/6.svg" alt="icon"></Trusted>
+          <Trusted src="../../images/about/7.svg" alt="icon"></Trusted>
         </TrustedsubContainer>
       </TrustedContainer>
     </>

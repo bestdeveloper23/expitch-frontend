@@ -19,7 +19,6 @@ import {
   DContainer,
   PitchTextFormTopBar,
   GridColumns,
-  SvgBgContainer,
   BigTitle,
   MidTitle,
   FitMeNow,
@@ -49,9 +48,7 @@ import { Form } from "react-router-dom";
 export default function GetStart() {
   return (
     <ColorBgContainer
-      backgroundcolor="#111827"
     >
-      <SvgBgContainer>
         <TitleTag>
           <Title>
             {i18n.t('getstart.title')}
@@ -460,7 +457,6 @@ export default function GetStart() {
             </GridRows>
           </F>
         </Features>
-      </SvgBgContainer>
     </ColorBgContainer>
   );
 }
