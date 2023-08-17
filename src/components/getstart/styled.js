@@ -5,12 +5,13 @@ import ChatIcon from '../../assets/images/chat-bubble-oval-left.svg'
 import BackgroundSVG from "../../assets/images/Group5.png"
 
 export const ColorBgContainer = styled.div`
-    background: 
-            radial-gradient(ellipse at 50% -30%, rgba(17, 24, 39, 0),  rgba(17, 24, 39, 1)90%),
-            radial-gradient(ellipse at 50% 20%, rgba(231, 21, 97, 0.3), transparent 120%),
-            url("../../images/grid.svg") 0% -20%/80% auto no-repeat,
-            linear-gradient(0deg, rgba(17, 24, 39, 1) 0%, rgba(17, 24, 39, 1) 100%);
+    background-color: ${(props) => props.bg};
     padding-bottom: 100px;
+`;
+
+export const Section = styled.div`
+    position: relative;
+    width: 100%;
 `;
 
 export const TitleTag = styled.div`
@@ -28,6 +29,20 @@ export const TitleTag = styled.div`
     @media (min-width: 1400px) {
         padding: 150px 0px;
        };
+    position: relative;
+`
+
+export const Bgtitle =styled.div`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: 
+        radial-gradient(ellipse at 50% -50%, rgba(231, 21, 97, 0.4), transparent 70%),
+        radial-gradient(ellipse at 50% -50%, rgba(17, 24, 39, 0),  rgba(17, 24, 39, 1)80%),
+        url("../../images/grid.svg") 0% -20%/80% auto no-repeat,
+        linear-gradient(0deg, rgba(17, 24, 39, 1) 0%, rgba(17, 24, 39, 1) 100%);
 `
 
 export const Features = styled.div`
@@ -62,7 +77,20 @@ export const PitchForm = styled.div`
     @media (max-width: 1024px){
         margin: 50px 0px;
     }
+    position: relative;
 `
+
+export const ShadowpitchForm = styled.div`
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, rgba(17, 24, 39, 1) 0%, rgba(17, 24, 39, 1) 10%, transparent 100%);
+    z-index: 1;
+`
+
 export const Player = styled.div`
     color: white;
     display: flex;
@@ -154,8 +182,8 @@ export const PitchTextFormTopBar = styled.div`
     padding: 5px 20px 5px 0px;
 `
 export const PitchTextFormBottomBar = styled.div`
-    border: 1px solid #405A94;
-    border-top: none;
+    /* border: 1px solid #405A94; */
+    /* border-top: none; */
     width: calc(100% - 22px);
     border-radius: 0 0 15px 15px ;
     height: 35px;

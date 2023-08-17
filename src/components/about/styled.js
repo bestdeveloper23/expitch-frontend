@@ -280,7 +280,7 @@ export const Shadow2 = styled.span`
  width: 100%;
  height: 100%;
  background: rgb(255,255,255);
- background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 5%, rgba(255,255,255,0) 20%);
+ background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 10%, rgba(255,255,255,0) 30%);
 `
 
 export const AudioBar = styled.img`
