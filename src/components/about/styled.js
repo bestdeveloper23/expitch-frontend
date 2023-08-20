@@ -1,12 +1,13 @@
 import styled, { css } from "styled-components";
+import { breakpoint, typography } from "../../theme/theme";
 
 export const Container = styled.div`
 
-  @media (min-width: 800px) {
+  @media (min-width: ${breakpoint.md}) {
     margin: auto;
     padding: 50px 30px;
    }
-   @media (min-width: 1400px) {
+   @media (min-width: ${breakpoint.lg}) {
     max-width: 1204px;
     margin: auto;
     
@@ -20,13 +21,13 @@ export const Line = styled.div`
   display: flex;
   /* align-items: center; */
   justify-content: space-between;
-  @media (max-width: 800px) {
+  @media (max-width: ${breakpoint.md}) {
     flex-direction: column-reverse;
   }
 `;
 
 export const Texts = styled.div`
-  @media (min-width: 800px) {
+  @media (min-width: ${breakpoint.md}) {
     padding: 100px 0px;  
     text-align: left;
     width: 55%;
@@ -37,41 +38,28 @@ export const Texts = styled.div`
 `;
 
 export const Paragraph = styled.p`
-  @media (min-width: 600px) {
-   font-family: 'DM Sans', sans-serif;
-   font-weight: 400;
-   font-size: 20px;
-   line-height: 24px;
+  @media (min-width: ${breakpoint.sm}) {
+   font-weight: ${typography.md.fontWeight};
+   font-size: ${typography.md.size};
    margin: 0;
   }
  
-  @media (min-width: 1400px) {
-    font-family: 'DM Sans', sans-serif;
+  @media (min-width: ${breakpoint.lg}) {
    font-weight: 400;
    font-size: 22px;
-   line-height: 26px;
   }
   max-width: 70%;
   color: ${(props) => props.color};
   position: relative;
   margin: auto;
   padding: 50px 0px;
+  font-family: ${typography.md.font};
 `;
 
 export const Paragraph2 = styled.span`
-  @media (min-width: 600px) {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 22px;
-  }
-  
-  @media (min-width: 1400px) {
-   font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 22px;
-  }
+  font-family: ${typography.sm_bold.font};
+  font-weight: ${typography.sm_bold.fontWeight};
+  font-size: ${typography.sm_bold.size};
   color: ${(props) => props.color};
   padding: 10px;
 `
@@ -81,40 +69,40 @@ export const Links = styled.div`
   align-items: center;
   gap: 10px;
   justify-content: space-evenly;
-  @media (min-width: 800px) {
-    font-family: 'DM Sans', sans-serif;
-   font-weight: 400;
-   font-size: 22px;
-   line-height: 26px;
+  @media (min-width: ${breakpoint.md}) {
    justify-content: start;
   }
 `;
 
-export const TestButton = styled.button`
-  background-color: #E71561;
-  color: #FFFFFF;
+export const TestButton = styled.a`
+  text-decoration: none;
+  background-color: ${(props) => props.bgcolor};
+  color: ${(props) => props.color};
   padding: 12px 26px;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  font-family: 'DM Sans';
-  font-size: 18px;
+  font-family: ${typography.sm_bold.font};
+  font-size: ${typography.sm_bold.size};
+  font-weight: ${typography.sm_bold.fontWeight};
+  @media (max-width: ${breakpoint.md}){
+    padding: 3px 5px;
+    border-radius: 5px;
+    font-size: 12px;
+  }
 `
 
 export const Title = styled.span`
-  font-weight: 300;
-  font-size: 46px;
-  line-height: 50px;
-  @media (min-width: 600px) {
-    font-weight: 500;
-    font-size: 60px;
-    line-height: 58px;
+  font-weight: ${typography.h3.fontWeight};
+  font-size: ${typography.h3.size};
+  @media (min-width: ${breakpoint.md}) {
+    font-weight: ${typography.h2.fontWeight};
+    font-size: ${typography.h2.size};
   }
 
-  @media (min-width: 1400px) {
-    font-weight: 600;
-    font-size: 64x;
-    line-height: 66px;
+  @media (min-width: ${breakpoint.lg}) {
+    font-weight: ${typography.h1.fontWeight};
+    font-size: ${typography.h1.size};
   }
  color: ${(props) => props.color};
 `;
@@ -132,45 +120,35 @@ export const RightColumn = styled.div`
   justify-content: flex-end;
   position: relative;
   width: 45%;
-  @media (max-width: 800px){
+  @media (max-width: ${breakpoint.md}){
     width: 100%;
   }
 `;
 
 export const Righttitle = styled.p`
-@media (min-width: 600px) {
-  font-weight: 400;
-  font-size: 15.2px;
-  line-height: 17.96px;
- }
- font-family: 'DM Sans';
- @media (min-width: 1400px) {
-  font-weight: 400;
-  font-size: 15.2px;
-  line-height: 17.96px;
- }
- font-weight: 400;
-  font-size: 15.2px;
-  line-height: 17.96px;
+  font-weight: ${typography.xs.fontWeight};
+  font-size: ${typography.xs.size};
+ font-family: ${typography.xs.font};
  text-align: start;
  color: ${(props) => props.color};
 `
 
 export const Rightparagraph = styled.p`
- font-family: 'DM Sans', sans-serif;
- @media (min-width: 600px) {
-  font-weight: 400;
-  font-size: 12.44px;
-  line-height: 15.2px;
+ @media (min-width: ${breakpoint.md}) {
+  font-weight: ${typography.text.fontWeight};
+  font-size: ${typography.text.size};
  }
 
- @media (min-width: 1400px) {
-  font-weight: 400;
-  font-size: 12.44px;
-  line-height: 15.2px;
+ @media (min-width: ${breakpoint.lg}) {
+  font-weight: ${typography.text.fontWeight};
+  font-size: ${typography.text.size};
  }
+ background-color: ${(props) => props.bgcolor};
+ border-radius: 17px;
+ border: solid 1px ${(props) => props.bordercolor};
  color: ${(props) => props.color};
  position: relative;
+ padding: 11px;
 `
 
 export const Container2 = styled.div`
@@ -180,7 +158,7 @@ export const Container2 = styled.div`
     display: inline-block;
     margin-top: 2rem;
   }
-  @media (max-width: 800px) {
+  @media (max-width: ${breakpoint.md}) {
     text-align: center;
     padding: 0;
     padding: 50px 0px;
@@ -205,18 +183,16 @@ export const List = styled.li`
   padding: 10px;
   list-style: none;
   border-bottom: 1px solid ${(props) => props.bordercolor};
-  font-weight: 500;
 `;
 
 export const Feature = styled.summary`
-  font-family: 'DM Sans';
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: ${typography.label_bold.size};
+  font-weight: ${typography.label_bold.fontWeight};
   color: ${(props) => props.color};
 `;
 
@@ -229,17 +205,13 @@ export const ResponseIcon = styled.img`
 export const Response = styled.details`
   padding: 10px;
   text-align: left;
-  line-height: 1.6;
-  font-weight: 400;
-  font-family: 'DM Sans';
 `;
 
 export const Featuredetail = styled.p`
   padding-top: 15px;
-  line-height: 15.2px;
-  font-size: 12.44px;
+  font-weight: ${typography.text.fontWeight};
+  font-size: ${typography.text.size};
   color: ${(props) => props.color};
-  
 `;
 
 export const Grade = styled.div`
@@ -284,13 +256,13 @@ export const Shadow2 = styled.span`
 `
 
 export const AudioBar = styled.img`
-  @media (max-width: 800px) {
+  @media (max-width: ${breakpoint.md}) {
     width: 40%;
     text-align: center;
     padding: 0;
     bottom: -50%;
   }
-  @media (min-width: 800px){
+  @media (min-width: ${breakpoint.md}){
       bottom: -100%;
   }
   z-index: 2;
@@ -323,12 +295,12 @@ export const CardContainer = styled.div`
 `
 
 export const Card = styled.div`
-  @media (max-width: 800px) {
+  @media (max-width: ${breakpoint.md}) {
     width: 40%;
     text-align: center;
     padding: 0;
   }
-  @media (min-width: 800px) {
+  @media (min-width: ${breakpoint.md}) {
     width: 20%;
     text-align: left;
     padding: 0;
@@ -336,19 +308,15 @@ export const Card = styled.div`
 `
 
 export const CardIcon = styled.img`
-  @media (min-width: 400px){
+  @media (min-width: ${breakpoint.sm}){
     width: 26px;
 
   }
-  @media (min-width: 800px){
-    width: 30px;
+  @media (min-width: ${breakpoint.md}){
+    width: 34px;
 
   }
-  @media (min-width: 1024px){
-    width: 36px;
-
-  }
-  @media (min-width: 1400px){
+  @media (min-width: ${breakpoint.lg}){
     width: 40px;
 
   }
@@ -356,21 +324,18 @@ export const CardIcon = styled.img`
 `
 
 export const CardTitle = styled.p`
-  font-size: 32px;
-  line-height: 32px;
-  font-weight: 600;
+  font-size: ${typography.h4.size};
+  font-weight: ${typography.h4.fontWeight};
   color: ${(props) => props.color};
 `
 export const CardParagraph = styled.p`
-  font-size: 18px;
-  line-height: 22px;
-  font-weight: 400;
+  font-size: ${typography.sm.size};
+  font-weight: ${typography.sm.fontWeight};
   color: ${(props) => props.color};
 `
 
 export const TrustedContainer = styled.div`
   padding: 0;
-  max-height: 124px;
   width: 100%;
   background-color: ${(props) => props.bgcolor};
 `
@@ -380,11 +345,11 @@ export const TrustedsubContainer = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  @media (min-width: 800px) {
+  @media (min-width: ${breakpoint.md}) {
     margin: auto;
     padding-inline: 30px;
    }
-   @media (min-width: 1400px) {
+   @media (min-width: ${breakpoint.lg}) {
     max-width: 1204px;
     margin: auto;
     
@@ -396,11 +361,11 @@ export const TrustedsubContainer = styled.div`
 export const Trusted = styled.img`
   width: 30%;
   height: auto;
-  @media (min-width: 400px){
+  @media (min-width: ${breakpoint.sm}){
     width: 20%;
 
   }
-  @media (min-width: 800px){
+  @media (min-width: ${breakpoint.md}){
     width: 80px;
 
   }
@@ -408,7 +373,7 @@ export const Trusted = styled.img`
     width: 100px;
 
   }
-  @media (min-width: 1400px){
+  @media (min-width: ${breakpoint.lg}){
     width: 139px;
 
   }
@@ -417,7 +382,7 @@ export const Gridbackground = styled.img`
   left: 0;
   top: 0;
   position: absolute;
-  width: 1204px;
+  width: 100%;
   height: auto;
   z-index: -1;
 `

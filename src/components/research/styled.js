@@ -1,14 +1,15 @@
 import styled from "styled-components";
+import { breakpoint, typography } from "../../theme/theme";
 
 export const Section = styled.div`
   padding: 156px 0;
-  @media (max-width: 768px) {
+  @media (max-width: ${breakpoint.md}) {
     padding: 30px 0;
   }
 `;
 
 export const Container = styled.div`
-  max-width: 1204px;
+  max-width: ${breakpoint.lg};
   width: 94%;
   margin: auto;
   display: flex;
@@ -20,7 +21,7 @@ export const Container = styled.div`
 export const SectionTop = styled.div`
   display: flex;
   margin-bottom: 128px;
-  @media (max-width: 768px) {
+  @media (max-width: ${breakpoint.md}) {
     display: block;
     width: 94%;
     margin: auto;
@@ -30,7 +31,7 @@ export const SectionTop = styled.div`
 
 export const SectionBottom = styled.div`
   display: flex;
-  @media (max-width: 768px) {
+  @media (max-width: ${breakpoint.md}) {
     display: block;
     width: 94%;
     margin: auto;
@@ -43,7 +44,7 @@ export const Left = styled.div`
   justify-content: flex-start;
   row-gap: 40px;
   width: 50%;
-  @media (max-width: 768px) {
+  @media (max-width: ${breakpoint.md}) {
     width: 100%;
   }
 `;
@@ -51,7 +52,7 @@ export const Left = styled.div`
 export const Right = styled.div`
   text-align: right;
   width: 50%;
-  @media (max-width: 768px) {
+  @media (max-width: ${breakpoint.md}) {
     width: 100%;
     text-align: center;
     margin-top: 30px;
@@ -70,11 +71,9 @@ export const Span = styled.span`
 export const Link = styled.a`
   display: flex;
   align-items: center;
-  font-family: "DM Sans";
-  font-size: 18px;
+  font-size: ${typography.sm_bold.size};
   font-style: normal;
-  font-weight: 500;
-  line-height: 22px;
+  font-weight: ${typography.sm_bold.fontWeight};
   color: ${(props) => props.color};
 `;
 
@@ -82,25 +81,20 @@ export const Image = styled.img``;
 
 export const SectionTitle = styled.div`
   padding: 8px;
-  font-size: 56px;
-  line-height: 56px;
-  font-weight: 600;
-  font-family: "Darker Grotesque";
-  @media (max-width: 768px) {
-    font-size: 40px;
+  font-size: ${typography.h2.size};
+  font-weight: ${typography.h2.fontWeight};
+  font-family: ${typography.h2.font};
+  @media (max-width: ${breakpoint.md}) {
+    font-size: ${typography.h3.size};
   }
 `;
 
 export const SectionDescription = styled.div`
-  color: var(--gray-700, #374151);
-  font-family: "DM Sans";
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 26px;
+  font-size: ${typography.lg.size};
+  font-weight: ${typography.lg.fontWeight};
   color: ${(props) => props.color};
-  @media (max-width: 768px) {
-    font-size: 16px;
+  @media (max-width: ${breakpoint.md}) {
+    font-size: ${typography.sm.size};
   }
 `;
 
@@ -119,12 +113,12 @@ export const Member = styled.div`
   row-gap: 32px;
   width: 25%;
 
-  @media (max-width: 1204px) {
+  @media (max-width: ${breakpoint.lg}) {
     width: 50%;
     margin-bottom: 20px;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: ${breakpoint.md}) {
     width: 94%;
     margin: auto;
     margin-bottom: 30px;

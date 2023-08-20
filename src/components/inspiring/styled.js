@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { breakpoint, typography } from "../../theme/theme";
 
 export const Section = styled.div`
   padding: 156px 0;
@@ -9,7 +10,7 @@ export const SectionWrap = styled.div`
   width: 100%;
   margin: auto;
   padding-bottom: 50px;
-  @media (max-width: 800px){
+  @media (max-width: ${breakpoint.md}){
     padding-bottom: 30px;
   }
 `
@@ -23,37 +24,32 @@ export const Container = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  @media (max-width: 1024px){
+  @media (max-width: ${breakpoint.lg}){
     width: 94%;
   }
 `;
 
-export const SectionTitle = styled.div`
+export const SectionTitle = styled.h2`
   padding: 8px;
-  font-size: 56px;
-  line-height: 56px;
-  font-weight: 600;
+  font-size: ${typography.h2.size};
+  font-weight: ${typography.h2.fontWeight};
   color: ${(props) => props.color};
-  @media (max-width: 768px) {
-    font-size: 50px;
+  @media (max-width: ${breakpoint.md}) {
+    font-size: ${typography.h3.size};
     text-align: center;
   }
-`;
-
-export const RedText = styled.div`
-  color: var(--primary, #e71561);
-`;
+`
 
 export const CardGrid = styled.div`
   width: 24%;
   display: flex;
   flex-direction: column;
   row-gap: 15px;
-  @media (max-width: 1024px) {
+  @media (max-width: ${breakpoint.lg}) {
     width: 48%;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: ${breakpoint.md}) {
     width: 94%;
     margin: auto;
   }
@@ -73,16 +69,10 @@ export const Card = styled.div`
 
 export const Empty = styled.div`
   height: 50px;
-  @media (max-width: 1024px){
+  @media (max-width: ${breakpoint.lg}){
     display: none;
   }
 `
-
-export const ImageWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-`;
 
 export const Image = styled.img`
   max-width: 64px;
@@ -92,19 +82,16 @@ export const Image = styled.img`
 `;
 
 export const CardContent = styled.p`
-  color: var(--gray-900, #111827);
-  font-size: 18px;
+  color: ${(props) => props.color};
+  font-size: ${typography.sm_bold.size};
   font-style: normal;
-  font-weight: 500;
-  line-height: 22px;
-  font-family: "DM Sans", sans-serif;
+  font-weight: ${typography.sm_bold.fontWeight};
 `;
 
 export const CardUserName = styled.p`
-  color: var(--gray-500, #6b7280);
-  font-size: 20px;
+  color: ${(props) => props.color};
+  font-size: ${typography.h5.size};
   font-style: normal;
-  font-weight: 600;
-  line-height: 20px;
-  font-family: "Darker Grotesque", sans-serif;
+  font-weight: ${typography.h5.fontWeight};
+  font-family: ${typography.h5.font};
 `;

@@ -4,6 +4,13 @@ import { Container, Title, Container2, VideoDiv, Video, Play, PlayButton, Playta
 import { i18n } from "./../../translate/i18n";
 import { useTheme } from "styled-components";
 import { useState, useEffect } from "react";
+import Videolink from "../../assets/video/Render.mp4";
+import Emoji_mike from "../../assets/images/emoji-mike.svg";
+import Emoji_document from "../../assets/images/emoji-document.svg";
+import Emoji_robot from "../../assets/images/emoji-robot.svg";
+import Emoji_score from "../../assets/images/emoji-score.svg";
+import PlayButtonIcon from "../../assets/images/play.svg";
+import PauseButtonIcon from "../../assets/images/pause.svg"
 
 export default function Workflow() {
  const theme = useTheme();
@@ -31,11 +38,11 @@ export default function Workflow() {
    <Container2>
     <VideoDiv>
      {/* <Video muted autoPlay loop controls> */}
-     <Video src="./video/Render.mp4" muted alt="test" id="video"></Video>
+     <Video src={Videolink} muted alt="test" id="video"></Video>
 
      <Play>
-      <PlayButton isvisible={buttonVisible} iconvisible={iconVisible} onClick={handleClick} onMouseEnter={MouseEnter} onMouseLeave={MouseLeave}><img src="../../images/play.svg" alt="play"></img></PlayButton>
-      <PlayButton isvisible={!buttonVisible} iconvisible={iconVisible} onClick={handleClick} onMouseEnter={MouseEnter} onMouseLeave={MouseLeave}><img src="../../images/pause.svg" alt="how it works"></img></PlayButton>
+      <PlayButton isvisible={buttonVisible} iconvisible={iconVisible} onClick={handleClick} onMouseEnter={MouseEnter} onMouseLeave={MouseLeave}><img src={PlayButtonIcon} alt="play"></img></PlayButton>
+      <PlayButton isvisible={!buttonVisible} iconvisible={iconVisible} onClick={handleClick} onMouseEnter={MouseEnter} onMouseLeave={MouseLeave}><img src={PauseButtonIcon} alt="how it works"></img></PlayButton>
       <Playtag color={theme.colors.white}>{i18n.t("workflow.button.title")}</Playtag>
      </Play>
     </VideoDiv>
@@ -46,7 +53,7 @@ export default function Workflow() {
        <CardText color={theme.colors.primary} >{i18n.t("workflow.card1.highlight")}</CardText>
        <CardText color={theme.colors.gray900}>{i18n.t("workflow.card1.paragraph")}</CardText>
       </CardTextDiv>
-      <CardIcon src="../../images/emoji-mike.svg" />
+      <CardIcon src={Emoji_mike} />
      </Card>
      <Card color={theme.colors.gray0}>
       <CardNumber color={theme.colors.primary}>2</CardNumber>
@@ -54,7 +61,7 @@ export default function Workflow() {
        <CardText color={theme.colors.primary}>{i18n.t("workflow.card2.highlight")}</CardText>
        <CardText color={theme.colors.gray900}>{i18n.t("workflow.card2.paragraph")}</CardText>
       </CardTextDiv>
-      <CardIcon src="../../images/emoji-document.svg" />
+      <CardIcon src={Emoji_document} />
      </Card>
      <Card color={theme.colors.gray0}>
       <CardNumber color={theme.colors.primary}>3</CardNumber>
@@ -62,7 +69,7 @@ export default function Workflow() {
        <CardText color={theme.colors.primary}>{i18n.t("workflow.card3.highlight")}</CardText>
        <CardText color={theme.colors.gray900}>{i18n.t("workflow.card3.paragraph")}</CardText>
       </CardTextDiv>
-      <CardIcon src="../../images/emoji-robot.svg" />
+      <CardIcon src={Emoji_robot} />
      </Card>
      <Card color={theme.colors.gray0}>
       <CardNumber color={theme.colors.primary}>4</CardNumber>
@@ -71,7 +78,7 @@ export default function Workflow() {
        <CardText color={theme.colors.primary}>{i18n.t("workflow.card4.highlight")}</CardText>
        <CardText color={theme.colors.gray900}>{i18n.t("workflow.card4.paragraph2")}</CardText>
       </CardTextDiv>
-      <CardIcon src="../../images/emoji-score.svg" />
+      <CardIcon src={Emoji_score} />
      </Card>
     </Container3>
    </Container2>

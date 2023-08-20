@@ -130,7 +130,7 @@ const StringsComuns = {
                 recommendation: "Recommendation"
               },
               readiness:{
-                title: "Reaciness",
+                title: "Readiness",
 
               }
             },

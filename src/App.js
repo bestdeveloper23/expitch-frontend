@@ -10,28 +10,33 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 // import SucessoEmail from "./components/sucessoEmail";
 // import Login from "./components/login";
-import Test from "./pages/test"
+// import Test from "./pages/test"
 import About from "./components/about";
 import Workflow from "./components/workflow";
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import reducer from './reducers/pitch';
+import Test from "./pages/test";
+
+const store = createStore(reducer);
+
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <Header />
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        {/* <Route path="/features" element={<Features />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/extension" element={<Extension />} />
-        <Route path="/sucessoEmail" element={<SucessoEmail />} />
-        <Route path="/login" element={<Login />} /> */}
-        <Route path="/test" element={<Test />} />
-        <Route path="/workflow" element={<Workflow />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
-      <Footer/>
-    </ThemeProvider>
+    
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Header />
+        <Routes>
+          <Route exact path="/" element={<Home />} />          
+          <Route path="/workflow" element={<Workflow />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/test" element={<Test/>} />
+        </Routes>
+        <Footer/>
+      </ThemeProvider>
+    </Provider>
   );
 }
 

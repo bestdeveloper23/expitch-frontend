@@ -4,7 +4,7 @@ export const GlobalStyles = createGlobalStyle`
 
   @font-face {
     font-family: 'Darker Grotesque';
-    src: url('./fonts/DarkerGrotesque-Regular.ttf') format('truetype');
+    src: url('../fonts/DarkerGrotesque-Regular.ttf') format('truetype');
     /* Add more src declarations for other file formats if needed */
   }
 
@@ -17,7 +17,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    font-family: 'Darker Grotesque', sans-serif;
+    font-family: 'DM Sans', Arial, sans-serif;
     margin: 0;
     padding: 0;
   }

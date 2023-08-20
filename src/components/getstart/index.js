@@ -12,6 +12,7 @@ import {
   Player,
   PlayerProgress,
   PlayerTime,
+  FormText,
   TextBox,
   PitchTextFormBottomBar,
   FormTitle,
@@ -26,7 +27,8 @@ import {
   MidTitle,
   FitMeNow,
   Title,
-  Avatar
+  Avatar,
+  Box
 } from "./styled";
 // import About from "./../../components/about"
 
@@ -69,11 +71,11 @@ export default function GetStart() {
       <Features>
         <F>
           <PitchForm>
-            <ShadowpitchForm/>
+            <ShadowpitchForm height={"0%"}/>
             <Title>
               {i18n.t('getstart.pitch.title')}
             </Title>
-            <Player>
+            <Player color={theme.colors.white}>
               <img src={PlayIcon} alt={PlayIcon} />
               <PlayerTime>
                 0:05 / 0:56
@@ -82,53 +84,57 @@ export default function GetStart() {
                 id="playerprogress"
                 value='30'
                 max='100'
+                color={theme.colors.primary}
               />
               <img src={SpeakerWaveIcon} alt={SpeakerWaveIcon} />
               <img src={MoreIcon} alt={MoreIcon} />
             </Player>
-            <TextBox
-              height="300px"
-              borderradius="15px"
-            >
-              We believe in the power of exceptional user experiences. Our UX/UI agency is dedicated to creating visually stunning and intuitive digital products that captivate users and drive business growth. Through our meticulous design process, we blend creativity, user-centricity, and technical expertise to craft interfaces that not only look beautiful but also deliver seamless interactions. Join us on a journey to transform your digital presence and leave a lasting impression on your audience.
-              In today's digital landscape, user experience has become a critical factor in the success of any business. However, many companies struggle to provide seamless and intuitive user interfaces that effectively meet the needs and expectations of their target audience. Outdated designs, confusing navigation, and lack of user-centered approaches often result in frustrated users, decreased conversion rates, and missed opportunities for growth.
-              We believe in the power of exceptional user experiences. Our UX/UI agency is dedicated to creating visually stunning and intuitive digital products that captivate users and drive business growth. Through our meticulous design process, we blend creativity, user-centricity, and technical expertise to craft interfaces that not only look beautiful but also deliver seamless interactions. Join us on a journey to transform your digital presence and leave a lasting impression on your audience.
-              In today's digital landscape, user experience has become a critical factor in the success of any business. However, many companies struggle to provide seamless and intuitive user interfaces that effectively meet the needs and expectations of their target audience. Outdated designs, confusing navigation, and lack of user-centered approaches often result in frustrated users, decreased conversion rates, and missed opportunities for growth.
-              <br />
-              <br />
-              <br />
-            </TextBox>
-            <PitchTextFormBottomBar
-              top="-43px"
-            >
-              <DContainer
-                display="flex"
-                justifycontent="flex-end"
-                alignitems="center"
-                gap="20px"
+            <FormText>
+              <TextBox
+                height="300px"
+                borderradius="15px 15px 0 0"
+                borderbottom = "none"
+                color={theme.colors.white} 
+              >
+                We believe in the power of exceptional user experiences. Our UX/UI agency is dedicated to creating visually stunning and intuitive digital products that captivate users and drive business growth. Through our meticulous design process, we blend creativity, user-centricity, and technical expertise to craft interfaces that not only look beautiful but also deliver seamless interactions. Join us on a journey to transform your digital presence and leave a lasting impression on your audience.
+                In today's digital landscape, user experience has become a critical factor in the success of any business. However, many companies struggle to provide seamless and intuitive user interfaces that effectively meet the needs and expectations of their target audience. Outdated designs, confusing navigation, and lack of user-centered approaches often result in frustrated users, decreased conversion rates, and missed opportunities for growth.
+                We believe in the power of exceptional user experiences. Our UX/UI agency is dedicated to creating visually stunning and intuitive digital products that captivate users and drive business growth. Through our meticulous design process, we blend creativity, user-centricity, and technical expertise to craft interfaces that not only look beautiful but also deliver seamless interactions. Join us on a journey to transform your digital presence and leave a lasting impression on your audience.
+                In today's digital landscape, user experience has become a critical factor in the success of any business. However, many companies struggle to provide seamless and intuitive user interfaces that effectively meet the needs and expectations of their target audience. Outdated designs, confusing navigation, and lack of user-centered approaches often result in frustrated users, decreased conversion rates, and missed opportunities for growth.
+                <br />
+                <br />
+                <br />
+              </TextBox>
+              <PitchTextFormBottomBar position="absolute"
               >
                 <DContainer
                   display="flex"
-                  gap="10px"
+                  justifycontent="flex-end"
+                  alignitems="center"
+                  gap="20px"
                 >
-                  <img src={DownloadIcon} alt={DownloadIcon} />
-                  <FormTitle
-                    color="white"
-                    fontsize="18px"
-                  >{i18n.t("getstart.analysis.button.download")}</FormTitle>
+                  <DContainer
+                    display="flex"
+                    gap="10px"
+                  >
+                    <img src={DownloadIcon} alt="downloadIcon" />
+                    <FormTitle
+                      color="white"
+                      fontsize="18px"
+                    >{i18n.t("getstart.analysis.button.download")}</FormTitle>
+                  </DContainer>
+                  <DContainer
+                    display="flex"
+                    gap="10px"
+                  >
+                    <img src={CopyIcon} alt={CopyIcon} />
+                    <FormTitle
+                      color="white"
+                      fontsize="18px"
+                    >{i18n.t("getstart.analysis.button.copy")}</FormTitle>
+                  </DContainer>
                 </DContainer>
-                <DContainer
-                  display="flex"
-                  gap="10px"
-                >
-                  <img src={CopyIcon} alt={CopyIcon} />
-                  <FormTitle
-                    color="white"
-                    fontsize="18px"
-                  >{i18n.t("getstart.analysis.button.copy")}</FormTitle>
-                </DContainer>
-              </DContainer>
-            </PitchTextFormBottomBar>
+              </PitchTextFormBottomBar>
+            </FormText>
           </PitchForm>
           <GridRows
             rows={2}
@@ -226,109 +232,110 @@ export default function GetStart() {
             </DContainer>
           </GridRows>
           <PitchForm>
-            <ShadowpitchForm/>
+            <ShadowpitchForm height={"25%"}/>
             <Title>
               {i18n.t('getstart.analysis.title')}
             </Title>
-            <PitchTextFormTopBar
-            >
-              <DContainer
-                margin="0 0 0 20px"
-                display="flex"
-                justifycontent="space-between"
-                alignitems="center"
+            <FormText>
+              <PitchTextFormTopBar
               >
                 <DContainer
+                  margin="0 0 0 20px"
                   display="flex"
-                  gap="10px"
+                  justifycontent="space-between"
+                  alignitems="center"
                 >
-                  <FormTitle
-                    color="white"
-                    fontsize="18px"
+                  <DContainer
+                    display="flex"
+                    gap="10px"
                   >
-                    {i18n.t("getstart.analysis.feature.title")}
-                  </FormTitle>
-                  <CustomSVG src={InformationIcon}></CustomSVG>
+                    <FormTitle
+                      color="white"
+                      fontsize="18px"
+                    >
+                      {i18n.t("getstart.analysis.feature.title")}
+                    </FormTitle>
+                    <CustomSVG src={InformationIcon}></CustomSVG>
+                  </DContainer>
+                  <CustomSVG src={ChevronIcon}></CustomSVG>
                 </DContainer>
-                <CustomSVG src={ChevronIcon}></CustomSVG>
-              </DContainer>
-              <Grade
-                position="absolute"
-                left="50%"
-                transform="translate(-50%, -50%)"
-                size={30}
-                color="yellow"
-                backgroundcolor="rgba(255,255,0,0.1)"
-              >B+</Grade>
-            </PitchTextFormTopBar>
-            <TextBox
-              height="500px"
-              bordertop="none"
-              borderbottom="none"
-              borderradius="0px"
-            >
-              <FormTitle
-                color="#75A8FF"
-                fontsize="20px"
+                <Grade
+                  position="absolute"
+                  left="50%"
+                  transform="translate(-50%, -50%)"
+                  size={30}
+                  color="yellow"
+                  backgroundcolor="rgba(255,255,0,0.1)"
+                >B+</Grade>
+              </PitchTextFormTopBar>
+              <TextBox
+                height="500px"
+                bordertop="none"
+                borderbottom="none"
+                borderradius="0px"
               >
-                {i18n.t("getstart.analysis.feature.evaluation")}<br /><br />
-              </FormTitle>
-              <FormTitle
-                color="white"
-                fontsize="18px"
-              >
-                While you touched on the features of your agency, you did not sufficiently emphasize the specific benefits that clients can expect from working with you. To make this section more impactful, it is important to clearly articulate the advantages and value proposition your agency offers, highlighting how your features directly address the pain points and needs of potential clients.
-              </FormTitle><br /><br /><br />
-              <FormTitle
-                color="#75A8FF"
-                fontsize="20px"
-              >
-                {i18n.t("getstart.analysis.feature.recommendation")}<br /><br />
-              </FormTitle>
-              <FormTitle
-                color="white"
-                fontsize="18px"
-              >
-                Try to focus more on the unique benefits that clients will gain from your agency's features. Clearly communicate how your features translate into tangible advantages, such as enhanced user experiences, increased user engagement, improved conversion rates, streamlined workflows, and the achievement of clients' business goals. By doing so, you can effectively differentiate your agency from competitors and persuade potential clients to choose your services.
-              </FormTitle>
-            </TextBox>
-            <PitchTextFormBottomBar
-              top="-8px"
-            >
-              <DContainer
-                margin="0 0 0 20px"
-                display="flex"
-                justifycontent="space-between"
-                alignitems="center"
+                <FormTitle
+                  color="#75A8FF"
+                  fontsize="20px"
+                >
+                  {i18n.t("getstart.analysis.feature.evaluation")}<br /><br />
+                </FormTitle>
+                <FormTitle
+                  color="white"
+                  fontsize="18px"
+                >
+                  While you touched on the features of your agency, you did not sufficiently emphasize the specific benefits that clients can expect from working with you. To make this section more impactful, it is important to clearly articulate the advantages and value proposition your agency offers, highlighting how your features directly address the pain points and needs of potential clients.
+                </FormTitle><br /><br /><br />
+                <FormTitle
+                  color="#75A8FF"
+                  fontsize="20px"
+                >
+                  {i18n.t("getstart.analysis.feature.recommendation")}<br /><br />
+                </FormTitle>
+                <FormTitle
+                  color="white"
+                  fontsize="18px"
+                >
+                  Try to focus more on the unique benefits that clients will gain from your agency's features. Clearly communicate how your features translate into tangible advantages, such as enhanced user experiences, increased user engagement, improved conversion rates, streamlined workflows, and the achievement of clients' business goals. By doing so, you can effectively differentiate your agency from competitors and persuade potential clients to choose your services.
+                </FormTitle>
+              </TextBox>
+              <PitchTextFormBottomBar
               >
                 <DContainer
+                  margin="0 0 0 20px"
                   display="flex"
-                  gap="10px"
+                  justifycontent="space-between"
+                  alignitems="center"
                 >
-                  <FormTitle
-                    color="white"
-                    fontsize="18px"
+                  <DContainer
+                    display="flex"
+                    gap="10px"
                   >
-                    {i18n.t("getstart.analysis.readiness.title")}
-                  </FormTitle>
-                  <CustomSVG src={InformationIcon}></CustomSVG>
+                    <FormTitle
+                      color="white"
+                      fontsize="18px"
+                    >
+                      {i18n.t("getstart.analysis.readiness.title")}
+                    </FormTitle>
+                    <CustomSVG src={InformationIcon}></CustomSVG>
+                  </DContainer>
+                  <Rotate rotate="180" right="5%"><CustomSVG src={ChevronIcon}></CustomSVG></Rotate>
                 </DContainer>
-                <Rotate rotate="180" right="5%"><CustomSVG src={ChevronIcon}></CustomSVG></Rotate>
-              </DContainer>
-              <Grade
-                position="absolute"
-                left="50%"
-                transform="translate(-50%, -50%)"
-                size={30}
-                color="yellow"
-                backgroundcolor="rgba(255,255,0,0.1)"
-              >B-</Grade>
-            </PitchTextFormBottomBar>
+                <Grade
+                  position="absolute"
+                  left="50%"
+                  transform="translate(-50%, -50%)"
+                  size={30}
+                  color="yellow"
+                  backgroundcolor="rgba(255,255,0,0.1)"
+                >B-</Grade>
+              </PitchTextFormBottomBar>
+            </FormText>
           </PitchForm>
         </F>
         <F>
           <PitchForm>
-            <ShadowpitchForm/>
+            <ShadowpitchForm height={"100%"}/>
             <Title>
               {i18n.t("getstart.public.title")}
             </Title>
@@ -374,7 +381,7 @@ export default function GetStart() {
                 </DContainer>
               </DContainer>
             </TextBox>
-            <Player>
+            <Player color={theme.colors.white}>
               <img src={PlayIcon} alt={PlayIcon} />
               <PlayerTime>
                 0:05 / 0:56
@@ -383,6 +390,7 @@ export default function GetStart() {
                 id="playerprogress"
                 value='30'
                 max='100'
+                color={theme.colors.primary}
               />
               <img src={SpeakerWaveIcon} alt={SpeakerWaveIcon} />
               <img src={MoreIcon} alt={MoreIcon} />
@@ -390,6 +398,7 @@ export default function GetStart() {
             <TextBox
               height="200px"
               borderradius="15px"
+              color={theme.colors.white}
             >
               Hi everyone! My name is Olivia, and I'm here to introduce you to FitMeNow, the revolutionary fitness app designed to transform your workout routine. Are you tired of feeling unmotivated and struggling to reach your fitness goals? FitMeNow is here to change that!<br /><br />
               We've identified a common problem among individuals who want to lead a healthier lifestyle: lack of personalized guidance and motivation. Many people find it challenging to stay consistent with their exercise routines or don't know where to begin. FitMeNow is the solution to these obstacles.

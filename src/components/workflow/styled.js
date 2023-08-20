@@ -1,12 +1,13 @@
 import styled, {css } from "styled-components";
+import { breakpoint, typography } from "../../theme/theme";
 
 export const Container = styled.div`
 
-  @media (min-width: 800px) {
+  @media (min-width: ${breakpoint.md}) {
     margin: auto;
     padding: 50px 30px;
    }
-   @media (min-width: 1400px) {
+   @media (min-width: ${breakpoint.lg}) {
     max-width: 1204px;
     margin: auto;
     
@@ -16,9 +17,9 @@ export const Container = styled.div`
    position: relative;
 `;
 
-export const Title = styled.h1`
- font-size: 56px;
- font-weight: 600;
+export const Title = styled.h2`
+ font-size: ${typography.h2.size};
+ font-weight: ${typography.h2.fontWeight};
  color: ${(props)=> props.color};
 `
 
@@ -26,7 +27,7 @@ export const Container2 = styled.div`
  display: flex;
  align-items: start;
  justify-content: space-between;
- @media (max-width: 800px) {
+ @media (max-width: ${breakpoint.md}) {
   flex-direction: column;
  }
 `
@@ -34,7 +35,7 @@ export const VideoDiv = styled.div`
  width: 50%;
  margin-right: 50px;
  position: relative;
- @media (max-width: 800px) {
+ @media (max-width: ${breakpoint.md}) {
   width: 100%;
   margin: 0;
  }
@@ -43,7 +44,7 @@ export const VideoDiv = styled.div`
 export const Video = styled.video`
  width: 100%;
  height: auto;
- @media (max-width: 800px){
+ @media (max-width: ${breakpoint.md}){
   width: 100%;
   padding-bottom: 50px;
  }
@@ -74,11 +75,9 @@ export const PlayButton = styled.button`
 `
 export const Playtag = styled.p`
   display: ${(props) => props.isvisible == true ? "block" : "none"};
- font-family: 'DM Sans', sans-serif;
  border: none;
- font-size: 18px;
- font-weight: 400;
- line-height: 22px;
+ font-size: ${typography.md.size};
+ font-weight: ${typography.md.fontWeight};
  color: ${(props)=> props.color};
 `
 export const Container3 = styled.div`
@@ -86,7 +85,7 @@ export const Container3 = styled.div`
  flex-direction: column;
  gap: 10px;
  width: 50%;
- @media (max-width: 800px) {
+ @media (max-width: ${breakpoint.md}) {
   width: 100%;
  }
 `
@@ -104,16 +103,14 @@ export const CardTextDiv = styled.p`
  width: 85%;
 `
 export const CardNumber = styled.h4`
-  font-family: 'DM Sans', sans-serif;
  width: 5%;
- font-size: 32px;
- font-weight: 600;
+ font-size: ${typography.h4.size};
+ font-weight: ${typography.h4.fontWeight};
  color: ${(props)=> props.color};
 `
 export const CardText = styled.span`
-font-family: 'DM Sans', sans-serif;
- font-size: 26px;
- font-weight: 400;
+ font-size: ${typography.lg.size};
+ font-weight: ${typography.lg.fontWeight};
  color: ${(props)=> props.color};
 `
 export const CardIcon = styled.img`

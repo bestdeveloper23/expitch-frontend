@@ -23,11 +23,10 @@ export default function Header() {
     // Perform any desired logic or state updates here
   };
   return (
-    <Container >
-      <Notice isopen={isOpen_notice}>
+    <Container color={theme.colors.gray200}>
+      <Notice isopen={isOpen_notice} bgcolor={theme.colors.gray900} color={theme.colors.white}>
         {i18n.t("header.title")}
       </Notice>
-
       <CloseButton onClick={handleClick} isopen={isOpen_notice}>
         <svg
           width="13.5"
@@ -46,8 +45,7 @@ export default function Header() {
           <Links href={"/workflow"} color={theme.colors.gray900}>{i18n.t("routes.workflow")}</Links>
           <Links href={"/about"} color={theme.colors.gray900}>{i18n.t("routes.about")}</Links>
         </LinkDiv>
-        <TestButton>{i18n.t("routes.test")}</TestButton>
-      </NavBar>
+        <TestButton href={"/test"} color={theme.colors.white} bgcolor={theme.colors.primary}>{i18n.t("routes.test")}</TestButton>      </NavBar>
     </Container>
   );
 }

@@ -1,22 +1,23 @@
 import styled from "styled-components";
+import { breakpoint, typography } from "../../theme/theme";
 
 export const Container = styled.section`
   width: 100%;
   padding: 0;
   margin: 0;
   position: relative;
-  border-bottom: 1px solid #E5E7EB;
+  border-bottom: 1px solid ${(props) => props.color};
   background-color: white;
 `;
 
 export const NavBar = styled.div`
 
-  @media (min-width: 600px) {
+  @media (min-width: ${breakpoint.md}) {
     min-height: 80px;
-    padding: 10ox 30px;
+    padding: 10px 30px;
   }
   
-  @media (min-width: 1400px) {
+  @media (min-width: ${breakpoint.lg}) {
     max-width: 1204px;
     min-height: 94px;
   }
@@ -31,13 +32,13 @@ export const Logo = styled.img`
   width: 82px;
   height: auto;
   cursor: pointer;
-  @media (max-width: 800px){
+  @media (max-width: ${breakpoint.md}){
     width: 20vw;
   }
 `
 export const Notice = styled.div`
-  background-color: #000;
-  color: #fff;
+  background-color: ${(props) => props.bgcolor};
+  color: ${(props) => props.color};
   padding: 10px;
   padding-inline: 35px;
   border: none;
@@ -57,13 +58,11 @@ export const Links = styled.a`
   display: flex;
   cursor: pointer;
   color: ${(props) => props.color};
-  font-family: 'DM Sans';
-  font-size: 18px;
-  line-height: 22px;
-  font-weight: 400;
+  font-size: ${typography.sm.size};
+  font-weight: ${typography.sm.fontWeight};
   align-items: center;
-  @media (max-width: 800px){
-    font-size: 12px;
+  @media (max-width: ${breakpoint.md}){
+    font-size: ${typography.xs.size};
   }
 `;
 
@@ -75,24 +74,26 @@ export const CloseButton = styled.button`
   background: transparent;
   cursor: pointer;
   border: none;
-  @media (min-width: 600px) {
+  @media (min-width: ${breakpoint.md}) {
     right: 20px;
   }
   
-  @media (min-width: 1400px) {
+  @media (min-width: ${breakpoint.lg}) {
     right: 40px;
   }
 `
-export const TestButton = styled.button`
-  background-color: #E71561;
-  color: #FFFFFF;
+export const TestButton = styled.a`
+  text-decoration: none;
+  background-color: ${(props) => props.bgcolor};
+  color: ${(props) => props.color};
   padding: 12px 26px;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  font-family: 'DM Sans';
-  font-size: 18px;
-  @media (max-width: 800px){
+  font-family: ${typography.sm_bold.font};
+  font-size: ${typography.sm_bold.size};
+  font-weight: ${typography.sm_bold.fontWeight};
+  @media (max-width: ${breakpoint.md}){
     padding: 3px 5px;
     border-radius: 5px;
     font-size: 12px;

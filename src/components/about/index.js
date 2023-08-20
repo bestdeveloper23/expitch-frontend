@@ -8,6 +8,20 @@ import { ThemeContext, styled, useTheme } from "styled-components";
 import { i18n } from "./../../translate/i18n";
 import arrow from "../../assets/images/arrow.svg";
 import React, { useState, useEffect } from "react";
+import Grid from "../../assets/images/grid.svg";
+import Play_circle from "../../assets/images/play-circle.svg";
+import Audio from "../../assets/images/loading.svg";
+import Emoji_Speech from "../../assets/images/emoji-speech.svg";
+import Emoji_muscle from "../../assets/images/emoji-muscle.svg";
+import Emoji_okay from "../../assets/images/emoji-okay.svg";
+import Emoji_hundred from "../../assets/images/emoji-hundred.svg";
+import About1 from "../../assets/images/about/1.svg";
+import About2 from "../../assets/images/about/2.svg";
+import About3 from "../../assets/images/about/3.svg";
+import About4 from "../../assets/images/about/4.svg";
+import About5 from "../../assets/images/about/5.svg";
+import About6 from "../../assets/images/about/6.svg";
+import About7 from "../../assets/images/about/7.svg";
 
 export default function About() {
   const theme = useTheme();
@@ -23,28 +37,29 @@ export default function About() {
   }
   return (
     <>
-      <Gridbackground src="../../images/grid.svg"></Gridbackground>
+      <Gridbackground src={Grid} alt="grid"></Gridbackground>
       <Container>
         <Line>
           <Texts>
-            <Title color={theme.colors.gray900}>{i18n.t("about.title1")}</Title><Title color={theme.colors.primary}>{i18n.t("about.title2")}</Title>
-            <Paragraph color={theme.colors.gray900}>{i18n.t("about.paragraph")}</Paragraph>
-            <Links>
-              <TestButton>{i18n.t("routes.test")}</TestButton>
+            <Title color={theme.colors.gray900} >{i18n.t("about.title1")}</Title>
+            <Title color={theme.colors.primary} >{i18n.t("about.title2")}</Title>
+            <Paragraph color={theme.colors.gray900} >{i18n.t("about.paragraph")}</Paragraph>
+            <Links >
+              <TestButton href={"/test"} color={theme.colors.white} bgcolor={theme.colors.primary}>{i18n.t("routes.test")}</TestButton>
               <Paragraph2>{i18n.t("about.paragraph2")}</Paragraph2>
-              <PlayButton src="../images/play-circle.svg" alt="play"></PlayButton>
+              <PlayButton src={Play_circle} alt="play"></PlayButton>
             </Links>
           </Texts>
           <RightColumn>
             <Shadow2 />
-            <Righttitle color={theme.colors.gray900}>{i18n.t("about.pitch.title")}</Righttitle>
-            <Rightparagraph color={theme.colors.gray900}>{i18n.t("about.pitch.paragraph")}
+            <Righttitle color={theme.colors.gray900} >{i18n.t("about.pitch.title")}</Righttitle>
+            <Rightparagraph color={theme.colors.gray900} bordercolor={theme.colors.gray200} bgcolor={theme.colors.gray50}>{i18n.t("about.pitch.paragraph")}
               <Shadow1 />
-              <AudioBar src="../../images/loading.svg" alt="audio"></AudioBar>
+              <AudioBar src={Audio} alt="audio"></AudioBar>
             </Rightparagraph>
 
             <Container2>
-              <Righttitle color={theme.colors.gray900}>{i18n.t("about.analysis.title")}</Righttitle>
+              <Righttitle color={theme.colors.gray900} >{i18n.t("about.analysis.title")}</Righttitle>
               <Collapse bordercolor={theme.colors.gray200}>
                 <List bordercolor={theme.colors.gray200}>
                   <Response>
@@ -85,36 +100,36 @@ export default function About() {
         </Line>
         <CardContainer>
           <Card>
-            <CardIcon src="../../images/emoji-speech.svg"/>
-            <CardTitle>{i18n.t("about.card1.title")}</CardTitle>
-            <CardParagraph>{i18n.t("about.card1.paragraph")}</CardParagraph>
+            <CardIcon src={Emoji_Speech} />
+            <CardTitle color={theme.colors.gray900} >{i18n.t("about.card1.title")}</CardTitle>
+            <CardParagraph color={theme.colors.gray500} >{i18n.t("about.card1.paragraph")}</CardParagraph>
           </Card>
           <Card>
-            <CardIcon src="../../images/emoji-muscle.svg"/>
-            <CardTitle>{i18n.t("about.card2.title")}</CardTitle>
-            <CardParagraph>{i18n.t("about.card2.paragraph")}</CardParagraph>
+            <CardIcon src={Emoji_muscle} />
+            <CardTitle color={theme.colors.gray900} >{i18n.t("about.card2.title")}</CardTitle>
+            <CardParagraph color={theme.colors.gray500} >{i18n.t("about.card2.paragraph")}</CardParagraph>
           </Card>
           <Card>
-            <CardIcon src="../../images/emoji-okay.svg" />
-            <CardTitle>{i18n.t("about.card3.title")}</CardTitle>
-            <CardParagraph>{i18n.t("about.card3.paragraph")}</CardParagraph>
+            <CardIcon src={Emoji_okay} />
+            <CardTitle color={theme.colors.gray900} >{i18n.t("about.card3.title")}</CardTitle>
+            <CardParagraph color={theme.colors.gray500} >{i18n.t("about.card3.paragraph")}</CardParagraph>
           </Card>
           <Card>
-            <CardIcon src="../../images/emoji-hundred.svg" />
-            <CardTitle>{i18n.t("about.card4.title")}</CardTitle>
-            <CardParagraph>{i18n.t("about.card4.paragraph")}</CardParagraph>
+            <CardIcon src={Emoji_hundred} />
+            <CardTitle color={theme.colors.gray900} >{i18n.t("about.card4.title")}</CardTitle>
+            <CardParagraph color={theme.colors.gray500} >{i18n.t("about.card4.paragraph")}</CardParagraph>
           </Card>
         </CardContainer>
       </Container>
       <TrustedContainer bgcolor={theme.colors.gray900}>
         <TrustedsubContainer>
-          <Trusted src="../../images/about/1.svg" alt="icon"></Trusted>
-          <Trusted src="../../images/about/2.svg" alt="icon"></Trusted>
-          <Trusted src="../../images/about/3.svg" alt="icon"></Trusted>
-          <Trusted src="../../images/about/4.svg" alt="icon"></Trusted>
-          <Trusted src="../../images/about/5.svg" alt="icon"></Trusted>
-          <Trusted src="../../images/about/6.svg" alt="icon"></Trusted>
-          <Trusted src="../../images/about/7.svg" alt="icon"></Trusted>
+          <Trusted src={About1} alt="icon"></Trusted>
+          <Trusted src={About2} alt="icon"></Trusted>
+          <Trusted src={About3} alt="icon"></Trusted>
+          <Trusted src={About4} alt="icon"></Trusted>
+          <Trusted src={About5} alt="icon"></Trusted>
+          <Trusted src={About6} alt="icon"></Trusted>
+          <Trusted src={About7} alt="icon"></Trusted>
         </TrustedsubContainer>
       </TrustedContainer>
     </>

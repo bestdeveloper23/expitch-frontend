@@ -13,7 +13,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  row-gap: 32px; 
 `;
 
 export const NavWrapper = styled.div``;

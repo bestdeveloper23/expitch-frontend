@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import HeartIcon from '../../assets/images/heart.svg'
 import ChatIcon from '../../assets/images/chat-bubble-oval-left.svg'
-
-import BackgroundSVG from "../../assets/images/Group5.png"
+import BackgroundSVG from "../../assets/images/grid.svg"
+import { breakpoint, typography } from "../../theme/theme";
 
 export const ColorBgContainer = styled.div`
     background-color: ${(props) => props.bg};
@@ -20,13 +20,13 @@ export const TitleTag = styled.div`
     max-width: 1232px;
     padding: 50px 0px;
     
-    @media (min-width: 600px) {
+    @media (min-width: ${breakpoint.sm}) {
         padding: 70px 0px;
     }
-    @media (min-width: 800px) {
+    @media (min-width: ${breakpoint.md}) {
         padding: 100px 0px;
     };
-    @media (min-width: 1400px) {
+    @media (min-width: ${breakpoint.lg}) {
         padding: 150px 0px;
        };
     position: relative;
@@ -38,23 +38,22 @@ export const Bgtitle =styled.div`
     position: absolute;
     left: 0;
     top: 0;
-    background: 
+    background:
         radial-gradient(ellipse at 50% -50%, rgba(231, 21, 97, 0.4), transparent 70%),
         radial-gradient(ellipse at 50% -50%, rgba(17, 24, 39, 0),  rgba(17, 24, 39, 1)80%),
-        url("../../images/grid.svg") 0% -20%/80% auto no-repeat,
+        url(${BackgroundSVG}) 0% 20%/80% auto no-repeat,
         linear-gradient(0deg, rgba(17, 24, 39, 1) 0%, rgba(17, 24, 39, 1) 100%);
 `
 
 export const Features = styled.div`
 
-    @media (min-width: 800px) {
+    @media (min-width: ${breakpoint.md}) {
     margin: auto;
     padding: 0px 30px;
    }
-   @media (min-width: 1400px) {
+   @media (min-width: ${breakpoint.lg}) {
     max-width: 1204px;
     margin: auto;
-    
     padding: 0px 30px;
    }
 `
@@ -78,6 +77,7 @@ export const PitchForm = styled.div`
         margin: 50px 0px;
     }
     position: relative;
+    height: fit-content;
 `
 
 export const ShadowpitchForm = styled.div`
@@ -87,18 +87,18 @@ export const ShadowpitchForm = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(0deg, rgba(17, 24, 39, 1) 0%, rgba(17, 24, 39, 1) 10%, transparent 100%);
+    background: ${ (props) => `linear-gradient(0deg, rgba(17, 24, 39, 1), transparent ${props.height})`};
     z-index: 1;
 `
 
 export const Player = styled.div`
-    color: white;
+    color: ${(props) => props.color};
     display: flex;
     padding: 8px;
     align-items: center;
     gap: 16px;
     align-self: stretch;
-    height: 25px;
+    height: 48px;
     border-radius: 12px;
     border: 1px solid #405A94;
     background: #1E2A45;
@@ -120,20 +120,26 @@ export const PlayerProgress = styled.progress`
     }
 
     &::-webkit-progress-value {
-    background-color: #E71561;
+    background-color: ${(props) => props.color};
     border-radius: 10px;
     }
 
     &::-moz-progress-bar {
-    background-color: #E71561;
+    background-color: ${(props) => props.color};
     border-radius: 10px;
     }
 `
 export const PlayerTime = styled.div`
     width: 200px;
 `
+
+export const FormText = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+`
+
 export const TextBox = styled.div`
-    font-family: 'DM Sans', sans-serif;
     width: ${props => props.width};
     max-width: 100%;
     height: ${props => props.height};
@@ -148,8 +154,9 @@ export const TextBox = styled.div`
     word-wrap: break-word;
     border-radius: ${props => props.borderradius};
     overflow: scroll;
-    color: white;
-    font-size: 18px;
+    color: ${(props) => props.color};
+    font-size: ${typography.sm.size};
+    font-weight: ${typography.sm.fontWeight};
     overflow-x: hidden;
 
     &::-webkit-scrollbar {
@@ -172,19 +179,14 @@ export const TextBox = styled.div`
 `
 export const PitchTextFormTopBar = styled.div`
     position: relative;
-    top: 8px;
     border: 1px solid #405A94;
     border-bottom: none;
     border-radius: 15px 15px 0 0;
     height: 35px;
-    width: calc(100% - 22px);
     background-color: #2A3754;
     padding: 5px 20px 5px 0px;
 `
 export const PitchTextFormBottomBar = styled.div`
-    /* border: 1px solid #405A94; */
-    /* border-top: none; */
-    width: calc(100% - 22px);
     border-radius: 0 0 15px 15px ;
     height: 35px;
     background-color: #2A3754;
@@ -192,61 +194,64 @@ export const PitchTextFormBottomBar = styled.div`
     gap: 10px;
     padding: 5px 20px 5px 0px;
     position: relative;
-    top: ${props => props.top};
+    top: ${props => props.top};    
+    border: 1px solid #405A94;
+    border-top: none;
 `
 export const Title = styled.span`
-    font-weight: 600;
+    font-weight: ${typography.h3.fontWeight};
     color: white;
-    font-size: 25px;
-    @media (min-width: 800px) {
-        font-size: 37px;
+    font-size: ${typography.h4.size};
+    @media (min-width: ${breakpoint.md}) {
+        font-size: ${typography.h3.size};
     };
-    @media (min-width: 1400px) {
-        font-size: 42px;
+    @media (min-width: ${breakpoint.lg}) {
+        font-size: ${typography.h3.size};
     };
 `
 export const FormTitle = styled.span`
     color: ${props => props.color};
-    font-size: ${props => props.fontsize};
+    font-size: ${(props) => props.fontsize};
 `
 
 export const BigTitle = styled.span`
     color: ${props => props.color};
     font-size: 50px;
     font-weight: 600;
-    @media (min-width: 600px) {
+    @media (min-width: ${breakpoint.sm}) {
         font-size: 100px;
     }
-    @media (min-width: 800px) {
+    @media (min-width: ${breakpoint.md}) {
         font-size: 150px;
     };
-    @media (min-width: 1400px) {
+    @media (min-width: ${breakpoint.lg}) {
         font-size: 200px;
        };
 `
 export const MidTitle = styled.span`
-    font-weight: 600;
+    font-weight: ${typography.h2.fontWeight};
     color: ${props => props.color};
-    font-size: 26px;
-    @media (min-width: 600px) {
-        font-size: 36px;
+    font-size: ${typography.h4.size};
+    @media (min-width: ${breakpoint.sm}) {
+        font-size: ${typography.h3.size};
     }
-    @media (min-width: 800px) {
-        font-size: 46px;
+    @media (min-width: ${breakpoint.md}) {
+        font-size: ${typography.h2.size};
     };
-    @media (min-width: 1400px) {
-        font-size: 56px;
+    @media (min-width: ${breakpoint.lg}) {
+        font-size: ${typography.h2.size};
        };
 `
 export const FitMeNow = styled.span`
     color: ${props => props.color};
-    font-size: 25px;
-    @media (min-width: 800px) {
-        font-size: 37px;
+    font-size: ${typography.h4.size};
+    @media (min-width: ${breakpoint.md}) {
+        font-size: ${typography.h3.size};
     };
-    @media (min-width: 1400px) {
-        font-size: 42px;
+    @media (min-width: ${breakpoint.lg}) {
+        font-size: ${typography.h3.size};
        };
+    font-weight: ${typography.h3.fontWeight};
 `
 
 export const GridRows = styled.div`
@@ -304,7 +309,16 @@ export const DContainer = styled.div`
     position: ${props =>props.position};
 `
 export const Box = styled.div`
-
+    background-color: rgba(255, 255, 255, 0.05); /* Adjust the alpha value to control the transparency */
+  backdrop-filter: blur(10px); /* Adjust the blur value to control the intensity of the effect */
+  border-radius: 8px;
+  padding: 16px;
+  z-index: 9;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 `
 export const ProfileImage = styled.img`
     width: ${props => props.width || '50px'};
@@ -329,13 +343,13 @@ export const Avatar = (props) => {
                             display="flex"
                         >
                             <CustomSVG src={HeartIcon} width="20px" height="20px"></CustomSVG>
-                            <FormTitle color='white' fontsize="18px">456</FormTitle>
+                            <FormTitle color='white'>456</FormTitle>
                         </DContainer>
                         <DContainer
                             display="flex"
                         >
                             <CustomSVG src={ChatIcon} width="20px" height="20px"></CustomSVG>
-                            <FormTitle color='white' fontsize="18px">1k</FormTitle>
+                            <FormTitle color='whtie'>1k</FormTitle>
                         </DContainer>
                     </>
                 ):(<></>)}
