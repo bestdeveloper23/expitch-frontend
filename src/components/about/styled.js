@@ -21,13 +21,13 @@ export const Line = styled.div`
   display: flex;
   /* align-items: center; */
   justify-content: space-between;
-  @media (max-width: ${breakpoint.md}) {
-    flex-direction: column-reverse;
+  @media (max-width: ${breakpoint.lg}) {
+    flex-direction: column;
   }
 `;
 
 export const Texts = styled.div`
-  @media (min-width: ${breakpoint.md}) {
+  @media (min-width: ${breakpoint.lg}) {
     padding: 100px 0px;  
     text-align: left;
     width: 55%;
@@ -85,7 +85,7 @@ export const TestButton = styled.a`
   font-family: ${typography.sm_bold.font};
   font-size: ${typography.sm_bold.size};
   font-weight: ${typography.sm_bold.fontWeight};
-  @media (max-width: ${breakpoint.md}){
+  @media (max-width: ${breakpoint.lg}){
     padding: 3px 5px;
     border-radius: 5px;
     font-size: 12px;
@@ -120,7 +120,7 @@ export const RightColumn = styled.div`
   justify-content: flex-end;
   position: relative;
   width: 45%;
-  @media (max-width: ${breakpoint.md}){
+  @media (max-width: ${breakpoint.lg}){
     width: 100%;
   }
 `;
@@ -158,7 +158,7 @@ export const Container2 = styled.div`
     display: inline-block;
     margin-top: 2rem;
   }
-  @media (max-width: ${breakpoint.md}) {
+  @media (max-width: ${breakpoint.lg}) {
     text-align: center;
     padding: 0;
     padding: 50px 0px;
@@ -256,7 +256,7 @@ export const Shadow2 = styled.span`
 `
 
 export const AudioBar = styled.img`
-  @media (max-width: ${breakpoint.md}) {
+  @media (max-width: ${breakpoint.lg}) {
     width: 40%;
     text-align: center;
     padding: 0;
@@ -295,12 +295,14 @@ export const CardContainer = styled.div`
 `
 
 export const Card = styled.div`
-  @media (max-width: ${breakpoint.md}) {
+    width: 90%;
+    text-align: center;
+  @media (min-width: ${breakpoint.md}) {
     width: 40%;
     text-align: center;
     padding: 0;
   }
-  @media (min-width: ${breakpoint.md}) {
+  @media (min-width: ${breakpoint.lg}) {
     width: 20%;
     text-align: left;
     padding: 0;
@@ -308,19 +310,11 @@ export const Card = styled.div`
 `
 
 export const CardIcon = styled.img`
-  @media (min-width: ${breakpoint.sm}){
-    width: 26px;
-
-  }
-  @media (min-width: ${breakpoint.md}){
-    width: 34px;
-
-  }
   @media (min-width: ${breakpoint.lg}){
     width: 40px;
 
   }
-  width: 20px;
+  width: 50px;
 `
 
 export const CardTitle = styled.p`

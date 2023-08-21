@@ -426,52 +426,40 @@ export default function GetStart() {
             <DContainer
               padding="10% 10% 0px 10%"
               position="relative"
+              display="flex"
+              gap="10px"
+              justifycontent="space-between"
             >
-
-              <Rotate
-                top="10%"
-                left="5%"
-              >
+              <DContainer>
                 <Avatar
                   imageSrc={Avatar1}
                   avatarTitle="Following"
                   comment={false}
                   titleState={false}
                 />
-              </Rotate>
-              <Rotate
-                top="8%"
-                right="10%"
-              >
+              </DContainer>
+              <DContainer top="150px">
                 <Avatar
                   imageSrc={Avatar2}
                   avatarTitle=""
-                  comment={true}
+                  comment={false}
                   titleState={false}
                 />
-              </Rotate>
-              <Rotate
-                top="60%"
-                left="25%"
-              >
+              </DContainer>
                 <Avatar
                   imageSrc={Avatar3}
                   avatarTitle="+ Follow"
                   comment={false}
                   titleState={true}
                 />
-              </Rotate>
-              <Rotate
-                top="60%"
-                right="5%"
-              >
+              <DContainer top="150px">
                 <Avatar
                   imageSrc={Avatar4}
                   avatarTitle=""
-                  comment={false}
+                  comment={true}
                   titleState={false}
                 />
-              </Rotate>
+              </DContainer>
             </DContainer>
           </GridRows>
         </F>

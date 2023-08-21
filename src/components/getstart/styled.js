@@ -6,7 +6,10 @@ import { breakpoint, typography } from "../../theme/theme";
 
 export const ColorBgContainer = styled.div`
     background-color: ${(props) => props.bg};
-    padding-bottom: 100px;
+    padding-inline: 10px;
+    @media(min-width: ${breakpoint.sm}){
+        padding-inline: 30px;
+    }
 `;
 
 export const Section = styled.div`
@@ -61,7 +64,7 @@ export const Features = styled.div`
 export const F = styled.div`
     margin: 50px 0px;
 
-    @media (min-width: 1024px) {
+    @media (min-width: ${breakpoint.lg}) {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10%;
@@ -201,9 +204,9 @@ export const PitchTextFormBottomBar = styled.div`
 export const Title = styled.span`
     font-weight: ${typography.h3.fontWeight};
     color: white;
-    font-size: ${typography.h4.size};
+    font-size: ${typography.h5.size};
     @media (min-width: ${breakpoint.md}) {
-        font-size: ${typography.h3.size};
+        font-size: ${typography.h4.size};
     };
     @media (min-width: ${breakpoint.lg}) {
         font-size: ${typography.h3.size};
@@ -307,6 +310,9 @@ export const DContainer = styled.div`
     align-content: ${props =>props.aligncontent};
     gap: ${props =>props.gap};
     position: ${props =>props.position};
+    @media (min-width: ${breakpoint.lg}){
+        transform: ${(props) => `translateY(${props.top})`};
+    }
 `
 export const Box = styled.div`
     background-color: rgba(255, 255, 255, 0.05); /* Adjust the alpha value to control the transparency */
@@ -321,9 +327,25 @@ export const Box = styled.div`
   height: 100%;
 `
 export const ProfileImage = styled.img`
-    width: ${props => props.width || '50px'};
-    height: ${props => props.height || '50px'};
     border-radius: 50%;
+    @media(min-width: ${breakpoint.lg}) {
+        width: 70px;
+    }
+    @media(min-width: ${breakpoint.md}) {
+        width: 50px;
+    }
+    width: 40px;
+    height: auto;
+`
+export const Avatarbadge = styled.img`
+    @media(min-width: ${breakpoint.lg}) {
+        width: 20px;
+    }
+    @media(min-width: ${breakpoint.md}) {
+        width: 18px;
+    }
+    width: 12px;
+    height: auto;
 `
 
 export const Avatar = (props) => {
@@ -333,32 +355,32 @@ export const Avatar = (props) => {
             <DContainer
                 display="flex"
                 alignItems="center"
-                gap="20px"
+                gap="15px"
                 margin="0 0 10px 0"
             >
-                <ProfileImage src={props.imageSrc} width="70px" height="70px"></ProfileImage>
+                <ProfileImage src={props.imageSrc}></ProfileImage>
                 {props.comment ? (
                     <>
                         <DContainer
                             display="flex"
                         >
-                            <CustomSVG src={HeartIcon} width="20px" height="20px"></CustomSVG>
+                            <Avatarbadge src={HeartIcon}></Avatarbadge>
                             <FormTitle color='white'>456</FormTitle>
                         </DContainer>
                         <DContainer
                             display="flex"
                         >
-                            <CustomSVG src={ChatIcon} width="20px" height="20px"></CustomSVG>
-                            <FormTitle color='whtie'>1k</FormTitle>
+                            <Avatarbadge src={ChatIcon}></Avatarbadge>
+                            <FormTitle color='white'>1k</FormTitle>
                         </DContainer>
                     </>
                 ):(<></>)}
             </DContainer>
             <DContainer
-                margom="20px 0 0 0"
+                // margom="20px 0 0 0"
             >
                 <FormTitle
-                    fontsize="15px"
+                    fontsize="12px"
                     color={props.titleState ? "white" : "#3D568C"}
                 >{props.avatarTitle}</FormTitle>
             </DContainer>

@@ -51,6 +51,9 @@ export const LinkDiv = styled.div`
   display: flex;
   align-items: center;
   gap: 25px;
+  @media(max-width: ${breakpoint.md}){
+    display: none;
+  }
 `;
 
 export const Links = styled.a`

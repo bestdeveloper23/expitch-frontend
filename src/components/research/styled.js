@@ -9,7 +9,7 @@ export const Section = styled.div`
 `;
 
 export const Container = styled.div`
-  max-width: ${breakpoint.lg};
+  max-width: 1204px;
   width: 94%;
   margin: auto;
   display: flex;
@@ -111,15 +111,15 @@ export const Member = styled.div`
   justify-content: flex-start;
   align-items: center;
   row-gap: 32px;
-  width: 25%;
+  width: 100%;
 
-  @media (max-width: ${breakpoint.lg}) {
-    width: 50%;
+  @media (min-width: ${breakpoint.md}) {
+    width: 24%;
     margin-bottom: 20px;
   }
 
-  @media (max-width: ${breakpoint.md}) {
-    width: 94%;
+  @media (min-width: ${breakpoint.sm}) {
+    width: 50%;
     margin: auto;
     margin-bottom: 30px;
   }

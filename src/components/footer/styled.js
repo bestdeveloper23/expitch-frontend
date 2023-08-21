@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { breakpoint, typography } from "../../theme/theme";
 
 export const Section = styled.div`
   padding: 64px 0;
@@ -19,28 +20,24 @@ export const NavWrapper = styled.div``;
 
 export const Navs = styled.ul`
   display: flex;
+  gap: 15px;
   justify-content: center;
   list-style-type: none;
   padding: 0;
+  @media(max-width: ${breakpoint.sm}){
+    flex-direction: column;
+    text-align: center;
+  }
 `;
 
 export const Nav = styled.li`
-  font-family: 'DM Sans', sans-serif;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
-  padding: 8px 20px;
 `;
 
 export const NavLink = styled.a`
-  font-family: 'DM Sans', sans-serif;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
+  font-size: ${typography.sm.size};
+  font-weight: ${typography.sm.fontWeight};
   @media (max-width: 768px) {
-    font-size: 16px;
+    font-size: ${typography.xs.size};
   }
 `;
 
@@ -57,9 +54,6 @@ export const Image = styled.img``;
 export const Content = styled.div`
   display: flex;
   justify-content: center;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 16px;
+  font-size: ${typography.label.size};
+  font-weight: ${typography.label.fontWeight};
 `;

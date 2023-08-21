@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 import BackgroundSVG from "../../assets/images/grid.svg"
 import { breakpoint, typography } from "../../theme/theme";
@@ -6,7 +6,7 @@ import { breakpoint, typography } from "../../theme/theme";
 export const ContainerEmail = styled.div`
   @media (min-width: ${breakpoint.md}) {
     margin: auto;
-    padding: 50px 30px;
+    padding: 30px 30px;
    }
    @media (min-width: ${breakpoint.lg}) {
     max-width: 1204px;
@@ -20,11 +20,13 @@ export const ContainerEmail = styled.div`
 
 export const ColorBgContainer = styled.div`
     background: ${props => props.backgroundcolor};
-    padding-bottom: 100px;
     border: 1px solid transparent;
     border-radius: 24px 0 0 24px;
+    
+    width: 50%;
     @media (max-width: ${breakpoint.md}){
-        border-radius: 24px 24px 0 0;
+        border-radius: 0 0 24px 24px;
+        width: 100%
     }
 `;
 export const SvgBgContainer = styled.div`
@@ -35,17 +37,13 @@ export const SvgBgContainer = styled.div`
     border-radius: 24px 0 0 0;
     border-right: none;
     border-bottom: none;
-    @media (max-width: ${breakpoint.md}){
-        border-radius: 24px 24px 0 0;
-    }
 `
 
 export const F = styled.div`
-
-    @media (min-width: ${breakpoint.md}) {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-       }
+ display: flex; 
+    @media (max-width: ${breakpoint.md}) {
+        flex-direction: column-reverse;
+    }
        
     border: 1px solid #888888;
     border-radius: 24px;
@@ -55,12 +53,25 @@ export const PitchForm = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 32px;
+    gap: 10px;
     padding: ${props => props.padding};
-    @media (max-width: ${breakpoint.md}){
-        margin: 100px 50px;
-    }
 `
+
+export const SubForm = styled.div`
+ display: flex;
+ flex-direction: column;
+ gap: 15px;
+ justify-content: center;
+ padding: 10px;
+ @media(min-width: ${breakpoint.md}){
+  padding: 20px;
+ }
+ @media(min-width: ${breakpoint.lg}){
+  padding: 30px;
+ }
+
+`
+
 export const Player = styled.div`
     color: white;
     display: flex;
@@ -170,8 +181,8 @@ export const FormTitle = styled.span`
 
 export const FitMeNow = styled.span`
     color: ${props => props.color};
-    font-size: ${typography.h4.size};
-    font-weight: ${typography.h4.fontWeight};
+    font-size: ${typography.h5.size};
+    font-weight: ${typography.h5.fontWeight};
     @media (min-width: ${breakpoint.md}) {
         font-size: ${typography.h4.size};
     };
@@ -185,16 +196,46 @@ export const Grade = styled.div`
     top: 50%;
     transform: ${props => props.transform};
     left: ${props => props.left};
-    width: ${props => props.size || '50'}px;
-    height: ${props => props.size || '50'}px;
+    width: 30px;
+    height: 30px;
     border: 1px solid ${props => props.color || 'green'};
     background-color: ${props => props.backgroundcolor || 'rgba(0,255,0,0.1)'};
     color: ${props => props.color || 'green'};
-    font-size: ${props => props.size / 2 || '25'}px;
+    font-size: ${props => props.size / 2 || '18'}px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: ${props => props.size / 5 || '10'}px;
+    @media(min-width: ${breakpoint.lg}){
+     width: 50px;
+     height: 50px
+    }
+`
+
+export const EmailInputContainer = styled.div`
+
+ display: flex;
+  padding: 10px;
+ justify-content: center;
+ @media(min-width: ${breakpoint.lg}){
+  width: 50%;
+  
+  justify-content: flex-end;
+ }
+`
+
+export const EmailLeftContainer = styled.div`
+     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px;
+    @media(min-width: ${breakpoint.md}){
+     padding: 20px;
+    }
+    @media(min-width: ${breakpoint.lg}){
+     padding: 10%;
+    }
 `
 
 export const DContainer = styled.div`
@@ -314,7 +355,7 @@ export const Button1 = styled.button`
     padding: 4px 14px;
     justify-content: center;
     align-items: center;
-    border-radius: 12px;
+    border-radius: 5px;
     border: 1px solid ${(props) => props.bordercolor};
     background: ${(props) => props.bgcolor};
     color: ${(props) => props.color};
@@ -329,6 +370,7 @@ export const Button1 = styled.button`
     @media (min-width: ${breakpoint.lg}) {
         font-size: ${typography.sm_bold.size};
         padding: 12px 26px;
+        border-radius: 12px;
     }
 `
 
@@ -346,6 +388,14 @@ export const Button = styled.button`
     background: ${(props) => props.bgcolor};
     color: ${(props) => props.color};
     cursor: pointer;
+`
+
+export const ButtonDiv = styled.div`
+ display: flex;
+ justify-content: center;
+    @media(min-width: ${breakpoint.sm}){
+     justify-content: flex-end;
+    }
 `
 
 export const RecordingBox = styled.div`
@@ -442,9 +492,9 @@ export const ProcessImage = styled.img`
 `
 
 export const DscrText = styled.div`
-    width: 90%;
+    width:100%;
     color: ${props => props.color};
-    font-size: ${props => props.fontsize - 4 || 14}px;
+    font-size: ${typography.label.size};
     font-weight: ${typography.sm.fontWeight};
     text-align: center;
     @media (min-width: ${breakpoint.sm}){
@@ -452,7 +502,7 @@ export const DscrText = styled.div`
     }
     @media (min-width: ${breakpoint.md}){
         width:500px;
-        font-size: ${props => props.fontsize || 18}px;
+        font-size: ${typography.xs.size};
     }
     @media (min-width: ${breakpoint.lg}){
         width:586px;
@@ -467,6 +517,7 @@ export const TextBoxProcessing = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
     @media (min-width: ${breakpoint.sm}){
         width:400px;
     }
@@ -476,4 +527,94 @@ export const TextBoxProcessing = styled.div`
     @media (min-width: ${breakpoint.lg}){
         width:586px;
     }
+`
+export const ProcessError = styled.div`
+ position: fixed;
+ display: ${(props) => props.message !== '' ? 'flex' : 'none'};
+ justify-content: center;
+ align-items: center;
+ background-color: rgba(5,5,5,0.8);
+ color: red;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ z-index: 100;
+ @media (max-width: ${breakpoint.md}){
+  width: 60vw;
+  height: 60vh;
+  font-size: ${typography.h4.size};
+  font-weight: ${typography.h4.fontWeight};
+ }
+ @media (min-width: ${breakpoint.md}){
+  width: 60vw;
+  height: 60vh;
+  font-size: ${typography.h3.size};
+  font-weight: ${typography.h3.fontWeight};
+ }
+`
+
+
+export const Collapse = styled.ul`
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  border: 1px solid ${(props) => props.bordercolor};
+  border-radius: 20px;
+`;
+
+export const List = styled.li`
+  width: calc(100% - 20px);
+  padding: 10px;
+  list-style: none;
+  border-bottom: 1px solid ${(props) => props.bordercolor};
+`;
+
+export const Feature = styled.summary`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: ${typography.label_bold.size};
+  font-weight: ${typography.label_bold.fontWeight};
+  color: ${(props) => props.color};
+`;
+
+export const ResponseIcon = styled.img`
+  pointer-events: none;
+  width: 12px;
+  height: auto;
+`
+
+export const Response = styled.details`
+  padding: 10px;
+  text-align: left;
+`;
+
+export const Featuredetail = styled.p`
+  padding-top: 15px;
+  font-weight: ${typography.text.fontWeight};
+  font-size: ${typography.text.size};
+  color: ${(props) => props.color};
+`;
+
+export const Grade2 = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 34px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${({ color, bgcolor }) => css`
+    background-color: ${bgcolor};
+    color: ${color};
+  `}
+  pointer-events: none;
 `

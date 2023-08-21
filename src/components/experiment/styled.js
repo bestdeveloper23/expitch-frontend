@@ -10,8 +10,9 @@ export const Section = styled.div`
 `;
 
 export const Container = styled.div`
-  width: 94%;
+  width: 65%;
   margin: auto;
+  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -57,7 +58,6 @@ export const Button = styled.a`
 `;
 
 export const Content = styled.div`
-  font-family: 'DM Sans', sans-serif;
   font-size: 26px;
   font-style: normal;
   font-weight: 400;

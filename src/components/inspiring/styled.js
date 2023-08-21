@@ -2,7 +2,10 @@ import styled from "styled-components";
 import { breakpoint, typography } from "../../theme/theme";
 
 export const Section = styled.div`
-  padding: 156px 0;
+  padding: 50px 0;
+  @media(min-width: ${breakpoint.md}){
+    padding: 0px 0;
+  }
 `;
 
 export const SectionWrap = styled.div`
@@ -41,16 +44,16 @@ export const SectionTitle = styled.h2`
 `
 
 export const CardGrid = styled.div`
-  width: 24%;
   display: flex;
   flex-direction: column;
   row-gap: 15px;
-  @media (max-width: ${breakpoint.lg}) {
+  width: 100%;
+  @media (min-width: ${breakpoint.md}) {
     width: 48%;
   }
 
-  @media (max-width: ${breakpoint.md}) {
-    width: 94%;
+  @media (min-width: ${breakpoint.lg}) {
+    width: 24%;
     margin: auto;
   }
 `;
@@ -69,7 +72,7 @@ export const Card = styled.div`
 
 export const Empty = styled.div`
   height: 50px;
-  @media (max-width: ${breakpoint.lg}){
+  @media (max-width: ${breakpoint.sm}){
     display: none;
   }
 `

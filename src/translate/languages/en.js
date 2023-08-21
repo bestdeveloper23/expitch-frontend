@@ -1,7 +1,7 @@
 const StringsComuns = {
     en: {
         components: {
-          
+//---------------------------------HEADER---------------------------------------------------//
           routes: {
             workflow: "How it works?",
             about:"About us",
@@ -10,6 +10,10 @@ const StringsComuns = {
           header: {
             title: "✨ Expitch is free to use and is intended for research and educational purposes only."
           },
+
+//---------------------------------HEADER---------------------------------------------------//
+
+//---------------------------------HOME-ABOUT---------------------------------------------------//
           about: {
             title1: "Craft Your Startup Success story with ",
             title2: "AI Pitch Assessment Technology",
@@ -77,6 +81,10 @@ const StringsComuns = {
             }
           },
 
+//---------------------------------HOME-ABOUT---------------------------------------------------//
+
+//---------------------------------HOME-WORDFLOW---------------------------------------------------//
+
           workflow: {
             title: "How it works?",
             button: {
@@ -105,6 +113,11 @@ const StringsComuns = {
               paragraph2: " for every factor"
             }
           },
+
+//---------------------------------HOME-ABOUT---------------------------------------------------//
+
+//---------------------------------HOME-GETSTARAT---------------------------------------------------//
+
           getstart: {
             title: "Get started",
             paragraph: "Make your pitch perfect",
@@ -142,6 +155,11 @@ const StringsComuns = {
               highlight2: "community",
             }
           },
+
+//---------------------------------HOME-ABOUT---------------------------------------------------//
+
+//---------------------------------HOME-INSPIRING---------------------------------------------------//
+
           inspiring: {
             title: "Inspiring Voices,",
             red_title: "Incredible Results",
@@ -187,6 +205,11 @@ const StringsComuns = {
             },
           },
     
+
+//---------------------------------HOME-INSPIRING---------------------------------------------------//
+
+//---------------------------------HOME-RESEARCH---------------------------------------------------//
+
           research: {
             title: "Research-based intelligence",
             paragraph:
@@ -219,6 +242,65 @@ const StringsComuns = {
             content: "It's totally free!",
           },
     
+//---------------------------------HOME-RESEARCH---------------------------------------------------//
+
+
+//---------------------------------TEST---------------------------------------------------//
+
+          email: {
+            pitch:{
+              title: "Pitch",
+              paragraph: "Hi everyone! My name is Olivia, and I'm here to introduce you to FitMeNow, the revolutionary fitness app designed to transform your workout routine. Are you tired of feeling unmotivated and struggling to reach your fitness goals? FitMeNow is here to change that! We've identified a common problem among individuals who want to lead a healthier lifestyle: lack of personalized guidance and motivation. Many people find it challenging to stay consistent with their exercise routines or don't know where to begin. FitMeNow is the solution to these obstacles."
+            },
+            form: {
+              name: "Oliva Martinez",
+              title: "FitMeNow",
+              favorite: "361",              
+              comment: "1k",
+              score: "68 ",
+              total: "/ 80"
+            },
+            player: {
+              time: "0:0  5 / 0:56"
+            },
+            textbox: {
+             download: "Download" ,
+             copy: "Copy",
+             paragraph: "Please enter your email address to which we will send the results",
+             label: "Your email address ",
+             button: "Uploader"
+            }
+          },
+
+          uploading: {
+            uploadingbox: {
+             hint: "Drag & drop or choose file to upload",
+             drop: "Drop file..."
+            },
+            recording:{
+              paragraph1: "Upload a 2-5 minute pitch of your startup.",
+              paragraph2: "MP3, MP4, WAV, up to 20MB, up to  MIN",
+              button: "Or record your voice",
+              hint1: "Just click on the button and start talking.",
+              hint2: "You have 5 minutes."
+            },
+            submit: {
+              button: "Choose file",
+            }
+          },
+
+          process: {
+            status: "processing",
+            paragraph: "Sit tight as we unleash a team of eager investor robots to dissect your pitch... Beep-boop... our supercomputing overlords began crunching numbers!"
+
+          },
+
+
+//---------------------------------TEST---------------------------------------------------//
+
+
+//---------------------------------FOOTER---------------------------------------------------//
+
           footer: {
             links: {
               link_1: "How it works?",
@@ -229,6 +311,7 @@ const StringsComuns = {
             content: "© 2023 Expitch, Inc. All rights reserved.",
           },
     
+//---------------------------------FOOTER---------------------------------------------------//
         },
     }
 }

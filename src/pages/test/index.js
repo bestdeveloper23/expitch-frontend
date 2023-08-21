@@ -3,7 +3,8 @@ import {
  PlayerProgress, PlayerTime, TextBox, Title, SmallTitle, FormTitle, FitMeNow,
  Grade, DContainer, Label, Required, EmailInput, ContainerUploading, UploadingBox,
  CustomSVG, UploadText, Button, Button1, RecordingBox, RoundButton, ContainerProcessing, ProcessingBox,
- DscrText, TextBoxProcessing, ProcessingProgress, ProcessImage
+ DscrText, TextBoxProcessing, ProcessingProgress, ProcessImage, ProcessError, EmailLeftContainer, ButtonDiv,
+ Collapse, List, Feature, ResponseIcon, Response, Featuredetail, Grade2, EmailInputContainer, SubForm
 } from './styled';
 
 import SpeakerWaveIcon from "../../assets/images/speaker-wave.svg"
@@ -16,6 +17,7 @@ import UploadIcon from '../../assets/images/arrow-up-tray.svg'
 import MicIcon from '../../assets/images/microphone.svg'
 import Processimageprimary from '../../assets/images/process_primary.svg'
 import Processimagegray from '../../assets/images/process_gray.svg'
+import arrow from "../../assets/images/arrow.svg";
 
 import React, { useReducer, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +25,7 @@ import { setEmail, setFile } from '../../actions/pitch';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
 import { useTheme } from 'styled-components';
+import { i18n } from "./../../translate/i18n";
 
 const Test = () => {
   const theme = useTheme();
@@ -30,6 +33,8 @@ const Test = () => {
   const [responseProgress, setResponseProgress] = useState(0);
   const [emailError, setEmailError] = useState('');
   const [emailEnable, setEmailEnable] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [processstatus, setProcessstatus] = useState('Processing...');
 
   const { email, file } = useSelector((state) => ({
    email: state.email,
@@ -45,10 +50,6 @@ const Test = () => {
     dispatch(setEmail(event.target.value));
   };
 
-  const handleFileChange = (event) => {
-    dispatch(setFile(event.target.files[0]));
-  };
-
   const handleWizardIndex = (index) => {
    if (!validateEmail()) {
     console.log(emailError)
@@ -59,11 +60,13 @@ const Test = () => {
   };
 
   const onDrop = (acceptedFiles) => {
-   dispatch(setFile(acceptedFiles));
+   dispatch(setFile(acceptedFiles[0]));
    // setFile(acceptedFiles);
-   console.log(acceptedFiles);
+   console.log(acceptedFiles[0], "test");
    setWizardIndex("processing");
-   handleSubmit();
+   setTimeout(() => {
+    handleSubmit(acceptedFiles[0]);
+   }, 500);
  };
 
  const validateEmail = () => {
@@ -78,38 +81,52 @@ const Test = () => {
 };
 
  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: 'audio/*', multiple: false, noClick: true,});
- const handleSubmit = () => {
+ const handleSubmit = (file) => {
     const formData = new FormData();
     formData.append('email', email);
-    formData.append('file', file);
-  
+    formData.append('pitchFile', file);
+    console.log(email, file)
     axios
-      .post('https://api-stagin-dot-sustained-vial-393016.uc.r.appspot.com/open-ai/getPitchEvalForAudio', formData, {
+      .post('https://api-staging-dot-sustained-vial-393016.uc.r.appspot.com/open-ai/getPitchEvalForAudio', formData, {
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
           );
           setResponseProgress(progress);
-          console.log(`Upload Progress: ${progress}%`);
-          // Perform any progress-related actions or update UI
+          if (progress === 100) {
+           // The upload is complete, but the response may still be pending
+           setProcessstatus('Waiting for result...')
+         }
         },
+
       })
       .then((response) => {
         // Handle the successful response
-        console.log('Response:', response.data);
-        // Perform any further actions with the response data
+        setWizardIndex("result")
       })
       .catch((error) => {
-        // Handle the error
-        console.error('Error:', error.message);
-        
-        // Perform any error handling or display error messages
+        console.error('Error:', error.message, formData);
+        setErrorMessage(error.message);
+        setProcessstatus(error.message);
+
       });
   };
 
+  const handleClick = (e) => {
+   if (e.target.children[1]) {
+     if (e.target.children[1].style.transform === "rotateX(180deg)") {
+       e.target.children[1].style.transform = "rotateX(0deg)"
+     } else {
+       e.target.children[1].style.transform = "rotateX(180deg)"
+     }
+
+   }
+ }
+
   useEffect(() => {
    setWizardIndex("email");
-   console.log(wizardIndex, "useeffect")
+   setProcessstatus('Processing...');
+   setResponseProgress(0);
   },[])
 
   return (
@@ -123,14 +140,13 @@ const Test = () => {
        <ContainerEmail>
        <F>
            <ColorBgContainer
-               backgroundcolor="#111827"
+               backgroundcolor={theme.colors.gray900}
            >
                <SvgBgContainer>
-                   <PitchForm
-                       padding="10%"
+                   <EmailLeftContainer 
                    >
                        <Title>
-                           Pitch
+                           {i18n.t("email.pitch.title")}
                        </Title>
                        <TextBox
                            borderradius="15px"
@@ -143,13 +159,13 @@ const Test = () => {
                            >
                                <PitchForm>
                                    <FormTitle
-                                   color="#E71561"
+                                   color={theme.colors.primary}
                                    fontsize="15px"
-                                   >Oliva Martinez</FormTitle>
+                                   >{i18n.t("email.form.name")}</FormTitle>
                                    <FitMeNow
                                    color="White"
                                    >
-                                   FitMeNow
+                                   {i18n.t("email.form.title")}
                                    </FitMeNow>
                                    <DContainer
                                        display="flex"
@@ -159,13 +175,13 @@ const Test = () => {
                                            display="flex"
                                        >
                                            <CustomSVG src={HeartIcon} width="20px" height="20px"></CustomSVG>
-                                           <FormTitle color={theme.colors.white} fontsize="18px">456</FormTitle>
+                                           <FormTitle color={theme.colors.white} fontsize="18px">{i18n.t("email.form.favorite")}</FormTitle>
                                        </DContainer>
                                        <DContainer
                                            display="flex"
                                        >
                                            <CustomSVG src={ChatIcon} width="20px" height="20px"></CustomSVG>
-                                           <FormTitle color={theme.colors.white} fontsize="18px">1k</FormTitle>
+                                           <FormTitle color={theme.colors.white} fontsize="18px">{i18n.t("email.form.comment")}</FormTitle>
                                        </DContainer>
                                    </DContainer>
                                </PitchForm>
@@ -177,7 +193,7 @@ const Test = () => {
                                    <FitMeNow
                                        color={theme.colors.green600}
                                    >
-                                       89<FitMeNow color="#415C96">/100</FitMeNow>
+                                       {i18n.t("email.form.score")}<FitMeNow color="#415C96">{i18n.t("email.form.total")}</FitMeNow>
                                    </FitMeNow></DContainer>
                                    <DContainer
                                    display="flex"
@@ -194,7 +210,7 @@ const Test = () => {
                        <Player>
                            <img src={PlayIcon} alt={PlayIcon}/>
                            <PlayerTime>
-                           0:05 / 0:56
+                           {i18n.t("email.player.time")}
                            </PlayerTime>
                            <PlayerProgress
                            id="playerprogress"
@@ -209,27 +225,23 @@ const Test = () => {
                            height="200px"
                            borderradius="15px"
                        >
-                           Hi everyone! My name is Olivia, and I'm here to introduce you to FitMeNow, the revolutionary fitness app designed to transform your workout routine. Are you tired of feeling unmotivated and struggling to reach your fitness goals? FitMeNow is here to change that!<br/><br/>
-                           We've identified a common problem among individuals who want to lead a healthier lifestyle: lack of personalized guidance and motivation. Many people find it challenging to stay consistent with their exercise routines or don't know where to begin. FitMeNow is the solution to these obstacles.
+                           {i18n.t("email.pitch.paragraph")}
                        </TextBox>
-                   </PitchForm>
+                   </EmailLeftContainer>
                </SvgBgContainer>
            </ColorBgContainer>
-           <DContainer
+           <EmailInputContainer
                display="flex"
                alignitems="center"
                justifycontent="center"
                padding="0 5% 0 5%"
            >
-               <PitchForm>
-                   <SmallTitle color="black">Please enter your email address to which we will send the results</SmallTitle>
-                   <Label color={theme.colors.gray900}>Your email address <Required>*</Required> </Label>
+               <SubForm>
+                   <SmallTitle color="black">{i18n.t("email.textbox.paragraph")}</SmallTitle>
+                   <Label color={theme.colors.gray900}>{i18n.t("email.textbox.label")}<Required>*</Required> </Label>
                    <EmailInput type='email' onChange={handleEmailChange} bordercolor={theme.colors.gray300} bgcolor={theme.colors.white}></EmailInput>
                    <Label color='#FF0000'>{emailError}</Label>
-                   <DContainer
-                       display="flex"
-                       justifycontent="flex-end"
-                       width="100%"
+                   <ButtonDiv
                    >
                        <Button onClick={() => handleWizardIndex("uploading")} isenable={emailEnable} bgcolor={theme.colors.primary}
                         bordercolor={theme.colors.primary} color={theme.colors.white}>
@@ -238,13 +250,13 @@ const Test = () => {
                                justifycontent="center"
                                alignitems="center"
                            >
-                               Uploader
+                               {i18n.t("email.textbox.button")}
                                <CustomSVG src={RightArrowIcon} alt={RightArrowIcon}></CustomSVG>
                            </DContainer>
                        </Button>
-                   </DContainer>
-               </PitchForm>
-           </DContainer>
+                   </ButtonDiv>
+               </SubForm>
+           </EmailInputContainer>
        </F>
    </ContainerEmail>
     }
@@ -262,35 +274,34 @@ const Test = () => {
                    <SmallTitle
                      color="black"
                        >
-                       Drag & drop or choose file to upload
+                       {i18n.t("uploading.uploadingbox.hint")}
                    </SmallTitle> : 
                      <SmallTitle
                      color={theme.colors.primary}
-                       >
-                       Drop file...
+                       >{i18n.t("uploading.uploadingbox.drop")}
                    </SmallTitle> 
                  }
               <UploadText
                   color={theme.colors.gray500}
               >
-              Upload a 2-5 minute pitch of your startup.<br/>MP3, MP4, WAV, up to 20 MB, up to 5 MIN
+              {i18n.t("uploading.recording.paragraph1")}<br/>{i18n.t("uploading.recording.paragraph2")}
               </UploadText>
               <Button1 onClick={() => document.getElementById('fileInput').click()} bordercolor={theme.colors.primary}
-               bgcolor={theme.colors.white} color={theme.colors.gray900}>Choose file</Button1>
+               bgcolor={theme.colors.white} color={theme.colors.gray900}>{i18n.t("uploading.submit.button")}</Button1>
           </UploadingBox>
           <RecordingBox>
-              <UploadText color={theme.colors.gray900}>Or record your voice</UploadText>
+              <UploadText color={theme.colors.gray900}>{i18n.t("uploading.recording.button")}</UploadText>
               <RoundButton width={32} height={32} bordercolor={theme.colors.primary} bgcolor={theme.colors.gray50}>
                   <CustomSVG src={MicIcon}></CustomSVG>
               </RoundButton>
-              <UploadText color={theme.colors.gray500} fontsize={16}>Just click on the button and start talking. <br/>You have 5 minutes.</UploadText>
+              <UploadText color={theme.colors.gray500} fontsize={16}>{i18n.t("uploading.recording.hint1")} <br/>{i18n.t("uploading.recording.hint2")}</UploadText>
           </RecordingBox>
       </ContainerUploading>
     }
 
     {wizardIndex === "processing" && 
          <ContainerProcessing>
-             <SmallTitle color='black'>🤖 Processing...</SmallTitle>
+             <SmallTitle color='black'>🤖 {processstatus}</SmallTitle>
              <ProcessingBox bordercolor={theme.colors.gray200} bgcolor={theme.colors.white}>
               <ProcessingProgress>
                <TextBoxProcessing>
@@ -302,14 +313,131 @@ const Test = () => {
               </ProcessingProgress>
              </ProcessingBox>
              <TextBox bgcolor={theme.colors.white} bordercolor={theme.colors.white}>
-                 <DscrText fontsize={22}
+                 <DscrText
                   color={theme.colors.gray900} 
-                 >Sit tight as we unleash a team of eager investor robots to dissect your pitch... Beep-boop... our supercomputing overlords began crunching numbers!</DscrText>
+                 >{i18n.t("process.paragraph")}</DscrText>
              </TextBox>
          </ContainerProcessing>
-     
     }
 
+   {wizardIndex === "result" && 
+         <ContainerEmail>
+          <ColorBgContainer>
+                <SvgBgContainer>
+                   <EmailLeftContainer 
+                   >
+                       <Title>
+                           {i18n.t("email.pitch.title")}
+                       </Title>
+                       <TextBox
+                           borderradius="15px"
+                           width="calc(100% - 60px)"
+                       >
+                           <DContainer
+                               display="flex"
+                               justifycontent="space-between"
+                               width="100%"
+                           >
+                               <PitchForm>
+                                   <FormTitle
+                                   color={theme.colors.primary}
+                                   fontsize="15px"
+                                   >{i18n.t("email.form.name")}</FormTitle>
+                                   <FitMeNow
+                                   color="White"
+                                   >
+                                   {i18n.t("email.form.title")}
+                                   </FitMeNow>
+                                   <DContainer
+                                       display="flex"
+                                       gap="20px"
+                                   >
+                                       <DContainer
+                                           display="flex"
+                                       >
+                                           <CustomSVG src={HeartIcon} width="20px" height="20px"></CustomSVG>
+                                           <FormTitle color={theme.colors.white} fontsize="18px">{i18n.t("email.form.favorite")}</FormTitle>
+                                       </DContainer>
+                                       <DContainer
+                                           display="flex"
+                                       >
+                                           <CustomSVG src={ChatIcon} width="20px" height="20px"></CustomSVG>
+                                           <FormTitle color={theme.colors.white} fontsize="18px">{i18n.t("email.form.comment")}</FormTitle>
+                                       </DContainer>
+                                   </DContainer>
+                               </PitchForm>
+                               <DContainer>
+                                   <DContainer
+                                   display="flex"
+                                   justifycontent="flex-end"
+                                   >
+                                   <FitMeNow
+                                       color={theme.colors.green600}
+                                   >
+                                       {i18n.t("email.form.score")}<FitMeNow color="#415C96">{i18n.t("email.form.total")}</FitMeNow>
+                                   </FitMeNow></DContainer>
+                                   <DContainer
+                                   display="flex"
+                                   justifycontent="flex-end"
+                                   >
+                                   <Grade
+                                       color={theme.colors.green600}
+                                       backgroundcolor={theme.colors.green200}
+                                   >A</Grade>
+                                   </DContainer>
+                               </DContainer>
+                           </DContainer>
+                       </TextBox>
+                       <Player>
+                           <img src={PlayIcon} alt={PlayIcon}/>
+                           <PlayerTime>
+                           {i18n.t("email.player.time")}
+                           </PlayerTime>
+                           <PlayerProgress
+                           id="playerprogress"
+                           value='30'
+                           max='100'
+                           color={theme.colors.primary}
+                           />
+                           <img src={SpeakerWaveIcon} alt={SpeakerWaveIcon}/>
+                           <img src={MoreIcon} alt={MoreIcon}/>
+                       </Player>
+                       <TextBox
+                           height="200px"
+                           borderradius="15px"
+                       >
+                           {i18n.t("email.pitch.paragraph")}
+                       </TextBox>
+                   </EmailLeftContainer>
+               </SvgBgContainer>
+           </ColorBgContainer>
+          <Collapse>
+            <List bordercolor={theme.colors.gray200}>
+                  <Response>
+                    <Feature color={theme.colors.gray800} onClick={handleClick}>
+                      {i18n.t("about.analysis.barrier.title")}
+                      <Grade2 color={theme.colors.green600} bgcolor={theme.colors.green50} className="grade">A+</Grade2>
+                      <ResponseIcon src={arrow} alt="arrow" />
+                    </Feature>
+                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.barrier.evaluation.paragraph")}</Featuredetail>
+                  </Response>
+                </List>
+                <List bordercolor={theme.colors.transparent}>
+                  <Response>
+                    <Feature color={theme.colors.gray800} onClick={handleClick}>
+                      {i18n.t("about.analysis.readiness.title")}
+                      <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">B+</Grade2>
+                      <ResponseIcon src={arrow} alt="arrow" />
+                    </Feature>
+                    <Featuredetail color={theme.colors.primary}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
+                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.paragraph")}</Featuredetail>
+                    <Featuredetail color={theme.colors.primary}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
+                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.paragraph")}</Featuredetail>
+                  </Response>
+                </List>
+          </Collapse>
+         </ContainerEmail>
+    }
    </>
   );
 };
