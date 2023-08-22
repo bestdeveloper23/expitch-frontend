@@ -3,7 +3,13 @@ import styled, {css} from "styled-components";
 import BackgroundSVG from "../../assets/images/grid.svg"
 import { breakpoint, typography } from "../../theme/theme";
 
-export const ContainerEmail = styled.div`
+export const Wrapper = styled.div`
+ width: 100%;
+ height: 100%;
+ background-color: ${(props) => props.color};
+`
+
+export const MainContainer = styled.div`
   @media (min-width: ${breakpoint.md}) {
     margin: auto;
     padding: 30px 30px;
@@ -73,16 +79,17 @@ export const SubForm = styled.div`
 `
 
 export const Player = styled.div`
-    color: white;
+    color: ${(props) => props.color || 'white'};
     display: flex;
-    padding: 8px;
+    padding: ${(props) => props.padding || '8px'};
     align-items: center;
     gap: 16px;
     align-self: stretch;
     height: 25px;
     border-radius: 12px;
-    border: 1px solid #405A9444;
-    background: #1E2A4555;
+    /* border: 1px solid #405A9444; */
+    border: 1px solid ${(props) => props.bordercolor || '#1E2A4555'};
+    background: ${(props) => props.bgcolor || '#1E2A4555'};
     background-blend-mode: color-dodge;
 `
 
@@ -128,10 +135,11 @@ export const TextBox = styled.div`
     word-wrap: break-word;
     border-radius: ${props => props.borderradius};
     overflow: scroll;
-    color: white;
+    color: ${(props)=> props.color || 'white'};
     font-size: 18px;
     overflow-x: hidden;
-
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
     &::-webkit-scrollbar {
         width: 20px;
         
@@ -149,6 +157,7 @@ export const TextBox = styled.div`
         border-radius: 10px;
         border: 8px solid #1E2A45;
     }
+    
 `
 
 export const Title = styled.span`
@@ -217,7 +226,7 @@ export const EmailInputContainer = styled.div`
  display: flex;
   padding: 10px;
  justify-content: center;
- @media(min-width: ${breakpoint.lg}){
+ @media(min-width: ${breakpoint.md}){
   width: 50%;
   
   justify-content: flex-end;
@@ -228,13 +237,13 @@ export const EmailLeftContainer = styled.div`
      display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: ${(props)=>props.gap || '10px'};
     padding: 10px;
     @media(min-width: ${breakpoint.md}){
      padding: 20px;
     }
     @media(min-width: ${breakpoint.lg}){
-     padding: 10%;
+     padding-inline: 10%;
     }
 `
 
@@ -533,22 +542,19 @@ export const ProcessError = styled.div`
  display: ${(props) => props.message !== '' ? 'flex' : 'none'};
  justify-content: center;
  align-items: center;
- background-color: rgba(5,5,5,0.8);
- color: red;
+ background-color: #FFCC80;
+ color: #333333;
  top: 50%;
  left: 50%;
  transform: translate(-50%, -50%);
  z-index: 100;
+ padding: 15px;
  @media (max-width: ${breakpoint.md}){
-  width: 60vw;
-  height: 60vh;
-  font-size: ${typography.h4.size};
-  font-weight: ${typography.h4.fontWeight};
+  font-size: ${typography.h5.size};
+  font-weight: ${typography.h5.fontWeight};
  }
  @media (min-width: ${breakpoint.md}){
-  width: 60vw;
-  height: 60vh;
-  font-size: ${typography.h3.size};
+  font-size: ${typography.h4.size};
   font-weight: ${typography.h3.fontWeight};
  }
 `
@@ -617,4 +623,112 @@ export const Grade2 = styled.div`
     color: ${color};
   `}
   pointer-events: none;
+`
+
+export const GradeContainer = styled.div`
+ display: flex;
+ width: 100%;
+ justify-content: space-between;
+ align-items: center;
+ background: ${(props) => props.bgcolor};
+`
+
+export const GradeTitle = styled.div`
+ color: ${(props) => props.color};
+ font-size: ${typography.label.size};
+ font-weight: ${typography.sm.fontWeight};
+ @media(min-width: ${breakpoint.md}){
+  font-size: ${typography.xs.size};
+ }
+ @media(min-width: ${breakpoint.lg}){
+  font-size: ${typography.sm.size};
+ }
+`
+
+export const GradeResult = styled.div`
+position: absolute;
+  left: 60%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 35px;
+  height: 35px;
+   border: 1px solid ${props => props.color || 'green'};
+   background-color: ${props => props.bgcolor || 'rgba(0,255,0,0.1)'};
+   color: ${props => props.color || 'green'};
+   border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: ${typography.xs.size};
+  @media(min-width: ${breakpoint.md}){
+     width: 35px;
+     height: 35px;
+     font-size: ${typography.sm.size};
+     left: 30%;
+     transform: translateY(-50%);
+   }
+  @media(min-width: ${breakpoint.lg}){
+     width: 40px;
+     height: 40px;
+     font-size: ${typography.sm.size};
+   }
+`
+
+export const GradeName = styled.div`
+ color: ${(props) => props.color};
+`
+
+export const ScoreContainer = styled.div`
+ display: flex;
+ align-items: center;
+ justify-content: right;
+`
+
+export const Score = styled.span`
+ color: ${(props) => props.color};
+ font-size: ${typography.h5.size};
+ font-weight: ${typography.h5.size};
+ @media(min-width: ${breakpoint.lg}){
+  font-size: ${typography.h4.size};
+ }
+`   
+
+export const PitchTextFormBottomBar = styled.div`
+    border-radius: 0 0 15px 15px ;
+    height: 35px;
+    background-color: ${(props) => props.bgcolor};
+    backdrop-filter: blur(40px);
+    gap: 10px;
+    padding: 5px 20px 5px 0px;
+    position: relative;
+    top: ${props => props.top};    
+    border: 1px solid ${(props) => props.bordercolor};
+    border-top: none;
+    display: flex;
+    justify-content: flex-end;
+`
+export const FormText = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+`
+
+export const Audio = styled.audio`
+ width: 100%;
+ border-radius: 5px;
+ #myAudio {
+  background-color: white;
+ }
+
+ #myAudio::-webkit-media-controls-panel {
+  /* Add styles for the media controls panel */
+ }
+
+ #myAudio::-webkit-media-controls-play-button {
+  /* Add styles for the play button */
+ }
+
+ #myAudio::-webkit-media-controls-volume-slider {
+  /* Add styles for the volume slider */
+ }
 `

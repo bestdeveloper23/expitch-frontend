@@ -72,13 +72,15 @@ export const Links = styled.a`
 export const CloseButton = styled.button`
   display: ${(props)=> props.isopen=="yes"? "block" : "none"};
   position: absolute;
-  top: 13.25px;
+  top: 26.5px;
   
   background: transparent;
   cursor: pointer;
   border: none;
+  right: 10px;
   @media (min-width: ${breakpoint.md}) {
     right: 20px;
+    top: 13.25px;
   }
   
   @media (min-width: ${breakpoint.lg}) {

@@ -261,7 +261,7 @@ const StringsComuns = {
               total: "/ 80"
             },
             player: {
-              time: "0:0  5 / 0:56"
+              time: "0:05 / 0:56"
             },
             textbox: {
              download: "Download" ,
@@ -293,6 +293,9 @@ const StringsComuns = {
             status: "processing",
             paragraph: "Sit tight as we unleash a team of eager investor robots to dissect your pitch... Beep-boop... our supercomputing overlords began crunching numbers!"
 
+          },
+          result:{
+            noticeResult: "Are you sure you want to leave this page? Your unsaved data may be lost."
           },
 
 
