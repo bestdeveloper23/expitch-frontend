@@ -96,10 +96,7 @@ export default function GetStart() {
                 borderbottom = "none"
                 color={theme.colors.white} 
               >
-                We believe in the power of exceptional user experiences. Our UX/UI agency is dedicated to creating visually stunning and intuitive digital products that captivate users and drive business growth. Through our meticulous design process, we blend creativity, user-centricity, and technical expertise to craft interfaces that not only look beautiful but also deliver seamless interactions. Join us on a journey to transform your digital presence and leave a lasting impression on your audience.
-                In today's digital landscape, user experience has become a critical factor in the success of any business. However, many companies struggle to provide seamless and intuitive user interfaces that effectively meet the needs and expectations of their target audience. Outdated designs, confusing navigation, and lack of user-centered approaches often result in frustrated users, decreased conversion rates, and missed opportunities for growth.
-                We believe in the power of exceptional user experiences. Our UX/UI agency is dedicated to creating visually stunning and intuitive digital products that captivate users and drive business growth. Through our meticulous design process, we blend creativity, user-centricity, and technical expertise to craft interfaces that not only look beautiful but also deliver seamless interactions. Join us on a journey to transform your digital presence and leave a lasting impression on your audience.
-                In today's digital landscape, user experience has become a critical factor in the success of any business. However, many companies struggle to provide seamless and intuitive user interfaces that effectively meet the needs and expectations of their target audience. Outdated designs, confusing navigation, and lack of user-centered approaches often result in frustrated users, decreased conversion rates, and missed opportunities for growth.
+                {i18n.t("about.pitch.paragraph")}
                 <br />
                 <br />
                 <br />
@@ -284,7 +281,7 @@ export default function GetStart() {
                   color="white"
                   fontsize="18px"
                 >
-                  While you touched on the features of your agency, you did not sufficiently emphasize the specific benefits that clients can expect from working with you. To make this section more impactful, it is important to clearly articulate the advantages and value proposition your agency offers, highlighting how your features directly address the pain points and needs of potential clients.
+                  {i18n.t("getstart.analysis.feature.evaluationtext")}
                 </FormTitle><br /><br /><br />
                 <FormTitle
                   color="#75A8FF"
@@ -296,7 +293,7 @@ export default function GetStart() {
                   color="white"
                   fontsize="18px"
                 >
-                  Try to focus more on the unique benefits that clients will gain from your agency's features. Clearly communicate how your features translate into tangible advantages, such as enhanced user experiences, increased user engagement, improved conversion rates, streamlined workflows, and the achievement of clients' business goals. By doing so, you can effectively differentiate your agency from competitors and persuade potential clients to choose your services.
+                  {i18n.t("getstart.analysis.feature.recommendationtext")}
                 </FormTitle>
               </TextBox>
               <PitchTextFormBottomBar
@@ -400,8 +397,8 @@ export default function GetStart() {
               borderradius="15px"
               color={theme.colors.white}
             >
-              Hi everyone! My name is Olivia, and I'm here to introduce you to FitMeNow, the revolutionary fitness app designed to transform your workout routine. Are you tired of feeling unmotivated and struggling to reach your fitness goals? FitMeNow is here to change that!<br /><br />
-              We've identified a common problem among individuals who want to lead a healthier lifestyle: lack of personalized guidance and motivation. Many people find it challenging to stay consistent with their exercise routines or don't know where to begin. FitMeNow is the solution to these obstacles.
+              {i18n.t('getstart.public.textbox.paragraph1')}<br /><br />
+              {i18n.t('getstart.public.textbox.paragraph2')}
             </TextBox>
           </PitchForm>
           <GridRows

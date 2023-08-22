@@ -1,6 +1,6 @@
 import {
  Wrapper, MainContainer, ColorBgContainer, SvgBgContainer, F, PitchForm, Player,
- PlayerProgress, PlayerTime, TextBox, Title, SmallTitle, FormTitle, FitMeNow,
+ TextBox, Title, SmallTitle, FormTitle, FitMeNow,
  Grade, DContainer, Label, Required, EmailInput, ContainerUploading, UploadingBox,
  CustomSVG, UploadText, Button, Button1, RecordingBox, RoundButton, ContainerProcessing, ProcessingBox,
  DscrText, TextBoxProcessing, ProcessingProgress, ProcessImage, ProcessError, EmailLeftContainer, ButtonDiv,
@@ -8,9 +8,7 @@ import {
  GradeContainer, GradeTitle, Score, ScoreContainer, GradeResult, PitchTextFormBottomBar, FormText, Audio
 } from './styled';
 
-import SpeakerWaveIcon from "../../assets/images/speaker-wave.svg"
-import PlayIcon from "../../assets/images/play-circle.svg"
-import MoreIcon from "../../assets/images/ellipsis-horizontal.svg"
+
 import HeartIcon from "../../assets/images/heart.svg"
 import ChatIcon from "../../assets/images/chat-bubble-oval-left.svg"
 import RightArrowIcon from "../../assets/images/arrow-right.svg"
@@ -22,7 +20,7 @@ import arrow from "../../assets/images/arrowprimary.svg";
 import DownloadIcon from "../../assets/images/download_result.svg"
 import CopyIcon from "../../assets/images/copy_result.svg"
 
-import React, { useReducer, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEmail, setFile } from '../../actions/pitch';
 import axios from 'axios';

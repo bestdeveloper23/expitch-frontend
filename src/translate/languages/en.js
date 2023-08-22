@@ -140,7 +140,9 @@ const StringsComuns = {
               feature: {
                 title: "Features and Benefits",
                 evaluation: "Evaluation",
-                recommendation: "Recommendation"
+                evaluationtext: "While you touched on the features of your agency, you did not sufficiently emphasize the specific benefits that clients can expect from working with you. To make this section more impactful, it is important to clearly articulate the advantages and value proposition your agency offers, highlighting how your features directly address the pain points and needs of potential clients.",
+                recommendation: "Recommendation",
+                recommendationtext: "Try to focus more on the unique benefits that clients will gain from your agency's features. Clearly communicate how your features translate into tangible advantages, such as enhanced user experiences, increased user engagement, improved conversion rates, streamlined workflows, and the achievement of clients' business goals. By doing so, you can effectively differentiate your agency from competitors and persuade potential clients to choose your services."
               },
               readiness:{
                 title: "Readiness",
@@ -153,6 +155,12 @@ const StringsComuns = {
               paragraph2: " those shared by our ",
               highlight1: "exploring",
               highlight2: "community",
+              textbox: {
+                name: "Oliva Martinez",
+                fitmenow: "FitMeNow",
+                paragraph1: "Hi everyone! My name is Olivia, and I'm here to introduce you to FitMeNow, the revolutionary fitness app designed to transform your workout routine. Are you tired of feeling unmotivated and struggling to reach your fitness goals? FitMeNow is here to change that!",
+                paragraph2: "We've identified a common problem among individuals who want to lead a healthier lifestyle: lack of personalized guidance and motivation. Many people find it challenging to stay consistent with their exercise routines or don't know where to begin. FitMeNow is the solution to these obstacles."
+              }
             }
           },
 
