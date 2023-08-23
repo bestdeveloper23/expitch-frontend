@@ -8,7 +8,7 @@ import {
   TestButton,
   LinkDiv
 } from "./styled";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { i18n } from "./../../translate/i18n";
 import { useTheme } from "styled-components";
 

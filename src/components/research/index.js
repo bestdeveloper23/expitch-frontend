@@ -4,7 +4,6 @@ import {
   SectionDescription,
   Link,
   Image,
-  Brand,
   Span,
   MemberWrapper,
   Member,

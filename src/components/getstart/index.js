@@ -22,13 +22,11 @@ import {
   Grade,
   DContainer,
   PitchTextFormTopBar,
-  GridColumns,
   BigTitle,
   MidTitle,
   FitMeNow,
   Title,
   Avatar,
-  Box
 } from "./styled";
 // import About from "./../../components/about"
 
@@ -48,7 +46,6 @@ import Avatar3 from '../../assets/images/avatar/3.jpg'
 import Avatar4 from '../../assets/images/avatar/4.jpg'
 
 import { i18n } from "../../translate/i18n";
-import { Form } from "react-router-dom";
 import { theme } from "../../theme/theme";
 
 export default function GetStart() {

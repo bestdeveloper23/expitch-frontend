@@ -4,10 +4,10 @@ import {
   Grade, Shadow1, Shadow2, AudioBar, CardContainer, Card, CardIcon, CardTitle, CardParagraph, TrustedContainer, TrustedsubContainer,
    Trusted, Gridbackground, ResponseIcon
 } from "./styled";
-import { ThemeContext, styled, useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { i18n } from "./../../translate/i18n";
 import arrow from "../../assets/images/arrow.svg";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Grid from "../../assets/images/grid.svg";
 import Play_circle from "../../assets/images/play-circle.svg";
 import Audio from "../../assets/images/loading.svg";

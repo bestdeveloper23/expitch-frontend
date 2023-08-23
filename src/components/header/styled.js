@@ -44,7 +44,7 @@ export const Notice = styled.div`
   border: none;
   position: relative;
   text-align: center;
-  display: ${(props)=> props.isopen=="yes"? "block" : "none"};
+  display: ${(props)=> props.isopen==="yes"? "block" : "none"};
 `
 
 export const LinkDiv = styled.div`
@@ -70,7 +70,7 @@ export const Links = styled.a`
 `;
 
 export const CloseButton = styled.button`
-  display: ${(props)=> props.isopen=="yes"? "block" : "none"};
+  display: ${(props)=> props.isopen==="yes"? "block" : "none"};
   position: absolute;
   top: 26.5px;
   

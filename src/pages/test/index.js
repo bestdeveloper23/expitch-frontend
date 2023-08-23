@@ -4,7 +4,7 @@ import {
  Grade, DContainer, Label, Required, EmailInput, ContainerUploading, UploadingBox,
  CustomSVG, UploadText, Button, Button1, RecordingBox, RoundButton, ContainerProcessing, ProcessingBox,
  DscrText, TextBoxProcessing, ProcessingProgress, ProcessImage, ProcessError, EmailLeftContainer, ButtonDiv,
- Collapse, List, Feature, ResponseIcon, Response, Featuredetail, Grade2, EmailInputContainer, SubForm,
+ Collapse, List, Feature, ResponseIcon, Response, Featuredetail, EmailInputContainer, SubForm,
  GradeContainer, GradeTitle, Score, ScoreContainer, GradeResult, PitchTextFormBottomBar, FormText, Audio
 } from './styled';
 

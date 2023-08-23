@@ -1,4 +1,4 @@
-import styled, {css } from "styled-components";
+import styled from "styled-components";
 import { breakpoint, typography } from "../../theme/theme";
 
 export const Container = styled.div`
@@ -74,7 +74,7 @@ export const PlayButton = styled.button`
  cursor: pointer;
 `
 export const Playtag = styled.p`
-  display: ${(props) => props.isvisible == true ? "block" : "none"};
+  display: ${(props) => props.isvisible === true ? "block" : "none"};
  border: none;
  font-size: ${typography.md.size};
  font-weight: ${typography.md.fontWeight};

@@ -1,4 +1,4 @@
-import { Section, Bgimage, Container, Title, Button, Content } from "./styled";
+import { Section, Container, Title, Button, Content } from "./styled";
 
 import { useTheme } from "styled-components";
 import { i18n } from "../../translate/i18n";
