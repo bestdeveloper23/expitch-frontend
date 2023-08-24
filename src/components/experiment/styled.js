@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import BackgroundSVG from "../../assets/images/grid.svg"
+import { typography } from "../../theme/theme";
 
 export const Section = styled.div` 
   background: radial-gradient(ellipse at 50% -40%, rgba(231, 21, 97, 0.25), transparent 70%),
@@ -41,19 +42,18 @@ export const Button = styled.a`
   background: ${(props) => props.bg};
   color: ${(props) => props.color};
   font-family: 'DM Sans', sans-serif;
-  font-size: 18px;
+  font-size: ${typography.sm_bold.size};
   font-style: normal;
-  font-weight: 500;
-  line-height: 22px;
+  font-weight: ${typography.sm_bold.fontWeight};
   border-radius: 12px;
   cursor: pointer;
   &:hover {
     background: ${(props) => props.bg};
   }
   @media (max-width: 800px){
-    padding: 3px 5px;
-    border-radius: 5px;
-    font-size: 12px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: ${typography.sm_bold.size};
   }
 `;
 

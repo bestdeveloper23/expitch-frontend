@@ -28,12 +28,11 @@ export const Line = styled.div`
 
 export const Texts = styled.div`
   @media (min-width: ${breakpoint.lg}) {
-    padding: 100px 0px;  
-    text-align: left;
+    padding: 100px 0px; 
     width: 55%;
   }
   width: 100%;
-  text-align: center;
+  text-align: left;
   padding: 50px 0px;
 `;
 
@@ -67,10 +66,11 @@ export const Paragraph2 = styled.span`
 export const Links = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
-  justify-content: space-evenly;
+  gap: 3px;
+  justify-content: start;
   @media (min-width: ${breakpoint.md}) {
    justify-content: start;
+   gap: 10px;
   }
 `;
 
@@ -86,9 +86,9 @@ export const TestButton = styled.a`
   font-size: ${typography.sm_bold.size};
   font-weight: ${typography.sm_bold.fontWeight};
   @media (max-width: ${breakpoint.lg}){
-    padding: 3px 5px;
-    border-radius: 5px;
-    font-size: 12px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: ${typography.sm_bold.size};
   }
 `
 
@@ -337,7 +337,7 @@ export const TrustedContainer = styled.div`
 export const TrustedsubContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   @media (min-width: ${breakpoint.md}) {
     margin: auto;
@@ -346,7 +346,7 @@ export const TrustedsubContainer = styled.div`
    @media (min-width: ${breakpoint.lg}) {
     max-width: 1204px;
     margin: auto;
-    
+    justify-content: space-between;
     padding-inline: 30px;
    }
    padding: 30px 10px;

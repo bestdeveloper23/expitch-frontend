@@ -354,7 +354,7 @@ export const Avatar = (props) => {
         >
             <DContainer
                 display="flex"
-                alignItems="center"
+                alignitems="center"
                 gap="15px"
                 margin="0 0 10px 0"
             >

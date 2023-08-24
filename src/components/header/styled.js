@@ -99,8 +99,8 @@ export const TestButton = styled.a`
   font-size: ${typography.sm_bold.size};
   font-weight: ${typography.sm_bold.fontWeight};
   @media (max-width: ${breakpoint.md}){
-    padding: 3px 5px;
-    border-radius: 5px;
-    font-size: 12px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: ${typography.sm_bold.size};
   }
 `

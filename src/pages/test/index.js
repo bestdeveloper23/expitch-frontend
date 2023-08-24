@@ -5,7 +5,7 @@ import {
  CustomSVG, UploadText, Button, Button1, RecordingBox, RoundButton, ContainerProcessing, ProcessingBox,
  DscrText, TextBoxProcessing, ProcessingProgress, ProcessImage, ProcessError, EmailLeftContainer, ButtonDiv,
  Collapse, List, Feature, ResponseIcon, Response, Featuredetail, EmailInputContainer, SubForm,
- GradeContainer, GradeTitle, Score, ScoreContainer, GradeResult, PitchTextFormBottomBar, FormText, Audio
+ GradeContainer, GradeTitle, Score, ScoreContainer, GradeResult, PitchTextFormBottomBar, FormText, Audio, LoadingDiv, Loading
 } from './styled';
 
 
@@ -14,13 +14,14 @@ import ChatIcon from "../../assets/images/chat-bubble-oval-left.svg"
 import RightArrowIcon from "../../assets/images/arrow-right.svg"
 import UploadIcon from '../../assets/images/arrow-up-tray.svg'
 import MicIcon from '../../assets/images/microphone.svg'
+import StopRecording from '../../assets/images/stoprecording.png'
 import Processimageprimary from '../../assets/images/process_primary.svg'
 import Processimagegray from '../../assets/images/process_gray.svg'
 import arrow from "../../assets/images/arrowprimary.svg";
 import DownloadIcon from "../../assets/images/download_result.svg"
 import CopyIcon from "../../assets/images/copy_result.svg"
 
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEmail, setFile } from '../../actions/pitch';
 import axios from 'axios';
@@ -38,6 +39,8 @@ const Test = () => {
  const [processstatus, setProcessstatus] = useState('Processing...');
  const [result, setResult] = useState([]);
  const [pitchcontent, setPicthcontent] = useState('');
+ const [totalScore, setTotalScore] = useState('');
+
  const { email, file } = useSelector((state) => ({
   email: state.email,
   file: state.file
@@ -105,7 +108,7 @@ const Test = () => {
    })
    .then((response) => {
     // Handle the successful response
-    if(typeof(response.data) === 'string'){
+    if (typeof (response.data) === 'string') {
 
      var json_data = response.data.split("}{")
 
@@ -113,14 +116,46 @@ const Test = () => {
      var second_json = JSON.parse("{" + json_data[1])
      setPicthcontent(first_json['pitch']);
      var i = 0;
-     let item = []
-     for ( const key in second_json["evaluation"]){
-         const value = second_json["evaluation"][key]
-         item.push(value)
-         i ++
+     let item = [];
+     var scores = 0;
+     for (const key in second_json["evaluation"]) {
+      const value = second_json["evaluation"][key]
+      item.push(value)
+      i++
+      if (i % 3 == 1) {
+       switch (value) {
+        case 'A+':
+         scores += 10;
+         break;
+        case 'A':
+         scores += 9;
+         break;
+        case 'A-':
+         scores += 8;
+         break;
+        case 'B+':
+         scores += 6;
+         break;
+        case 'B':
+         scores += 5;
+         break;
+        case 'B-':
+         scores += 4;
+         break;
+        case 'C+':
+         scores += 2;
+         break;
+        case 'C':
+         scores += 1;
+         break;
+        default:
+         break;
+       }
+      }
      }
      setResult(item);
     }
+    setTotalScore(scores);
     setNoticeMessage(i18n.t("result.noticeResult"));
     setTimeout(() => {
      setNoticeMessage('')
@@ -134,6 +169,9 @@ const Test = () => {
    });
  };
 
+ let mediaRecorder;
+ let chunks = [];
+
  const createGradeBadge = (grade) => {
   var color = '';
   if (grade[0] === 'A') {
@@ -146,14 +184,14 @@ const Test = () => {
    color = 'red';
   }
 
-  const gradeColor = theme.colors[color + '200'];
+  const gradeColor = theme.colors[color + '600'];
   const gradeBorderColor = theme.colors[color + '200'];
   const gradeBgColor = theme.colors[color + '50'];
 
   return (
-    <GradeResult color={gradeColor} bordercolor={gradeBorderColor} bgcolor={gradeBgColor}>
-      {grade}
-    </GradeResult>
+   <GradeResult color={gradeColor} bordercolor={gradeBorderColor} bgcolor={gradeBgColor}>
+    {grade}
+   </GradeResult>
   );
  };
 
@@ -196,11 +234,89 @@ const Test = () => {
   }
  }
 
+ const CopytoClipboard = (textToCopy) => {
+  navigator.clipboard.writeText(textToCopy)
+   .then(function () {
+    console.log('Text copied to clipboard successfully');
+    setNoticeMessage('Copied!');
+    setTimeout(() => {
+     setNoticeMessage('')
+    }, 2000);
+   })
+   .catch(function (error) {
+    console.error('Error copying text to clipboard:', error);
+   });
+ }
+
+ const downloadTextAsWordFile = (text) => {
+
+  // Convert the text to a Blob
+  const blob = new Blob([text], { type: 'text/plain' });
+
+  // Create a temporary URL for the Blob
+  const url = URL.createObjectURL(blob);
+
+  // Create a link element
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'pitch.txt'; // Specify the file name with the .docx extension
+
+  // Append the link to the document body
+  document.body.appendChild(link);
+
+  // Trigger the download
+  link.click();
+
+  // Clean up by removing the link and revoking the URL
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+ }
+
  useEffect(() => {
   setWizardIndex("email");
   setProcessstatus('Processing...');
   setResponseProgress(0);
-  
+  setEmailEnable(false);
+
+  let mediaRecorder;
+  let chunks = [];
+
+  const startRecording = () => {
+    console.log('Started the recording');
+    chunks = [];
+    document.getElementById('stopButton').style.display = 'block';
+    document.getElementById('startButton').style.display = 'none';
+    mediaRecorder.start();
+  };
+
+  const stopRecording = () => {
+    console.log('Stopped the recording');
+    mediaRecorder.stop();
+    document.getElementById('stopButton').style.display = 'none';
+    document.getElementById('startButton').style.display = 'block';
+  };
+
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
+    .then(function (stream) {
+      mediaRecorder = new MediaRecorder(stream);
+
+      document.getElementById('startButton').addEventListener('click', startRecording);
+
+      document.getElementById('stopButton').addEventListener('click', stopRecording);
+
+      mediaRecorder.addEventListener('dataavailable', function (e) {
+        chunks.push(e.data);
+      });
+
+      mediaRecorder.addEventListener('stop', function () {
+        const blob = new Blob(chunks, { type: 'audio/mp3' });
+        setFile(blob);
+      });
+    })
+    .catch(function (error) {
+      console.error('Error accessing microphone:', error);
+    });
  }, [])
 
  return (
@@ -279,10 +395,10 @@ const Test = () => {
            </DContainer>
           </TextBox>
           <Player padding='0px'>
-          <Audio controls src="../../assets/audios/XL8's 3-Minute Startup Pitch.mp3">
+           <Audio controls src="../../assets/audios/XL8's 3-Minute Startup Pitch.mp3">
 
             <source src="../../assets/audios/XL8's 3-Minute Startup Pitch.mp3" type="audio/mpeg"></source>
-          </Audio>
+           </Audio>
           </Player>
           <TextBox
            height="200px"
@@ -354,17 +470,20 @@ const Test = () => {
       </UploadingBox>
       <RecordingBox>
        <UploadText color={theme.colors.gray900}>{i18n.t("uploading.recording.button")}</UploadText>
-       <RoundButton width={32} height={32} bordercolor={theme.colors.primary} bgcolor={theme.colors.gray50}>
+       <RoundButton width={64} height={64} bordercolor={theme.colors.primary} bgcolor={theme.colors.gray50} id='startButton'>
         <CustomSVG src={MicIcon}></CustomSVG>
        </RoundButton>
-       <UploadText color={theme.colors.gray500} fontsize={16}>{i18n.t("uploading.recording.hint1")} <br />{i18n.t("uploading.recording.hint2")}</UploadText>
+       <RoundButton width={64} height={64} bordercolor={theme.colors.primary} bgcolor={theme.colors.gray50} id='stopButton' style={{display: 'none'}}>
+        <CustomSVG src={StopRecording}></CustomSVG>
+       </RoundButton>
+       <UploadText color={theme.colors.gray500}>{i18n.t("uploading.recording.hint1")} <br />{i18n.t("uploading.recording.hint2")}</UploadText>
       </RecordingBox>
      </ContainerUploading>
     }
 
     {wizardIndex === "processing" &&
      <ContainerProcessing>
-      <SmallTitle color='black'>🤖 {processstatus}</SmallTitle>
+      <SmallTitle color='black'>🤖 {processstatus} <Loading /></SmallTitle>
       <ProcessingBox bordercolor={theme.colors.gray200} bgcolor={theme.colors.white}>
        <ProcessingProgress>
         <TextBoxProcessing>
@@ -403,16 +522,16 @@ const Test = () => {
           <FormTitle
            color={theme.colors.gray500}
           >Your Grade</FormTitle>
-          <Grade color={theme.colors.gray500}>
-           B+
+          <Grade color={totalScore >= 60 ? theme.colors.green600 : totalScore >= 40 ? theme.colors.yellow600 : totalScore >= 20 ? theme.coors.orange600 : theme.colors.red600}>
+           {totalScore >= 70 ? 'A+' : totalScore >= 65 ? 'A' : totalScore >= 60 ? 'A-' : totalScore >= 50 ? 'B+' : totalScore >= 45 ? 'B' : totalScore >= 40 ? 'B-' : totalScore >= 30 ? 'C+' : totalScore >= 25 ? 'C' : 'C-'}
           </Grade>
          </GradeTitle>
          <ScoreContainer>
-          <Score color={theme.colors.green600}>
-           87
+          <Score color={totalScore >= 60 ? theme.colors.green600 : totalScore >= 40 ? theme.colors.yellow600 : totalScore >= 20 ? theme.colors.orange600 : theme.colors.red600}>
+           {totalScore}
           </Score>
           <Score color={theme.colors.gray500}>
-           /100
+           /80
           </Score>
          </ScoreContainer>
         </GradeContainer>
@@ -427,9 +546,9 @@ const Test = () => {
         bordercolor={theme.colors.gray200}
         padding='0px'
        >
-       <Audio controls id="myAudio">
-            <source src="./audios/test.mp3" type="audio/mpeg"></source>
-          </Audio>
+        <Audio controls id="myAudio">
+         <source src="./audios/test.mp3" type="audio/mpeg"></source>
+        </Audio>
        </Player>
        <FormText>
         <TextBox
@@ -456,6 +575,8 @@ const Test = () => {
           <DContainer
            display="flex"
            gap="10px"
+           onClick={() => downloadTextAsWordFile(pitchcontent)}
+           style={{cursor: 'pointer'}}
           >
            <img src={DownloadIcon} alt="downloadIcon" />
            <FormTitle
@@ -466,6 +587,8 @@ const Test = () => {
           <DContainer
            display="flex"
            gap="10px"
+           onClick={() => CopytoClipboard(pitchcontent)}
+           style={{cursor: 'pointer'}}
           >
            <img src={CopyIcon} alt={CopyIcon} />
            <FormTitle
@@ -482,7 +605,7 @@ const Test = () => {
         <List bordercolor={theme.colors.gray200}>
          <Response>
           <Feature color={theme.colors.gray800} onClick={handleClick}>
-            Features and Benefits
+           Features and Benefits
            {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[0]}</Grade2> */}
 
            {createGradeBadge(result[0])}
@@ -498,7 +621,7 @@ const Test = () => {
         <List bordercolor={theme.colors.gray200}>
          <Response>
           <Feature color={theme.colors.gray800} onClick={handleClick}>
-          Readiness
+           Readiness
            {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[3]}</Grade2> */}
            {createGradeBadge(result[3])}
            <ResponseIcon src={arrow} alt="arrow" />
@@ -513,7 +636,7 @@ const Test = () => {
         <List bordercolor={theme.colors.gray200}>
          <Response>
           <Feature color={theme.colors.gray800} onClick={handleClick}>
-          Barrier To Entry
+           Barrier To Entry
            {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[6]}</Grade2> */}
            {createGradeBadge(result[6])}
            <ResponseIcon src={arrow} alt="arrow" />
@@ -528,7 +651,7 @@ const Test = () => {
         <List bordercolor={theme.colors.gray200}>
          <Response>
           <Feature color={theme.colors.gray800} onClick={handleClick}>
-          Adoption
+           Adoption
            {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[9]}</Grade2> */}
            {createGradeBadge(result[9])}
            <ResponseIcon src={arrow} alt="arrow" />
@@ -543,7 +666,7 @@ const Test = () => {
         <List bordercolor={theme.colors.gray200}>
          <Response>
           <Feature color={theme.colors.gray800} onClick={handleClick}>
-          Supply Chain
+           Supply Chain
            {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[12]}</Grade2> */}
            {createGradeBadge(result[12])}
            <ResponseIcon src={arrow} alt="arrow" />
@@ -558,7 +681,7 @@ const Test = () => {
         <List bordercolor={theme.colors.gray200}>
          <Response>
           <Feature color={theme.colors.gray800} onClick={handleClick}>
-          Market Size
+           Market Size
            {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[15]}</Grade2> */}
            {createGradeBadge(result[15])}
            <ResponseIcon src={arrow} alt="arrow" />
@@ -573,7 +696,7 @@ const Test = () => {
         <List bordercolor={theme.colors.gray200}>
          <Response>
           <Feature color={theme.colors.gray800} onClick={handleClick}>
-          Entrepreneur Experience
+           Entrepreneur Experience
            {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[18]}</Grade2> */}
            {createGradeBadge(result[18])}
            <ResponseIcon src={arrow} alt="arrow" />
@@ -588,7 +711,7 @@ const Test = () => {
         <List bordercolor={theme.colors.transparent}>
          <Response>
           <Feature color={theme.colors.gray800} onClick={handleClick}>
-          Financial Expectation
+           Financial Expectation
            {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[21]}</Grade2> */}
            {createGradeBadge(result[21])}
            <ResponseIcon src={arrow} alt="arrow" />

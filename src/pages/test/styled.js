@@ -172,6 +172,8 @@ export const Title = styled.span`
     };
 `
 export const SmallTitle = styled.span`
+    display: flex;
+    align-items: center;
     color: ${props => props.color || "white"};
     font-size: ${typography.h5.size};
     font-family: ${typography.h3.font};
@@ -207,7 +209,7 @@ export const Grade = styled.div`
     left: ${props => props.left};
     width: 30px;
     height: 30px;
-    border: 1px solid ${props => props.color || 'green'};
+    border: 1px solid ${props => props.bordercolor || 'green'};
     background-color: ${props => props.backgroundcolor || 'rgba(0,255,0,0.1)'};
     color: ${props => props.color || 'green'};
     font-size: ${props => props.size / 2 || '18'}px;
@@ -361,23 +363,18 @@ export const UploadText = styled.div`
 `
 export const Button1 = styled.button`
     display: flex;
-    padding: 4px 14px;
+    padding: 12px 20px;
     justify-content: center;
     align-items: center;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid ${(props) => props.bordercolor};
     background: ${(props) => props.bgcolor};
     color: ${(props) => props.color};
-    font-size: ${typography.label.size};
+    font-size: ${typography.sm_bold.size};
     font-style: normal;
-    font-weight: ${typography.label_bold.fontWeight};
+    font-weight: ${typography.sm_bold.fontWeight};
     cursor: pointer;
-    @media (min-width: ${breakpoint.sm}) {
-        font-size: ${typography.xs_bold.size};
-        padding: 8px 20px;
-    }
     @media (min-width: ${breakpoint.lg}) {
-        font-size: ${typography.sm_bold.size};
         padding: 12px 26px;
         border-radius: 12px;
     }
@@ -429,22 +426,17 @@ export const RecordingBox = styled.div`
         padding: 40px;
     }
 `
-export const RoundButton = styled.a`
+export const RoundButton = styled.button`
     display: flex;
     width: ${props => props.width}px;
     height: ${props => props.height}px;
-    padding: 9px;
+    padding: 16px;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
     border: 1px solid ${(props) => props.bordercolor};
     background: ${(props) => props.bgcolor};
-    @media (min-width: ${breakpoint.sm}) {
-        padding: 12px
-    }
-    @media (min-width: ${breakpoint.lg}) {
-        padding: 16px;
-    }
+    cursor: pointer;
 `
 
 export const ContainerProcessing =  styled.div`
@@ -491,9 +483,10 @@ export const ProcessingBox = styled.div`
 
 export const ProcessingProgress = styled.div`
  width: 100%;
+ height: 100%;
  position: relative;
  display: flex;
- /* clip-path: inset(0 0 0 0); */
+ justify-content: center;
 `
 
 export const ProcessImage = styled.img`
@@ -521,7 +514,8 @@ export const DscrText = styled.div`
 
 export const TextBoxProcessing = styled.div`
     position: absolute;
-    top: 0;
+    top: 50%;
+    transform: translateY(-50%);
     left: 0;
     display: flex;
     justify-content: center;
@@ -603,8 +597,8 @@ export const Response = styled.details`
 
 export const Featuredetail = styled.p`
   padding-top: 15px;
-  font-weight: ${typography.text.fontWeight};
-  font-size: ${typography.text.size};
+  font-weight: ${typography.sm.fontWeight};
+  font-size: ${typography.sm.size};
   color: ${(props) => props.color};
 `;
 
@@ -652,7 +646,7 @@ position: absolute;
   transform: translate(-50%, -50%);
   width: 35px;
   height: 35px;
-   border: 1px solid ${props => props.color || 'green'};
+   border: 1px solid ${props => props.bordercolor || 'green'};
    background-color: ${props => props.bgcolor || 'rgba(0,255,0,0.1)'};
    color: ${props => props.color || 'green'};
    border-radius: 6px;
@@ -716,6 +710,7 @@ export const FormText = styled.div`
 export const Audio = styled.audio`
  width: 100%;
  border-radius: 5px;
+ height: 35px;
  #myAudio {
   background-color: white;
  }
@@ -731,4 +726,29 @@ export const Audio = styled.audio`
  #myAudio::-webkit-media-controls-volume-slider {
   /* Add styles for the volume slider */
  }
+`
+
+export const LoadingDiv = styled.div`
+ display: flex;
+ justify-content: center;
+ position: absolute;
+ top: 25%;
+`
+
+export const Loading = styled.div`
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 `
