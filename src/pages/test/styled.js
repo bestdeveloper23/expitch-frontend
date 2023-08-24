@@ -185,9 +185,9 @@ export const SmallTitle = styled.span`
      font-size: ${typography.h3.size};
     };
 `
-export const FormTitle = styled.span`
+export const FormTitle = styled.div`
     color: ${props => props.color};
-    font-size: ${props => props.fontsize};
+    font-size: ${props => props.fontsizes};
 `
 
 export const FitMeNow = styled.span`
@@ -353,12 +353,12 @@ export const CustomSVG = styled.img`
 
 export const UploadText = styled.div`
     color: ${props => props.color};
-    font-size: ${props => props.fontsize || 18}px;
+    font-size: 18px;
     font-style: normal;
     font-weight: ${typography.sm.fontWeight};
     text-align: center;
     @media (max-width: ${breakpoint.sm}) {
-        font-size: ${props => props.fontsize - 4 || 14}px;
+        font-size: 14px;
     }
 `
 export const Button1 = styled.button`
@@ -390,7 +390,7 @@ export const Button = styled.button`
     gap: 8px;
     border-radius: 12px;
     border: 1px solid  ${(props) => props.bordercolor};
-    opacity: ${(props) => props.isenable === true ? '1' : '0.5'};
+    opacity: ${(props) => props.isenable === 'valid' ? '1' : '0.5'};
     background: ${(props) => props.bgcolor};
     color: ${(props) => props.color};
     cursor: pointer;

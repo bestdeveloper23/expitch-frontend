@@ -212,9 +212,9 @@ export const Title = styled.span`
         font-size: ${typography.h3.size};
     };
 `
-export const FormTitle = styled.span`
+export const FormTitle = styled.div`
     color: ${props => props.color};
-    font-size: ${(props) => props.fontsize};
+    font-size: ${(props) => props.fontsizes || '12px'};
 `
 
 export const BigTitle = styled.span`
@@ -380,7 +380,7 @@ export const Avatar = (props) => {
                 // margom="20px 0 0 0"
             >
                 <FormTitle
-                    fontsize="12px"
+                    // fontsizes="12px"
                     color={props.titleState ? "white" : "#3D568C"}
                 >{props.avatarTitle}</FormTitle>
             </DContainer>

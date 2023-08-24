@@ -34,12 +34,13 @@ const Test = () => {
  const [wizardIndex, setWizardIndex] = useState('email');
  const [responseProgress, setResponseProgress] = useState(0);
  const [emailError, setEmailError] = useState('');
- const [emailEnable, setEmailEnable] = useState(false);
+ const [emailEnable, setEmailEnable] = useState('failed');
  const [noticeMessage, setNoticeMessage] = useState('');
  const [processstatus, setProcessstatus] = useState('Processing...');
  const [result, setResult] = useState([]);
  const [pitchcontent, setPicthcontent] = useState('');
  const [totalScore, setTotalScore] = useState('');
+ const [pitchURL, setPitchURL] = useState('');
 
  const { email, file } = useSelector((state) => ({
   email: state.email,
@@ -49,8 +50,8 @@ const Test = () => {
 
  const handleEmailChange = (event) => {
   if (validateEmail()) {
-   setEmailEnable(true)
-  } else setEmailEnable(false)
+   setEmailEnable('valid')
+  } else setEmailEnable('failed')
 
   dispatch(setEmail(event.target.value));
  };
@@ -66,7 +67,7 @@ const Test = () => {
 
  const onDrop = (acceptedFiles) => {
   dispatch(setFile(acceptedFiles[0]));
-  // setFile(acceptedFiles);
+  setPitchURL(URL.createObjectURL(acceptedFiles[0]));
   console.log(acceptedFiles[0], "test");
   setWizardIndex("processing");
   setTimeout(() => {
@@ -169,9 +170,6 @@ const Test = () => {
    });
  };
 
- let mediaRecorder;
- let chunks = [];
-
  const createGradeBadge = (grade) => {
   var color = '';
   if (grade[0] === 'A') {
@@ -272,13 +270,7 @@ const Test = () => {
   URL.revokeObjectURL(url);
  }
 
- useEffect(() => {
-  setWizardIndex("email");
-  setProcessstatus('Processing...');
-  setResponseProgress(0);
-  setEmailEnable(false);
-
-  let mediaRecorder;
+ let mediaRecorder;
   let chunks = [];
 
   const startRecording = () => {
@@ -295,28 +287,37 @@ const Test = () => {
     document.getElementById('stopButton').style.display = 'none';
     document.getElementById('startButton').style.display = 'block';
   };
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  
+   navigator.mediaDevices
+     .getUserMedia({ audio: true })
+     .then(function (stream) {
+       mediaRecorder = new MediaRecorder(stream);
 
-  navigator.mediaDevices
-    .getUserMedia({ audio: true })
-    .then(function (stream) {
-      mediaRecorder = new MediaRecorder(stream);
+       mediaRecorder.addEventListener('dataavailable', function (e) {
+         chunks.push(e.data);
+       });
 
-      document.getElementById('startButton').addEventListener('click', startRecording);
-
-      document.getElementById('stopButton').addEventListener('click', stopRecording);
-
-      mediaRecorder.addEventListener('dataavailable', function (e) {
-        chunks.push(e.data);
-      });
-
-      mediaRecorder.addEventListener('stop', function () {
-        const blob = new Blob(chunks, { type: 'audio/mp3' });
-        setFile(blob);
-      });
-    })
-    .catch(function (error) {
-      console.error('Error accessing microphone:', error);
-    });
+       mediaRecorder.addEventListener('stop', function () {
+         const blob = new Blob(chunks, { type: 'audio/mp3' });
+         dispatch(setFile(blob));
+         setPitchURL(URL.createObjectURL(blob));
+         setWizardIndex('processing');
+         handleSubmit(blob);
+       });
+     })
+     .catch(function (error) {
+       console.error('Error accessing microphone:', error);
+     });
+    } else {
+     console.log('getUserMedia is not supported in this browser');
+    }
+    
+ useEffect(() => {
+  setWizardIndex("email");
+  setProcessstatus('Processing...');
+  setResponseProgress(0);
+  setEmailEnable('failed');
  }, [])
 
  return (
@@ -347,7 +348,7 @@ const Test = () => {
             <PitchForm>
              <FormTitle
               color={theme.colors.primary}
-              fontsize="15px"
+              fontsizes="15px"
              >{i18n.t("email.form.name")}</FormTitle>
              <FitMeNow
               color="White"
@@ -362,13 +363,13 @@ const Test = () => {
                display="flex"
               >
                <CustomSVG src={HeartIcon} width="20px" height="20px"></CustomSVG>
-               <FormTitle color={theme.colors.white} fontsize="18px">{i18n.t("email.form.favorite")}</FormTitle>
+               <FormTitle color={theme.colors.white} fontsizes="18px">{i18n.t("email.form.favorite")}</FormTitle>
               </DContainer>
               <DContainer
                display="flex"
               >
                <CustomSVG src={ChatIcon} width="20px" height="20px"></CustomSVG>
-               <FormTitle color={theme.colors.white} fontsize="18px">{i18n.t("email.form.comment")}</FormTitle>
+               <FormTitle color={theme.colors.white} fontsizes="18px">{i18n.t("email.form.comment")}</FormTitle>
               </DContainer>
              </DContainer>
             </PitchForm>
@@ -395,9 +396,9 @@ const Test = () => {
            </DContainer>
           </TextBox>
           <Player padding='0px'>
-           <Audio controls src="../../assets/audios/XL8's 3-Minute Startup Pitch.mp3">
+           <Audio controls>
 
-            <source src="../../assets/audios/XL8's 3-Minute Startup Pitch.mp3" type="audio/mpeg"></source>
+            <source src={pitchURL}></source>
            </Audio>
           </Player>
           <TextBox
@@ -470,10 +471,10 @@ const Test = () => {
       </UploadingBox>
       <RecordingBox>
        <UploadText color={theme.colors.gray900}>{i18n.t("uploading.recording.button")}</UploadText>
-       <RoundButton width={64} height={64} bordercolor={theme.colors.primary} bgcolor={theme.colors.gray50} id='startButton'>
+       <RoundButton width={64} height={64} bordercolor={theme.colors.primary} bgcolor={theme.colors.gray50} id='startButton' onClick={() => startRecording()}>
         <CustomSVG src={MicIcon}></CustomSVG>
        </RoundButton>
-       <RoundButton width={64} height={64} bordercolor={theme.colors.primary} bgcolor={theme.colors.gray50} id='stopButton' style={{display: 'none'}}>
+       <RoundButton width={64} height={64} bordercolor={theme.colors.primary} bgcolor={theme.colors.gray50} id='stopButton' style={{display: 'none'}} onClick={() => stopRecording()}>
         <CustomSVG src={StopRecording}></CustomSVG>
        </RoundButton>
        <UploadText color={theme.colors.gray500}>{i18n.t("uploading.recording.hint1")} <br />{i18n.t("uploading.recording.hint2")}</UploadText>
@@ -581,7 +582,7 @@ const Test = () => {
            <img src={DownloadIcon} alt="downloadIcon" />
            <FormTitle
             color="white"
-            fontsize="18px"
+            fontsizes="18px"
            >{i18n.t("getstart.analysis.button.download")}</FormTitle>
           </DContainer>
           <DContainer
@@ -593,7 +594,7 @@ const Test = () => {
            <img src={CopyIcon} alt={CopyIcon} />
            <FormTitle
             color="white"
-            fontsize="18px"
+            fontsizes="18px"
            >{i18n.t("getstart.analysis.button.copy")}</FormTitle>
           </DContainer>
          </DContainer>
@@ -608,7 +609,7 @@ const Test = () => {
            Features and Benefits
            {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[0]}</Grade2> */}
 
-           {createGradeBadge(result[0])}
+           { result[0] && createGradeBadge(result[0])}
            <ResponseIcon src={arrow} alt="arrow" />
           </Feature>
           <Featuredetail color={theme.colors.primary}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>

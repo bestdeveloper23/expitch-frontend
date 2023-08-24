@@ -113,7 +113,7 @@ export default function GetStart() {
                     <img src={DownloadIcon} alt="downloadIcon" />
                     <FormTitle
                       color="white"
-                      fontsize="18px"
+                      fontsizes="18px"
                     >{i18n.t("getstart.analysis.button.download")}</FormTitle>
                   </DContainer>
                   <DContainer
@@ -123,7 +123,7 @@ export default function GetStart() {
                     <img src={CopyIcon} alt={CopyIcon} />
                     <FormTitle
                       color="white"
-                      fontsize="18px"
+                      fontsizes="18px"
                     >{i18n.t("getstart.analysis.button.copy")}</FormTitle>
                   </DContainer>
                 </DContainer>
@@ -245,7 +245,7 @@ export default function GetStart() {
                   >
                     <FormTitle
                       color="white"
-                      fontsize="18px"
+                      fontsizes="18px"
                     >
                       {i18n.t("getstart.analysis.feature.title")}
                     </FormTitle>
@@ -270,25 +270,25 @@ export default function GetStart() {
               >
                 <FormTitle
                   color="#75A8FF"
-                  fontsize="20px"
+                  fontsizes="20px"
                 >
                   {i18n.t("getstart.analysis.feature.evaluation")}<br /><br />
                 </FormTitle>
                 <FormTitle
                   color="white"
-                  fontsize="18px"
+                  fontsizes="18px"
                 >
                   {i18n.t("getstart.analysis.feature.evaluationtext")}
                 </FormTitle><br /><br /><br />
                 <FormTitle
                   color="#75A8FF"
-                  fontsize="20px"
+                  fontsizes="20px"
                 >
                   {i18n.t("getstart.analysis.feature.recommendation")}<br /><br />
                 </FormTitle>
                 <FormTitle
                   color="white"
-                  fontsize="18px"
+                  fontsizes="18px"
                 >
                   {i18n.t("getstart.analysis.feature.recommendationtext")}
                 </FormTitle>
@@ -307,7 +307,7 @@ export default function GetStart() {
                   >
                     <FormTitle
                       color="white"
-                      fontsize="18px"
+                      fontsizes="18px"
                     >
                       {i18n.t("getstart.analysis.readiness.title")}
                     </FormTitle>
@@ -345,7 +345,7 @@ export default function GetStart() {
                 <PitchForm>
                   <FormTitle
                     color="#E71561"
-                    fontsize="15px"
+                    fontsizes="15px"
                   >Oliva Martinez</FormTitle>
                   <FitMeNow
                     color="White"
