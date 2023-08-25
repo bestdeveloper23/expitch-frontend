@@ -548,7 +548,7 @@ const Test = () => {
         padding='0px'
        >
         <Audio controls id="myAudio">
-         <source src="./audios/test.mp3" type="audio/mpeg"></source>
+         <source src={pitchURL}></source>
         </Audio>
        </Player>
        <FormText>
