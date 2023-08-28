@@ -5,7 +5,7 @@ import {
  CustomSVG, UploadText, Button, Button1, RecordingBox, RoundButton, ContainerProcessing, ProcessingBox,
  DscrText, TextBoxProcessing, ProcessingProgress, ProcessImage, ProcessError, EmailLeftContainer, ButtonDiv,
  Collapse, List, Feature, ResponseIcon, Response, Featuredetail, EmailInputContainer, SubForm,
- GradeContainer, GradeTitle, Score, ScoreContainer, GradeResult, PitchTextFormBottomBar, FormText, Audio, LoadingDiv, Loading
+ GradeContainer, GradeTitle, Score, ScoreContainer, GradeResult, PitchTextFormBottomBar, FormText, Audio, Loading
 } from './styled';
 
 
@@ -42,7 +42,7 @@ const Test = () => {
  const [totalScore, setTotalScore] = useState('');
  const [pitchURL, setPitchURL] = useState('');
 
- const { email, file } = useSelector((state) => ({
+ const { email } = useSelector((state) => ({
   email: state.email,
   file: state.file
  }));
@@ -91,10 +91,9 @@ const Test = () => {
   const formData = new FormData();
   formData.append('email', email);
   formData.append('pitchFile', file);
-  const fileUrl = URL.createObjectURL(file);
   console.log(email, file)
   axios
-   .post('https://api-staging-dot-sustained-vial-393016.uc.r.appspot.com/open-ai/getPitchEvalForAudio', formData, {
+   .post(`${process.env.REACT_APP_API_ENDPOINTS}/open-ai/getPitchEvalForAudio`, formData, {
     onUploadProgress: (progressEvent) => {
      const progress = Math.round(
       (progressEvent.loaded * 100) / progressEvent.total
@@ -123,7 +122,7 @@ const Test = () => {
       const value = second_json["evaluation"][key]
       item.push(value)
       i++
-      if (i % 3 == 1) {
+      if (i % 3 === 1) {
        switch (value) {
         case 'A+':
          scores += 10;
