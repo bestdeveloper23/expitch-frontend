@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import BackgroundSVG from "../../assets/images/grid.svg"
-import { typography } from "../../theme/theme";
+import { breakpoint, typography } from "../../theme/theme";
 
 export const Section = styled.div` 
   background: radial-gradient(ellipse at 50% -40%, rgba(231, 21, 97, 0.25), transparent 70%),
@@ -11,7 +11,6 @@ export const Section = styled.div`
 `;
 
 export const Container = styled.div`
-  width: 65%;
   margin: auto;
   text-align: center;
   display: flex;
@@ -19,6 +18,9 @@ export const Container = styled.div`
   justify-content: flex-start;
   align-items: center;
   row-gap: 64px;
+  @media(min-width: ${breakpoint.md}){
+    width: 65%;
+  }
 `;
 
 export const Title = styled.div`

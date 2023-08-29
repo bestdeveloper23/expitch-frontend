@@ -37,7 +37,7 @@ export const Logo = styled.img`
   }
 `
 export const Notice = styled.div`
-  background-color: ${(props) => props.bgcolor};
+  background-color: ${(props) => props.bgcolor} !important;
   color: ${(props) => props.color};
   padding: 10px;
   padding-inline: 35px;

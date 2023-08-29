@@ -106,22 +106,20 @@ export const MemberWrapper = styled.div`
 `;
 
 export const Member = styled.div`
+
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   row-gap: 32px;
   width: 100%;
-
   @media (min-width: ${breakpoint.md}) {
+    width: 50%;
+    margin-bottom: 30px;
+  }  
+  @media (min-width: ${breakpoint.lg}) {
     width: 24%;
     margin-bottom: 20px;
-  }
-
-  @media (min-width: ${breakpoint.sm}) {
-    width: 50%;
-    margin: auto;
-    margin-bottom: 30px;
   }
 `;
 export const MemberAvatar = styled.img`

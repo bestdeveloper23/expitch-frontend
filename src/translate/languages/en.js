@@ -294,17 +294,64 @@ const StringsComuns = {
             },
             submit: {
               button: "Choose file",
+            },
+            status: {
+              recording: {
+                text: "Recording..."
+              },
+              analysis: {
+                text: "Your recording",
+                button: "Analyze"
+              }
             }
+            
           },
 
           process: {
-            status: "processing",
-            paragraph: "Sit tight as we unleash a team of eager investor robots to dissect your pitch... Beep-boop... our supercomputing overlords began crunching numbers!"
-
+            status: "Processing... Just a moment!",
+            title: "The possible ratings for the CFA-AI report include:",
+            paragraph1: "Golden Opportunity: This factor is a tailwind propelling you to success. Keep up the excellent work and ride this momentum.",
+            paragraph2: "Pivotal Potential: Attention needed! A tweak or adjustment here could significantly elevate your chances of success.",
+            paragraph3: "Critical Hurdle: Immediate action required! This factor is a red flag that could derail your venture if not addressed."
           },
           result:{
-            noticeResult: "Are you sure you want to leave this page? Your unsaved data may be lost."
+            noticeResult: "Are you sure you want to leave this page? Your unsaved data may be lost.",
+            titleL: "Analysis ",
+            titleR: "(CFA-AI)",
+            features: {
+              title: "Features and Benefits",
+              tooltip: "Does your proposed product or service offer performance advantages compared to currently deployed solutions?"
+            },
+            readiness: {
+              title: "Readiness",
+              tooltip: "How far away are you from being able to deliver completed products or services to your first revenue customer?"
+            },
+            barrier: {
+              title: "Barrier TO Entry",
+              tooltip: "What is unique or patentable about your product that represents a barrier to entry for potential competitors?"
+            },
+            adoption: {
+              title: "Adoption",
+              tooltip: "Can you demonstrate that customers in your target market will purchase your product or service when it is available?"
+            },
+            supplychain: {
+              title: "Supply Chain",
+              tooltip: "Can you provide confirmation that there are no success barriers either about your supply chain, or distribution channel?"
+            },
+            market: {
+              title: "Market Size",
+              tooltip: "Is the overall size of the market and your likely market share, sufficient to generate the envisaged revenues? Further, is the overall market forecast to be large enough to be interesting?"
+            },
+            entrepreneur: {
+              title: "Entrepreneur Experience",
+              tooltip: "Do you or members of your team have any direct or relevant (entrepreneurial, industry, business) experience that can be directly applied to the challenges facing this business?"
+            },
+            financial: {
+              title: "Financial Expectation",
+              tooltip: "Do your financial projections present a persuasive argument that your company can achieve cash-flow neutrality, based on your own investment, money you can borrow, and money you can raise from external investors?"
+            }
           },
+
 
 
 //---------------------------------TEST---------------------------------------------------//

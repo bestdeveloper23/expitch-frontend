@@ -194,6 +194,9 @@ export const Feature = styled.summary`
   font-size: ${typography.label_bold.size};
   font-weight: ${typography.label_bold.fontWeight};
   color: ${(props) => props.color};
+  &::-webkit-details-marker {
+    display: none;
+  }
 `;
 
 export const ResponseIcon = styled.img`

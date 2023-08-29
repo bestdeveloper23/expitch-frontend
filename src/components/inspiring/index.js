@@ -11,14 +11,14 @@ import {
   SectionWrap,
 } from "./styled";
 import { i18n } from "./../../translate/i18n";
-import avatar_1 from "../../assets/images/avatar/avatar_1.svg";
-import avatar_2 from "../../assets/images/avatar/avatar_2.svg";
-import avatar_3 from "../../assets/images/avatar/avatar_3.svg";
-import avatar_4 from "../../assets/images/avatar/avatar_4.svg";
-import avatar_5 from "../../assets/images/avatar/avatar_5.svg";
-import avatar_6 from "../../assets/images/avatar/avatar_6.svg";
-import avatar_7 from "../../assets/images/avatar/avatar_7.svg";
-import avatar_8 from "../../assets/images/avatar/avatar_8.svg";
+import avatar_1 from "../../assets/images/avatar/avatar_1.png";
+import avatar_2 from "../../assets/images/avatar/avatar_2.png";
+import avatar_3 from "../../assets/images/avatar/avatar_3.png";
+import avatar_4 from "../../assets/images/avatar/avatar_4.png";
+import avatar_5 from "../../assets/images/avatar/avatar_5.png";
+import avatar_6 from "../../assets/images/avatar/avatar_6.png";
+import avatar_7 from "../../assets/images/avatar/avatar_7.png";
+import avatar_8 from "../../assets/images/avatar/avatar_8.png";
 import { theme } from "../../theme/theme";
 
 export default function Inspiring() {

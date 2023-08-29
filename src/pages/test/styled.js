@@ -1,4 +1,4 @@
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 
 import BackgroundSVG from "../../assets/images/grid.svg"
 import { breakpoint, typography } from "../../theme/theme";
@@ -6,7 +6,7 @@ import { breakpoint, typography } from "../../theme/theme";
 export const Wrapper = styled.div`
  width: 100%;
  height: 100%;
- background-color: ${(props) => props.color};
+ background-color: ${(props) => props.bgcolor};
 `
 
 export const MainContainer = styled.div`
@@ -87,36 +87,11 @@ export const Player = styled.div`
     align-self: stretch;
     height: 25px;
     border-radius: 12px;
-    /* border: 1px solid #405A9444; */
-    border: 1px solid ${(props) => props.bordercolor || '#1E2A4555'};
+    /* border: 1px solid ${(props) => props.bordercolor || '#1E2A4555'}; */
     background: ${(props) => props.bgcolor || '#1E2A4555'};
     background-blend-mode: color-dodge;
 `
 
-export const PlayerProgress = styled.progress`
-    width: 100%;
-    height: 10px;
-    appearance: none;
-    border: none;
-    background-color: #ddd;
-    border-radius: 10px;
-    overflow: hidden;
-
-    &::-webkit-progress-bar {
-    background-color: #ddd;
-    border-radius: 10px;
-    }
-
-    &::-webkit-progress-value {
-    background-color: ${(props) => props.color};
-    border-radius: 10px;
-    }
-
-    &::-moz-progress-bar {
-    background-color: ${(props) => props.color};
-    border-radius: 10px;
-    }
-`
 export const PlayerTime = styled.div`
     width: 200px;
 `
@@ -125,7 +100,7 @@ export const TextBox = styled.div`
     max-width: 100%;
     height: ${props => props.height};
     border: 1px solid ${(props) => props.bordercolor || '#405A94'};
-    background-color: ${(props) => props.bgcolor||'#1E2A45'};
+    background-color: ${(props) => props.bgcolor || '#1E2A45'};
     border-top: ${props => props.bordertop};
     border-left: ${props => props.borderleft};
     border-right: ${props => props.borderright};
@@ -135,13 +110,13 @@ export const TextBox = styled.div`
     word-wrap: break-word;
     border-radius: ${props => props.borderradius};
     overflow: scroll;
-    color: ${(props)=> props.color || 'white'};
+    color: ${(props) => props.color || 'white'};
     font-size: 18px;
     overflow-x: hidden;
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
     &::-webkit-scrollbar {
-        width: 20px;
+        width: 10px;
         
     }
     &::-webkit-scrollbar-track {
@@ -226,9 +201,10 @@ export const Grade = styled.div`
 export const EmailInputContainer = styled.div`
 
  display: flex;
-  padding: 10px;
+ margin: 10px;
  justify-content: center;
- @media(min-width: ${breakpoint.md}){
+ background: ${props => props.bgcolor};
+ @media(min-width: ${breakpoint.lg}){
   width: 50%;
   
   justify-content: flex-end;
@@ -239,7 +215,7 @@ export const EmailLeftContainer = styled.div`
      display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: ${(props)=>props.gap || '10px'};
+    gap: ${(props) => props.gap || '10px'};
     padding: 10px;
     @media(min-width: ${breakpoint.md}){
      padding: 20px;
@@ -256,11 +232,11 @@ export const DContainer = styled.div`
     display: ${props => props.display || "block"};
     justify-content: ${props => props.justifycontent};
     align-items: ${props => props.alignitems};
-    flex-direction: ${props =>props.flexdirection};
-    flex-wrap: ${props =>props.flexWrap};
-    align-content: ${props =>props.aligncontent};
-    gap: ${props =>props.gap};
-    position: ${props =>props.position};
+    flex-direction: ${props => props.flexdirection};
+    flex-wrap: ${props => props.flexWrap};
+    align-content: ${props => props.aligncontent};
+    gap: ${props => props.gap};
+    position: ${props => props.position};
 `
 
 export const Label = styled.span`
@@ -291,7 +267,7 @@ export const EmailInput = styled.input`
     }
 `
 
-export const ContainerUploading =  styled.div`
+export const ContainerUploading = styled.div`
     margin: auto;
     display: flex;
     justify-content: center;
@@ -336,18 +312,19 @@ export const UploadingBox = styled.div`
     }
 `
 export const CustomSVG = styled.img`
-    width: ${props => props.width-20 || 24}px;
-    height: ${props => props.height-20 || 24}px;
+    width: ${props => props.width - 20 || 24}px;
+    height: ${props => props.height - 20 || 24}px;
+    cursor: pointer;
     path {
         fill: ${props => props.fill || '#000'};
     }
     @media (min-width: ${breakpoint.sm}) {
         width: ${props => props.width - 10 || 24}px;
-        height: ${props => props.height-10 || 24}px;
+        height: ${props => props.height - 10 || 24}px;
     }
     @media (min-width: ${breakpoint.lg}) {
         width:${props => props.width || 24}px;
-        height: ${props => props.height|| 24}px;
+        height: ${props => props.height || 24}px;
     }
 `
 
@@ -412,7 +389,7 @@ export const RecordingBox = styled.div`
     align-items: center;
     text-align: center;
     gap: 16px;
-    background: var(--white, #FFF);
+    width: 85%;
     @media (min-width: ${breakpoint.sm}){
         width:300px;
         padding: 20px;
@@ -439,14 +416,7 @@ export const RoundButton = styled.button`
     cursor: pointer;
 `
 
-export const ContainerProcessing =  styled.div`
-    @media (min-width: ${breakpoint.md}) {
-     padding: 50px 30px;
-    }
-    @media (min-width: ${breakpoint.lg}) {
-     max-width: 1204px;     
-     padding: 100px 30px;
-    }
+export const ContainerProcessing = styled.div`
     padding: 30px 10px;
     position: relative;
     margin: auto;
@@ -455,6 +425,18 @@ export const ContainerProcessing =  styled.div`
     flex-direction: column;
     align-items: center;
     gap: 32px;
+    @media (min-width: ${breakpoint.md}) {
+      margin: auto;
+      padding: 50px 30px;
+     }
+     @media (min-width: ${breakpoint.lg}) {
+      max-width: 1204px;
+      margin: auto;
+      
+      padding: 100px 30px;
+     }
+     padding: 30px 10px;
+     position: relative;
 `
 
 export const ProcessingBox = styled.div`
@@ -495,10 +477,15 @@ export const ProcessImage = styled.img`
 
 export const DscrText = styled.div`
     width:100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
     color: ${props => props.color};
     font-size: ${typography.label.size};
     font-weight: ${typography.sm.fontWeight};
     text-align: center;
+    background: ${props => props.bgcolor};
+    border-color: ${props => props.bordercolor};
     @media (min-width: ${breakpoint.sm}){
         width:400px;
     }
@@ -574,14 +561,45 @@ export const List = styled.li`
 `;
 
 export const Feature = styled.summary`
+  text-align: left;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  font-size: ${typography.label_bold.size};
-  font-weight: ${typography.label_bold.fontWeight};
+  font-size: ${typography.xs.size};
+  font-weight: ${typography.h5.fontWeight};
   color: ${(props) => props.color};
+  @media(min-width: ${breakpoint.md}){
+    font-size: ${typography.sm.size};
+  }
+  @media(min-width: ${breakpoint.lg}){
+    font-size: ${typography.h5.size};
+  }
+  &::-webkit-details-marker {
+    display: none;
+  }
+  &::after {
+    content: attr(tooltip);
+    position: absolute;
+    background-color: #000;
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 10;
+  }
+
+  &:hover::after {
+    opacity: 1;
+    visibility: visible;
+  }
 `;
 
 export const ResponseIcon = styled.img`
@@ -598,16 +616,22 @@ export const Response = styled.details`
 export const Featuredetail = styled.p`
   padding-top: 15px;
   font-weight: ${typography.sm.fontWeight};
-  font-size: ${typography.sm.size};
+  font-size: ${typography.label.size};
   color: ${(props) => props.color};
+  @media(min-width: ${breakpoint.md}){
+    font-size: ${typography.xs.size};
+  }
+  @media(min-width: ${breakpoint.lg}){
+    font-size: ${typography.sm.size};
+  }
 `;
 
 export const Grade2 = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: 36px;
-  height: 34px;
+  width: 36px !important;
+  height: 34px !important;
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -641,7 +665,7 @@ export const GradeTitle = styled.div`
 
 export const GradeResult = styled.div`
 position: absolute;
-  left: 60%;
+  right: 5%;
   top: 50%;
   transform: translate(-50%, -50%);
   width: 35px;
@@ -685,7 +709,7 @@ export const Score = styled.span`
  @media(min-width: ${breakpoint.lg}){
   font-size: ${typography.h4.size};
  }
-`   
+`
 
 export const PitchTextFormBottomBar = styled.div`
     border-radius: 0 0 15px 15px ;
@@ -738,8 +762,8 @@ export const LoadingDiv = styled.div`
 export const Loading = styled.div`
   width: 40px;
   height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
+  border: 8px solid ${props => props.bordercolor || "#f3f3f3"}33;
+  border-top: 8px solid ${props => props.bordercolor || "#3498db"};
   border-radius: 50%;
   animation: spin 1s linear infinite;
 
@@ -751,4 +775,91 @@ export const Loading = styled.div`
     transform: rotate(360deg);
   }
 }
+`
+
+export const Container3 = styled.div`
+ display: flex;
+ flex-direction: column;
+ gap: 30px;
+ padding: 30px;
+ background-color: ${(props) => props.bgcolor};
+ border: solid 2px ${(props) => props.bordercolor};
+ border-radius: 20px;
+ @media (min-width: ${breakpoint.sm}){
+    width: ${props => props.smwidth};
+ }
+ @media (min-width: ${breakpoint.md}){
+    width:${props => props.mdwidth};
+    font-size: ${typography.xs.size};
+ }
+ @media (min-width: ${breakpoint.lg}){
+    width:${props => props.lgwidth};
+ }
+`
+
+export const ProcessingTitle = styled.div`
+ color: ${(props) => props.color || "black"};
+ font-size: ${typography.sm_bold.size};
+ font-weight: ${typography.sm_bold.fontWeight};
+`
+
+export const Card = styled.div`
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ border-radius: 24px;
+ gap: 15px;
+`
+
+export const CardTextDiv = styled.div`
+ text-align: start;
+ /* width: 85%; */
+`
+
+export const CardText = styled.span`
+ font-size: ${typography.xs.size};
+ font-weight: ${typography.xs.fontWeight};
+ color: ${(props) => props.color || 'black'};
+`
+
+export const CardIcon = styled.img`
+  width: 32px;
+  height: auto;
+`
+
+export const ResultContainer = styled.div`
+    max-width: 1204px;
+    margin: auto;
+    flex-direction: row;
+    padding: 100px 30px;
+    display: flex;
+    position: relative;
+    gap: 20px;
+    @media (max-width: ${breakpoint.sm}) {
+        padding: 30px 10px;
+   }
+   @media (max-width: ${breakpoint.md}) {
+    margin: auto;
+    padding: 30px 30px;
+    flex-direction: column;
+   }
+
+`
+
+export const ResultMainContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${(props) => props.gap || '10px'};
+    width: 60%;
+    @media(max-width: ${breakpoint.md}){
+     width: 100%;
+    }
+`
+
+export const ResultSubContainer = styled.div`
+    width: 40%;
+    @media(max-width: ${breakpoint.md}){
+     width: 100%;
+    }
 `
