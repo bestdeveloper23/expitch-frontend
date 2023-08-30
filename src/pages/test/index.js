@@ -230,12 +230,11 @@ const Test = () => {
             second_json.evaluation.entrepreneurExperience.recommendations,
             second_json.evaluation.financialExpectations.letterGrade,
             second_json.evaluation.financialExpectations.evaluation,
-            second_json.evaluation.financialExpectations.recommendations,
-            second_json.evaluation.fileName
+            second_json.evaluation.financialExpectations.recommendations
           ];
           valuesArray.forEach(element => {
             item.push(element)
-            i++
+            i++;
             if (i % 3 === 1) {
               switch (element) {
                 case 'A+':
@@ -268,7 +267,7 @@ const Test = () => {
             }
           });
 
-          setResult(item);
+          setResult(valuesArray);
         }
         setTotalScore(scores);
         setWizardIndex("result")
