@@ -28,6 +28,7 @@ export const Title = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: 66px;
+  font-family: ${typography.h1.font};
   color: ${(props) => props.color};
   @media (max-width: 768px) {
     font-size: 40px;
@@ -43,7 +44,6 @@ export const Button = styled.a`
   align-items: center;
   background: ${(props) => props.bg};
   color: ${(props) => props.color};
-  font-family: 'DM Sans', sans-serif;
   font-size: ${typography.sm_bold.size};
   font-style: normal;
   font-weight: ${typography.sm_bold.fontWeight};
@@ -60,9 +60,9 @@ export const Button = styled.a`
 `;
 
 export const Content = styled.div`
-  font-size: 26px;
+  font-size: ${typography.lg.size};
   font-style: normal;
-  font-weight: 400;
+  font-weight: ${typography.lg.fontWeight};
   line-height: 32px;
   color: ${(props) => props.color};
 `;

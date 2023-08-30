@@ -34,6 +34,7 @@ export const Container = styled.div`
 
 export const SectionTitle = styled.h2`
   padding: 8px;
+  font-family: ${typography.h2.font};
   font-size: ${typography.h2.size};
   font-weight: ${typography.h2.fontWeight};
   color: ${(props) => props.color};

@@ -315,6 +315,10 @@ const StringsComuns = {
             paragraph3: "Critical Hurdle: Immediate action required! This factor is a red flag that could derail your venture if not addressed."
           },
           result:{
+            title: "Your grade",
+            slogonA: "Golden Opportunity",
+            slogonB: "Pivotal Potential",
+            slogonC: "Critical Hurdle",
             noticeResult: "Are you sure you want to leave this page? Your unsaved data may be lost.",
             titleL: "Analysis ",
             titleR: "(CFA-AI)",
@@ -327,7 +331,7 @@ const StringsComuns = {
               tooltip: "How far away are you from being able to deliver completed products or services to your first revenue customer?"
             },
             barrier: {
-              title: "Barrier TO Entry",
+              title: "Barrier To Entry",
               tooltip: "What is unique or patentable about your product that represents a barrier to entry for potential competitors?"
             },
             adoption: {

@@ -21,18 +21,18 @@ export const Line = styled.div`
   display: flex;
   /* align-items: center; */
   justify-content: space-between;
-  @media (max-width: ${breakpoint.lg}) {
+  @media (max-width: ${breakpoint.md}) {
     flex-direction: column;
   }
 `;
 
 export const Texts = styled.div`
-  @media (min-width: ${breakpoint.lg}) {
-    padding: 100px 0px; 
-    width: 55%;
+  @media (max-width: ${breakpoint.md}) {
+    width: 100%;
+    text-align: left;
   }
-  width: 100%;
-  text-align: left;
+  padding: 100px 0px; 
+  width: 55%;
   padding: 50px 0px;
 `;
 
@@ -50,13 +50,10 @@ export const Paragraph = styled.p`
   max-width: 70%;
   color: ${(props) => props.color};
   position: relative;
-  margin: auto;
-  padding: 50px 0px;
-  font-family: ${typography.md.font};
+  padding: 30px 0px;
 `;
 
 export const Paragraph2 = styled.span`
-  font-family: ${typography.sm_bold.font};
   font-weight: ${typography.sm_bold.fontWeight};
   font-size: ${typography.sm_bold.size};
   color: ${(props) => props.color};
@@ -82,7 +79,6 @@ export const TestButton = styled.a`
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  font-family: ${typography.sm_bold.font};
   font-size: ${typography.sm_bold.size};
   font-weight: ${typography.sm_bold.fontWeight};
   @media (max-width: ${breakpoint.lg}){
@@ -93,6 +89,7 @@ export const TestButton = styled.a`
 `
 
 export const Title = styled.span`
+  font-family: ${typography.h1.font};
   font-weight: ${typography.h3.fontWeight};
   font-size: ${typography.h3.size};
   @media (min-width: ${breakpoint.md}) {
@@ -113,22 +110,28 @@ export const PlayButton = styled.img`
   cursor: pointer;
 `
 
+export const Formimage = styled.img`
+    width: 100%;
+    height: auto;
+`
+
 export const RightColumn = styled.div`
   position: relative;
-  display: grid;
+  display: flex;
   align-items: center;
   justify-content: flex-end;
   position: relative;
   width: 45%;
-  @media (max-width: ${breakpoint.lg}){
+  padding-bottom: 100px;
+  @media (max-width: ${breakpoint.md}){
     width: 100%;
+    padding-bottom: 50px;
   }
 `;
 
 export const Righttitle = styled.p`
   font-weight: ${typography.xs.fontWeight};
   font-size: ${typography.xs.size};
- font-family: ${typography.xs.font};
  text-align: start;
  color: ${(props) => props.color};
 `
@@ -321,6 +324,7 @@ export const CardIcon = styled.img`
 `
 
 export const CardTitle = styled.p`
+  font-family: ${typography.h4.font};
   font-size: ${typography.h4.size};
   font-weight: ${typography.h4.fontWeight};
   color: ${(props) => props.color};

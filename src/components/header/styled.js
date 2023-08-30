@@ -95,7 +95,6 @@ export const TestButton = styled.a`
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  font-family: ${typography.sm_bold.font};
   font-size: ${typography.sm_bold.size};
   font-weight: ${typography.sm_bold.fontWeight};
   @media (max-width: ${breakpoint.md}){

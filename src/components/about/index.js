@@ -1,8 +1,7 @@
 import {
   Links, Container, TestButton, RightColumn, Paragraph, Paragraph2, Title, Line, Texts,
-  PlayButton, Righttitle, Rightparagraph, Container2, Collapse, List, Feature, Response, Featuredetail,
-  Grade, Shadow1, Shadow2, AudioBar, CardContainer, Card, CardIcon, CardTitle, CardParagraph, TrustedContainer, TrustedsubContainer,
-   Trusted, Gridbackground, ResponseIcon
+  PlayButton, Formimage, CardContainer, Card, CardIcon, CardTitle, CardParagraph, TrustedContainer, TrustedsubContainer,
+   Trusted, Gridbackground
 } from "./styled";
 import { useTheme } from "styled-components";
 import { i18n } from "./../../translate/i18n";
@@ -22,6 +21,7 @@ import About4 from "../../assets/images/about/4.svg";
 import About5 from "../../assets/images/about/5.svg";
 import About6 from "../../assets/images/about/6.svg";
 import About7 from "../../assets/images/about/7.svg";
+import HeroImage from "../../assets/images/hero-img.webp";
 
 export default function About() {
   const theme = useTheme();
@@ -51,51 +51,7 @@ export default function About() {
             </Links>
           </Texts>
           <RightColumn>
-            <Shadow2 />
-            <Righttitle color={theme.colors.gray900} >{i18n.t("about.pitch.title")}</Righttitle>
-            <Rightparagraph color={theme.colors.gray900} bordercolor={theme.colors.gray200} bgcolor={theme.colors.gray50}>{i18n.t("about.pitch.paragraph")}
-              <Shadow1 />
-              <AudioBar src={Audio} alt="audio"></AudioBar>
-            </Rightparagraph>
-
-            <Container2>
-              <Righttitle color={theme.colors.gray900} >{i18n.t("about.analysis.title")}</Righttitle>
-              <Collapse bordercolor={theme.colors.gray200}>
-                <List bordercolor={theme.colors.gray200}>
-                  <Response>
-                    <Feature color={theme.colors.gray800} onClick={handleClick}>
-                      {i18n.t("about.analysis.features.title")}
-                      <Grade color={theme.colors.green600} bgcolor={theme.colors.green50} className="grade">A+</Grade>
-                      <ResponseIcon src={arrow} alt="arrow" />
-                    </Feature>
-                    <Featuredetail color={theme.colors.primary}>{i18n.t("about.analysis.features.evaluation.title")}</Featuredetail>
-                  </Response>
-                </List>
-                <List bordercolor={theme.colors.gray200}>
-                  <Response>
-                    <Feature color={theme.colors.gray800} onClick={handleClick}>
-                      {i18n.t("about.analysis.barrier.title")}
-                      <Grade color={theme.colors.green600} bgcolor={theme.colors.green50} className="grade">A+</Grade>
-                      <ResponseIcon src={arrow} alt="arrow" />
-                    </Feature>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.barrier.evaluation.paragraph")}</Featuredetail>
-                  </Response>
-                </List>
-                <List bordercolor={theme.colors.transparent}>
-                  <Response>
-                    <Feature color={theme.colors.gray800} onClick={handleClick}>
-                      {i18n.t("about.analysis.readiness.title")}
-                      <Grade color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">B+</Grade>
-                      <ResponseIcon src={arrow} alt="arrow" />
-                    </Feature>
-                    <Featuredetail color={theme.colors.primary}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.paragraph")}</Featuredetail>
-                    <Featuredetail color={theme.colors.primary}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.paragraph")}</Featuredetail>
-                  </Response>
-                </List>
-              </Collapse>
-            </Container2>
+            <Formimage src={HeroImage}></Formimage>
           </RightColumn>
         </Line>
         <CardContainer>

@@ -1,41 +1,38 @@
 import {
-  Wrapper, MainContainer, ColorBgContainer, SvgBgContainer, F, PitchForm, Player,
-  TextBox, Title, SmallTitle, FormTitle, FitMeNow, Grade, DContainer, Label, Required, EmailInput, ContainerUploading, UploadingBox,
-  CustomSVG, UploadText, Button, Button1, RecordingBox, RoundButton, ContainerProcessing, ProcessingProgress, EmailLeftContainer, ButtonDiv,
+  Wrapper, MainContainer, ColorBgContainer, F, Player,
+  TextBox, Title, SmallTitle, FormTitle, Grade, DContainer, Label, Required, EmailInput, ContainerUploading, UploadingBox,
+  CustomSVG, UploadText, Button, Button1, RecordingBox, RoundButton, ContainerProcessing, ProcessingProgress, ButtonDiv,
   Collapse, List, Feature, ResponseIcon, Response, Featuredetail, EmailInputContainer, SubForm,
   GradeContainer, GradeTitle, Score, ScoreContainer, GradeResult, PitchTextFormBottomBar, FormText, Audio, Loading,
   Container3, Card, CardTextDiv, CardText, CardIcon, ProcessingTitle,
-  ResultContainer, ResultMainContainer, ResultSubContainer
+  ResultContainer, ResultMainContainer, ResultSubContainer, ResultTitleContainer, Formimage
 } from './styled';
 
-
-import HeartIcon from "../../assets/images/heart.svg"
-import ChatIcon from "../../assets/images/chat-bubble-oval-left.svg"
 import RightArrowIcon from "../../assets/images/arrow-right.svg"
 import UploadIcon from '../../assets/images/arrow-up-tray.svg'
 import MicIcon from '../../assets/images/microphone.svg'
 import StopRecording from '../../assets/images/stop_recording.svg'
-import Processimageprimary from '../../assets/images/process_primary.svg'
-import Processimagegray from '../../assets/images/process_gray.svg'
 import arrow from "../../assets/images/arrowprimary.svg"
 import DownloadIcon from "../../assets/images/download_result.svg"
 import CopyIcon from "../../assets/images/copy_result.svg"
 import GradeA from "../../assets/images/grade_a.svg"
 import GradeB from "../../assets/images/grade_b.svg"
 import GradeC from "../../assets/images/grade_c.svg"
+import PrinterIcon from "../../assets/images/printer.svg"
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEmail, setFile } from '../../actions/pitch';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
 import { useTheme } from 'styled-components';
 import { i18n } from "./../../translate/i18n";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const Test = () => {
   const theme = useTheme();
   const [wizardIndex, setWizardIndex] = useState('email');
-  const [responseProgress, setResponseProgress] = useState(0);
   const [emailError, setEmailError] = useState('');
   const [emailEnable, setEmailEnable] = useState('failed');
   const [loadingStatus, setLoadingStatus] = useState('initial');
@@ -46,6 +43,9 @@ const Test = () => {
   const [pitchURL, setPitchURL] = useState('');
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [pitchfile, setPItchFile] = useState(null);
+
+  const contentRef = useRef(null);
 
   const { email, file } = useSelector((state) => ({
     email: state.email,
@@ -63,7 +63,7 @@ const Test = () => {
 
   const submitAnalysis = () => {
     setWizardIndex('processing');
-    handleSubmit(file);
+    handleSubmit(pitchfile);
   };
 
   useEffect(() => {
@@ -123,9 +123,12 @@ const Test = () => {
           });
 
           mediaRecorder.addEventListener('stop', function () {
-            const blob = new Blob(chunks, { type: 'audio/mp3' });
+            const blob = new Blob(chunks, { type: 'audio/mpeg' });
             console.log(blob)
             dispatch(setFile(blob));
+            const fileName = 'expitch.mp3';
+            const file = convertBlobToFile(blob, fileName);
+            setPItchFile(file);
             setPitchURL(URL.createObjectURL(blob));
             document.getElementById("recordingAudio").src = URL.createObjectURL(blob);
           });
@@ -160,20 +163,29 @@ const Test = () => {
     return true;
   };
 
+  const convertBlobToFile = (blob, fileName) => {
+    const file = new File([blob], fileName, { type: blob.type });
+    return file;
+  }
+
+  const isBlobEmpty = (blob) => {
+    return blob.size === 0;
+  }
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: 'audio/*', multiple: false, noClick: true, });
   const handleSubmit = (file) => {
     const formData = new FormData();
     formData.append('email', email);
+    console.log(file);
     formData.append('pitchFile', file);
     const fileUrl = URL.createObjectURL(file);
     console.log(email, file)
     axios
-      .post(`${process.env.REACT_APP_API_ENDPOINTS}/open-ai/getPitchEvalForAudio`, formData, {
+      .post(`${process.env.REACT_APP_API_ENDPOINTS}/pitch/getPitchEvalForAudio`, formData, {
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
           );
-          setResponseProgress(progress);
           if (progress === 100) {
             // The upload is complete, but the response may still be pending
             setProcessstatus('Waiting for result...')
@@ -190,15 +202,42 @@ const Test = () => {
           var first_json = JSON.parse(json_data[0] + "}")
           var second_json = JSON.parse("{" + json_data[1])
           setPicthcontent(first_json['pitch']);
+          console.log(second_json.evaluation.featureBenefits.letterGrade);
           var i = 0;
           let item = [];
           var scores = 0;
-          for (const key in second_json["evaluation"]) {
-            const value = second_json["evaluation"][key]
-            item.push(value)
+          const valuesArray = [
+            second_json.evaluation.featureBenefits.letterGrade,
+            second_json.evaluation.featureBenefits.evaluation,
+            second_json.evaluation.featureBenefits.recommendations,
+            second_json.evaluation.readiness.letterGrade,
+            second_json.evaluation.readiness.evaluation,
+            second_json.evaluation.readiness.recommendations,
+            second_json.evaluation.barrierToEntry.letterGrade,
+            second_json.evaluation.barrierToEntry.evaluation,
+            second_json.evaluation.barrierToEntry.recommendations,
+            second_json.evaluation.adoption.letterGrade,
+            second_json.evaluation.adoption.evaluation,
+            second_json.evaluation.adoption.recommendations,
+            second_json.evaluation.supplyChain.letterGrade,
+            second_json.evaluation.supplyChain.evaluation,
+            second_json.evaluation.supplyChain.recommendations,
+            second_json.evaluation.marketSize.letterGrade,
+            second_json.evaluation.marketSize.evaluation,
+            second_json.evaluation.marketSize.recommendations,
+            second_json.evaluation.entrepreneurExperience.letterGrade,
+            second_json.evaluation.entrepreneurExperience.evaluation,
+            second_json.evaluation.entrepreneurExperience.recommendations,
+            second_json.evaluation.financialExpectations.letterGrade,
+            second_json.evaluation.financialExpectations.evaluation,
+            second_json.evaluation.financialExpectations.recommendations,
+            second_json.evaluation.fileName
+          ];
+          valuesArray.forEach(element => {
+            item.push(element)
             i++
             if (i % 3 === 1) {
-              switch (value) {
+              switch (element) {
                 case 'A+':
                   scores += 10;
                   break;
@@ -227,7 +266,8 @@ const Test = () => {
                   break;
               }
             }
-          }
+          });
+
           setResult(item);
         }
         setTotalScore(scores);
@@ -242,10 +282,12 @@ const Test = () => {
 
   const createGradeBadge = (grade) => {
     var color = '';
+    if (grade === undefined)
+      return null;
     if (grade[0] === 'A') {
       color = 'green';
     } else if (grade[0] === 'B') {
-      color = 'yellow';
+      color = 'orange';
     } else if (grade[0] === 'C') {
       color = 'orange';
     } else {
@@ -262,34 +304,6 @@ const Test = () => {
       </GradeResult>
     );
   };
-
-  const createResponsive = (title, grade, evaluation, recommendation) => {
-    var color = '';
-    if (grade[0] === 'A+' || grade[0] === 'A-') {
-      color = 'green';
-    } else if (grade[0] === 'B+' || grade[0] === 'B-') {
-      color = 'yellow';
-    } else if (grade[0] === 'C+' || grade[0] === 'C-') {
-      color = 'orange';
-    } else {
-      color = 'red';
-    }
-    return (
-      <List bordercolor={theme.colors.transparent}>
-        <Response>
-          <Feature color={theme.colors.gray500} onClick={handleClick}>
-            {title}
-            <GradeResult color={color + '200'} bordercolor={color + '200'} bgcolor={color + '50'}>{grade}</GradeResult>
-            <ResponseIcon src={arrow} alt="arrow" />
-          </Feature>
-          <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
-          <Featuredetail color={theme.colors.gray500}>{evaluation}</Featuredetail>
-          <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
-          <Featuredetail color={theme.colors.gray500}>{recommendation}</Featuredetail>
-        </Response>
-      </List>
-    )
-  }
 
   const handleClick = (e) => {
     if (e.target.children[1]) {
@@ -314,35 +328,45 @@ const Test = () => {
 
   const downloadTextAsWordFile = (text) => {
 
-    // Convert the text to a Blob
     const blob = new Blob([text], { type: 'text/plain' });
 
-    // Create a temporary URL for the Blob
     const url = URL.createObjectURL(blob);
 
-    // Create a link element
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'pitch.txt'; // Specify the file name with the .docx extension
-
-    // Append the link to the document body
+    link.download = 'pitch.txt'; 
     document.body.appendChild(link);
-
-    // Trigger the download
     link.click();
-
-    // Clean up by removing the link and revoking the URL
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   }
+
+  const saveAsPdf = () => {
+    const content = contentRef.current;
+
+    html2canvas(content).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('document.pdf');
+    });
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
 
   useEffect(() => {
     setWizardIndex("email");
     setLoadingStatus('initial')
     setProcessstatus(i18n.t("process.status"));
-    setResponseProgress(0);
     setEmailEnable('failed');
     setSeconds(0);
+    setResult([]);
   }, [])
 
   return (
@@ -352,88 +376,8 @@ const Test = () => {
         {wizardIndex === "email" &&
           <MainContainer color={theme.colors.gray50}>
             <F>
-              <ColorBgContainer
-                backgroundcolor={theme.colors.gray900}
-              >
-                <SvgBgContainer>
-                  <EmailLeftContainer
-                  >
-                    <Title>
-                      {i18n.t("email.pitch.title")}
-                    </Title>
-                    <TextBox
-                      borderradius="15px"
-                      width="calc(100% - 60px)"
-                    >
-                      <DContainer
-                        display="flex"
-                        justifycontent="space-between"
-                        width="100%"
-                      >
-                        <PitchForm>
-                          <FormTitle
-                            color={theme.colors.primary}
-                            fontsizes="15px"
-                          >{i18n.t("email.form.name")}</FormTitle>
-                          <FitMeNow
-                            color="White"
-                          >
-                            {i18n.t("email.form.title")}
-                          </FitMeNow>
-                          <DContainer
-                            display="flex"
-                            gap="20px"
-                          >
-                            <DContainer
-                              display="flex"
-                            >
-                              <CustomSVG src={HeartIcon} width="20px" height="20px"></CustomSVG>
-                              <FormTitle color={theme.colors.white} fontsizes="18px">{i18n.t("email.form.favorite")}</FormTitle>
-                            </DContainer>
-                            <DContainer
-                              display="flex"
-                            >
-                              <CustomSVG src={ChatIcon} width="20px" height="20px"></CustomSVG>
-                              <FormTitle color={theme.colors.white} fontsizes="18px">{i18n.t("email.form.comment")}</FormTitle>
-                            </DContainer>
-                          </DContainer>
-                        </PitchForm>
-                        <DContainer>
-                          <DContainer
-                            display="flex"
-                            justifycontent="flex-end"
-                          >
-                            <FitMeNow
-                              color={theme.colors.green600}
-                            >
-                              {i18n.t("email.form.score")}<FitMeNow color="#415C96">{i18n.t("email.form.total")}</FitMeNow>
-                            </FitMeNow></DContainer>
-                          <DContainer
-                            display="flex"
-                            justifycontent="flex-end"
-                          >
-                            <Grade
-                              color={theme.colors.green600}
-                              backgroundcolor={theme.colors.green200}
-                            >A</Grade>
-                          </DContainer>
-                        </DContainer>
-                      </DContainer>
-                    </TextBox>
-                    <Player padding='0px'>
-                      <Audio controls>
-
-                        <source src={pitchURL}></source>
-                      </Audio>
-                    </Player>
-                    <TextBox
-                      height="200px"
-                      borderradius="15px"
-                    >
-                      {i18n.t("email.pitch.paragraph")}
-                    </TextBox>
-                  </EmailLeftContainer>
-                </SvgBgContainer>
+              <ColorBgContainer>
+                <Formimage></Formimage>
               </ColorBgContainer>
               <EmailInputContainer
                 bgcolor={theme.colors.white}
@@ -496,9 +440,9 @@ const Test = () => {
               <RoundButton width={64} height={64} bordercolor={theme.colors.primary} bgcolor={theme.colors.gray50} id='startButton' >
                 <CustomSVG src={MicIcon}></CustomSVG>
               </RoundButton>
-              
+
               <CustomSVG width={64} height={64} src={StopRecording} id='stopButton' style={{ display: 'none' }}></CustomSVG>
-              
+
               {loadingStatus === "completed" ? (
                 <Player padding='0px'>
                   <Audio controls id="recordingAudio">
@@ -507,7 +451,7 @@ const Test = () => {
                 </Player>
               ) : null}
               {loadingStatus === "initial" ? (<UploadText color={theme.colors.gray500}>{i18n.t("uploading.recording.hint1")}</UploadText>) :
-                loadingStatus === "recording" ? (<UploadText color={theme.colors.gray900}>{Math.floor(seconds/3600)}:{String(Math.floor((seconds%3600)/60)).padStart(2, '0')}:{String((seconds%3600)%60).padStart(2, '0')}</UploadText>) :
+                loadingStatus === "recording" ? (<UploadText color={theme.colors.gray900}>{Math.floor(seconds / 3600)}:{String(Math.floor((seconds % 3600) / 60)).padStart(2, '0')}:{String((seconds % 3600) % 60).padStart(2, '0')}</UploadText>) :
                   (
                     <Button onClick={() => submitAnalysis()} isenable={emailEnable} bgcolor={theme.colors.primary}
                       bordercolor={theme.colors.primary} color={theme.colors.white}>
@@ -532,9 +476,9 @@ const Test = () => {
         {wizardIndex === "processing" &&
           <ContainerProcessing>
             <SmallTitle color='black'>🤖 {processstatus}</SmallTitle>
-              <ProcessingProgress>
-                <Loading bordercolor={theme.colors.primary}/>
-              </ProcessingProgress>
+            <ProcessingProgress>
+              <Loading bordercolor={theme.colors.primary} />
+            </ProcessingProgress>
             <Container3 bordercolor={theme.colors.gray100} bgcolor={theme.colors.white}
               smwidth='400px' mdwidth='500px' lgwidth='586px'
             >
@@ -558,268 +502,291 @@ const Test = () => {
                 </CardTextDiv>
               </Card>
             </Container3>
-            
+
           </ContainerProcessing>
         }
 
         {wizardIndex === "result" &&
-          <ResultContainer>
-            <ResultMainContainer
-              gap='20px'
-            >
-              <TextBox
-                borderradius="15px"
-                width="calc(100% - 60px)"
-                bgcolor={theme.colors.gray50}
-                color={theme.colors.gray500}
-                bordercolor={theme.colors.gray200}
+          <>
+            <ResultTitleContainer>
+              <GradeContainer
+                bgcolor='transparent'
               >
-                <GradeContainer
-                  bgcolor={theme.gray50}
-                >
-                  <GradeTitle>
+                <GradeTitle>
+                  <FormTitle
+                    fontsizes={theme.typography.h4.size}
+                    color={theme.colors.gray900}
+                    fontweights={theme.typography.h4.fontWeight}
+                    font={theme.typography.h4.font}
+                  >{i18n.t("result.title")}</FormTitle>
+                </GradeTitle>
+                <ScoreContainer gap='20px'>
+                  <ButtonDiv gap='5px' onClick={() => saveAsPdf()}>
+                    <CustomSVG src={DownloadIcon}></CustomSVG>
+                    <FormTitle color={theme.colors.gray500}>Save PDF</FormTitle>
+                  </ButtonDiv>
+                  <ButtonDiv gap='5px' onClick={() => handlePrint()}>
+                    <CustomSVG src={PrinterIcon}></CustomSVG>
+                    <FormTitle color={theme.colors.gray500}>Print</FormTitle>
+                  </ButtonDiv>
+                </ScoreContainer>
+              </GradeContainer>
 
-                    <FormTitle
-                      color={theme.colors.gray500}
-                    >Your Grade</FormTitle>
-                    <Grade color={totalScore >= 60 ? theme.colors.green600 : totalScore >= 40 ? theme.colors.yellow600 : totalScore >= 20 ? theme.coors.orange600 : theme.colors.red600}
-                      bordercolor={totalScore >= 60 ? theme.colors.green200 : totalScore >= 40 ? theme.colors.yellow200 : totalScore >= 20 ? theme.coors.orange200 : theme.colors.red200}
-                      backgroundcolor={totalScore >= 60 ? theme.colors.green50 : totalScore >= 40 ? theme.colors.yellow50 : totalScore >= 20 ? theme.coors.orange50 : theme.colors.red50}
-                    >
-                      {totalScore >= 70 ? 'A+' : totalScore >= 65 ? 'A' : totalScore >= 60 ? 'A-' : totalScore >= 50 ? 'B+' : totalScore >= 45 ? 'B' : totalScore >= 40 ? 'B-' : totalScore >= 30 ? 'C+' : totalScore >= 25 ? 'C' : 'C-'}
-                    </Grade>
-                  </GradeTitle>
-                  <ScoreContainer>
-                    <Score color={totalScore >= 60 ? theme.colors.green600 : totalScore >= 40 ? theme.colors.yellow600 : totalScore >= 20 ? theme.colors.orange600 : theme.colors.red600}>
-                      {totalScore}
-                    </Score>
-                    <Score color={theme.colors.gray500}>
-                      /80
-                    </Score>
-                  </ScoreContainer>
-                </GradeContainer>
-              </TextBox>
+            </ResultTitleContainer>
 
-              <p>
-                <Title color={theme.colors.gray900}>
-                  {i18n.t("result.titleL")}
-                </Title>
-                <Title color={theme.colors.gray500}>
-                  {i18n.t("result.titleR")}
-                </Title>
-              </p>
-
-              <Collapse id='results' bordercolor={theme.colors.gray200}>
-                <List bordercolor={theme.colors.gray200}>
-                  <Response>
-                    <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.features.tooltip")}>
-                      {i18n.t("result.features.title")}
-                      {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[0]}</Grade2> */}
-
-                      {result[0] && createGradeBadge(result[0])}
-                      <ResponseIcon src={arrow} alt="arrow" />
-                    </Feature>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[1]}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[2]}</Featuredetail>
-                  </Response>
-                </List>
-
-                <List bordercolor={theme.colors.gray200}>
-                  <Response>
-                    <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.readiness.tooltip")}>
-                      {i18n.t("result.readiness.title")}
-                      {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[3]}</Grade2> */}
-                      {createGradeBadge(result[3])}
-                      <ResponseIcon src={arrow} alt="arrow" />
-                    </Feature>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[4]}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[5]}</Featuredetail>
-                  </Response>
-                </List>
-
-                <List bordercolor={theme.colors.gray200}>
-                  <Response>
-                    <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.barrier.tooltip")}>
-                      {i18n.t("result.barrier.title")}
-                      {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[6]}</Grade2> */}
-                      {createGradeBadge(result[6])}
-                      <ResponseIcon src={arrow} alt="arrow" />
-                    </Feature>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[7]}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[8]}</Featuredetail>
-                  </Response>
-                </List>
-
-                <List bordercolor={theme.colors.gray200}>
-                  <Response>
-                    <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.adoption.tooltip")}>
-                      {i18n.t("result.adoption.title")}
-                      {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[9]}</Grade2> */}
-                      {createGradeBadge(result[9])}
-                      <ResponseIcon src={arrow} alt="arrow" />
-                    </Feature>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[10]}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[11]}</Featuredetail>
-                  </Response>
-                </List>
-
-                <List bordercolor={theme.colors.gray200}>
-                  <Response>
-                    <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.supplychain.tooltip")}>
-                      {i18n.t("result.supplychain.title")}
-                      {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[12]}</Grade2> */}
-                      {createGradeBadge(result[12])}
-                      <ResponseIcon src={arrow} alt="arrow" />
-                    </Feature>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[13]}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[14]}</Featuredetail>
-                  </Response>
-                </List>
-
-                <List bordercolor={theme.colors.gray200}>
-                  <Response>
-                    <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.market.tooltip")}>
-                      {i18n.t("result.market.title")}
-                      {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[15]}</Grade2> */}
-                      {createGradeBadge(result[15])}
-                      <ResponseIcon src={arrow} alt="arrow" />
-                    </Feature>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[16]}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[17]}</Featuredetail>
-                  </Response>
-                </List>
-
-                <List bordercolor={theme.colors.gray200}>
-                  <Response>
-                    <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.entrepreneur.tooltip")}>
-                      {i18n.t("result.entrepreneur.title")}
-                      {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[18]}</Grade2> */}
-                      {createGradeBadge(result[18])}
-                      <ResponseIcon src={arrow} alt="arrow" />
-                    </Feature>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[19]}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[20]}</Featuredetail>
-                  </Response>
-                </List>
-
-                <List bordercolor={theme.colors.transparent}>
-                  <Response>
-                    <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.financial.tooltip")}>
-                      {i18n.t("result.financial.title")}
-                      {/* <Grade2 color={theme.colors.yellow600} bgcolor={theme.colors.yellow50} className="grade">{result[21]}</Grade2> */}
-                      {createGradeBadge(result[21])}
-                      <ResponseIcon src={arrow} alt="arrow" />
-                    </Feature>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[22]}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
-                    <Featuredetail color={theme.colors.gray500}>{result[23]}</Featuredetail>
-                  </Response>
-                </List>
-
-
-              </Collapse>
-              <Title color={theme.colors.gray900}>
-                {i18n.t("email.pitch.title")}
-              </Title>
-              <Player
-                color={theme.colors.gray900}
-                bgcolor={theme.colors.gray50}
-                bordercolor={theme.colors.gray200}
-                padding='0px'
+            <ResultContainer ref={contentRef}>
+              <ResultMainContainer
+                gap='20px'
               >
-                <Audio controls id="myAudio">
-                  <source src={pitchURL}></source>
-                </Audio>
-              </Player>
-              <FormText>
                 <TextBox
-                  height="200px"
-                  borderradius="15px 15px 0 0"
+                  borderradius="15px"
+                  width="calc(100% - 60px)"
                   bgcolor={theme.colors.gray50}
-                  color={theme.colors.gray900}
+                  color={theme.colors.gray500}
                   bordercolor={theme.colors.gray200}
-                  borderbottom='none'
                 >
-                  {pitchcontent}
-
+                  <GradeContainer
+                    bgcolor={theme.gray50}
+                  >
+                    <GradeTitle>
+                      <Grade color={totalScore >= 49 ? theme.colors.green600 : totalScore >= 17 ? theme.colors.orange600 : theme.colors.red600}
+                        bordercolor={totalScore >= 49 ? theme.colors.green200 : totalScore >= 17 ? theme.colors.orange200 : theme.colors.red200}
+                        backgroundcolor={totalScore >= 49 ? theme.colors.green50 : totalScore >= 17 ? theme.colors.orange50 : theme.colors.red50}
+                      >
+                        {totalScore >= 73 ? 'A+' : totalScore >= 65 ? 'A' : totalScore >= 49 ? 'A-' : totalScore >= 41 ? 'B+' : totalScore >= 33 ? 'B' : totalScore >= 17 ? 'B-' : totalScore >= 9 ? 'C+' : totalScore >= 8 ? 'C' : 'C-'}
+                      </Grade>
+                      <FormTitle
+                        color={totalScore >= 49 ? theme.colors.green600 : totalScore >= 17 ? theme.colors.orange600 : theme.colors.red600}
+                        padding='10px'
+                      >{totalScore >= 49 ? i18n.t("result.slogonA") : totalScore >= 17 ? i18n.t("result.slogonB") : i18n.t("result.slogonC")}</FormTitle>
+                    </GradeTitle>
+                    <ScoreContainer>
+                      <Score color={totalScore >= 53 ? theme.colors.green600 : totalScore >= 17 ? theme.colors.orange600 : theme.colors.red600}>
+                        {totalScore}
+                      </Score>
+                      <Score color={theme.colors.gray500}>
+                        /80
+                      </Score>
+                    </ScoreContainer>
+                  </GradeContainer>
                 </TextBox>
-                <PitchTextFormBottomBar
-                  bgcolor={theme.colors.gray100}
-                  bordercolor={theme.colors.gray100}
+
+                <p>
+                  <Title color={theme.colors.gray900}>
+                    {i18n.t("result.titleL")}
+                  </Title>
+                  <Title color={theme.colors.gray500}>
+                    {i18n.t("result.titleR")}
+                  </Title>
+                </p>
+
+                <Collapse id='results' bordercolor={theme.colors.gray200}>
+                  <List bordercolor={theme.colors.gray200}>
+                    <Response>
+                      <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.features.tooltip")}>
+                        {i18n.t("result.features.title")}
+                        {/* <Grade2 color={theme.colors.orange600} bgcolor={theme.colors.orange50} className="grade">{result[0]}</Grade2> */}
+
+                        {createGradeBadge(result[0] && result[0])}
+                        <ResponseIcon src={arrow} alt="arrow" />
+                      </Feature>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[1] && result[1]}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[2] && result[2]}</Featuredetail>
+                    </Response>
+                  </List>
+
+                  <List bordercolor={theme.colors.gray200}>
+                    <Response>
+                      <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.readiness.tooltip")}>
+                        {i18n.t("result.readiness.title")}
+                        {/* <Grade2 color={theme.colors.orange600} bgcolor={theme.colors.orange50} className="grade">{result[3]] && result[3]}</Grade2> */}
+                        {createGradeBadge(result[3] && result[3])}
+                        <ResponseIcon src={arrow} alt="arrow" />
+                      </Feature>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[4] && result[4]}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[5] && result[5]}</Featuredetail>
+                    </Response>
+                  </List>
+
+                  <List bordercolor={theme.colors.gray200}>
+                    <Response>
+                      <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.barrier.tooltip")}>
+                        {i18n.t("result.barrier.title")}
+                        {createGradeBadge(result[6] && result[6])}
+                        <ResponseIcon src={arrow} alt="arrow" />
+                      </Feature>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[7] && result[7]}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[8] && result[8]}</Featuredetail>
+                    </Response>
+                  </List>
+
+                  <List bordercolor={theme.colors.gray200}>
+                    <Response>
+                      <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.adoption.tooltip")}>
+                        {i18n.t("result.adoption.title")}
+                        {createGradeBadge(result[9] && result[9])}
+                        <ResponseIcon src={arrow} alt="arrow" />
+                      </Feature>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[10] && result[10]}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[11] && result[11]}</Featuredetail>
+                    </Response>
+                  </List>
+
+                  <List bordercolor={theme.colors.gray200}>
+                    <Response>
+                      <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.supplychain.tooltip")}>
+                        {i18n.t("result.supplychain.title")}
+                        {createGradeBadge(result[12] && result[12])}
+                        <ResponseIcon src={arrow} alt="arrow" />
+                      </Feature>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[13] && result[13]}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[14] && result[14]}</Featuredetail>
+                    </Response>
+                  </List>
+
+                  <List bordercolor={theme.colors.gray200}>
+                    <Response>
+                      <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.market.tooltip")}>
+                        {i18n.t("result.market.title")}
+                        {createGradeBadge(result[15] && result[15])}
+                        <ResponseIcon src={arrow} alt="arrow" />
+                      </Feature>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[16] && result[16]}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[17] && result[17]}</Featuredetail>
+                    </Response>
+                  </List>
+
+                  <List bordercolor={theme.colors.gray200}>
+                    <Response>
+                      <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.entrepreneur.tooltip")}>
+                        {i18n.t("result.entrepreneur.title")}
+                        {createGradeBadge(result[18] && result[18])}
+                        <ResponseIcon src={arrow} alt="arrow" />
+                      </Feature>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[19] && result[19]}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[20] && result[20]}</Featuredetail>
+                    </Response>
+                  </List>
+
+                  <List bordercolor={theme.colors.transparent}>
+                    <Response>
+                      <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.financial.tooltip")}>
+                        {i18n.t("result.financial.title")}
+                        {createGradeBadge(result[21] && result[21])}
+                        <ResponseIcon src={arrow} alt="arrow" />
+                      </Feature>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[22] && result[22]}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetail>
+                      <Featuredetail color={theme.colors.gray500}>{result[23] && result[23]}</Featuredetail>
+                    </Response>
+                  </List>
+
+
+                </Collapse>
+                <Title color={theme.colors.gray900}>
+                  {i18n.t("email.pitch.title")}
+                </Title>
+                <Player
+                  color={theme.colors.gray900}
+                  bgcolor={theme.colors.gray50}
+                  bordercolor={theme.colors.gray200}
+                  padding='0px'
                 >
-                  <DContainer
-                    display="flex"
-                    justifycontent="flex-end"
-                    alignitems="center"
-                    gap="20px"
+                  <Audio controls id="myAudio">
+                    <source src={pitchURL}></source>
+                  </Audio>
+                </Player>
+                <FormText>
+                  <TextBox
+                    height="200px"
+                    borderradius="15px 15px 0 0"
+                    bgcolor={theme.colors.gray50}
+                    color={theme.colors.gray900}
+                    bordercolor={theme.colors.gray200}
+                    borderbottom='none'
+                  >
+                    {pitchcontent}
+
+                  </TextBox>
+                  <PitchTextFormBottomBar
+                    bgcolor={theme.colors.gray100}
+                    bordercolor={theme.colors.gray100}
                   >
                     <DContainer
                       display="flex"
-                      gap="10px"
-                      onClick={() => downloadTextAsWordFile(pitchcontent)}
-                      style={{ cursor: 'pointer' }}
+                      justifycontent="flex-end"
+                      alignitems="center"
+                      gap="20px"
                     >
-                      <img src={DownloadIcon} alt="downloadIcon" />
-                      <FormTitle
-                        color={theme.colors.gray500}
-                        fontsizes="18px"
-                      >{i18n.t("getstart.analysis.button.download")}</FormTitle>
+                      <DContainer
+                        display="flex"
+                        gap="10px"
+                        onClick={() => downloadTextAsWordFile(pitchcontent)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <img src={DownloadIcon} alt="downloadIcon" />
+                        <FormTitle
+                          color={theme.colors.gray500}
+                          fontsizes="18px"
+                        >{i18n.t("getstart.analysis.button.download")}</FormTitle>
+                      </DContainer>
+                      <DContainer
+                        display="flex"
+                        gap="10px"
+                        onClick={() => CopytoClipboard(pitchcontent)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <img src={CopyIcon} alt={CopyIcon} />
+                        <FormTitle
+                          color={theme.colors.gray500}
+                          fontsizes="18px"
+                        >{i18n.t("getstart.analysis.button.copy")}</FormTitle>
+                      </DContainer>
                     </DContainer>
-                    <DContainer
-                      display="flex"
-                      gap="10px"
-                      onClick={() => CopytoClipboard(pitchcontent)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <img src={CopyIcon} alt={CopyIcon} />
-                      <FormTitle
-                        color={theme.colors.gray500}
-                        fontsizes="18px"
-                      >{i18n.t("getstart.analysis.button.copy")}</FormTitle>
-                    </DContainer>
-                  </DContainer>
-                </PitchTextFormBottomBar>
-              </FormText>
-            </ResultMainContainer>
-            <ResultSubContainer>
-              <Container3 bordercolor={theme.colors.gray100} bgcolor={theme.colors.white}>
-                <ProcessingTitle>{i18n.t("process.title")}</ProcessingTitle>
-                <Card>
-                  <CardIcon src={GradeA}></CardIcon>
-                  <CardTextDiv>
-                    <CardText>{i18n.t("process.paragraph1")}</CardText>
-                  </CardTextDiv>
-                </Card>
-                <Card>
-                  <CardIcon src={GradeB}></CardIcon>
-                  <CardTextDiv>
-                    <CardText>{i18n.t("process.paragraph2")}</CardText>
-                  </CardTextDiv>
-                </Card>
-                <Card>
-                  <CardIcon src={GradeC}></CardIcon>
-                  <CardTextDiv>
-                    <CardText>{i18n.t("process.paragraph3")}</CardText>
-                  </CardTextDiv>
-                </Card>
-              </Container3>
-            </ResultSubContainer>
-          </ResultContainer>
+                  </PitchTextFormBottomBar>
+                </FormText>
+              </ResultMainContainer>
+              <ResultSubContainer>
+                <Container3 bordercolor={theme.colors.gray100} bgcolor={theme.colors.white}>
+                  <ProcessingTitle>{i18n.t("process.title")}</ProcessingTitle>
+                  <Card>
+                    <CardIcon src={GradeA}></CardIcon>
+                    <CardTextDiv>
+                      <CardText>{i18n.t("process.paragraph1")}</CardText>
+                    </CardTextDiv>
+                  </Card>
+                  <Card>
+                    <CardIcon src={GradeB}></CardIcon>
+                    <CardTextDiv>
+                      <CardText>{i18n.t("process.paragraph2")}</CardText>
+                    </CardTextDiv>
+                  </Card>
+                  <Card>
+                    <CardIcon src={GradeC}></CardIcon>
+                    <CardTextDiv>
+                      <CardText>{i18n.t("process.paragraph3")}</CardText>
+                    </CardTextDiv>
+                  </Card>
+                </Container3>
+              </ResultSubContainer>
+            </ResultContainer>
+          </>
+
         }
       </Wrapper>
     </>

@@ -1,7 +1,9 @@
 import styled, { css } from "styled-components";
 
 import BackgroundSVG from "../../assets/images/grid.svg"
-import { breakpoint, typography } from "../../theme/theme";
+import PitchImage from '../../assets/images/email-img.webp'
+import PitchImageMobile from '../../assets/images/email-img-mobile.webp'
+import { breakpoint, typography } from "../../theme/theme"
 
 export const Wrapper = styled.div`
  width: 100%;
@@ -25,14 +27,19 @@ export const MainContainer = styled.div`
 `
 
 export const ColorBgContainer = styled.div`
-    background: ${props => props.backgroundcolor};
     border: 1px solid transparent;
-    border-radius: 24px 0 0 24px;
-    
-    width: 50%;
-    @media (max-width: ${breakpoint.md}){
-        border-radius: 0 0 24px 24px;
-        width: 100%
+    border-radius: 0 0 24px 24px;
+    width: 100%;
+    height: 650px;
+    background-image: url(${PitchImageMobile});
+    background-size: cover;
+    @media (min-width: ${breakpoint.lg}){
+        border-radius: 24px 0 0 24px;
+        height: 777px;
+        width: 50%;
+    }
+    @media(min-width: ${breakpoint.md}){
+        background-image: url(${PitchImage});
     }
 `;
 export const SvgBgContainer = styled.div`
@@ -137,13 +144,14 @@ export const TextBox = styled.div`
 
 export const Title = styled.span`
     color: ${props => props.color || "white"};
+    font-family: ${typography.h4.font};
     font-size: ${typography.h4.size};
-    font-weight: ${typography.h3.fontWeight};
+    font-weight: ${typography.h4.fontWeight};
     @media (min-width: ${breakpoint.md}) {
         font-size: ${typography.h4.size};
     };
     @media (min-width: ${breakpoint.lg}) {
-        font-size: ${typography.h3.size};
+        font-size: ${typography.h4.size};
     };
 `
 export const SmallTitle = styled.span`
@@ -161,11 +169,17 @@ export const SmallTitle = styled.span`
     };
 `
 export const FormTitle = styled.div`
+    content: attr(content);
     color: ${props => props.color};
     font-size: ${props => props.fontsizes};
+    font-weight: ${props => props.fontweights};
+    align-self: center;
+    padding: ${props => props.padding || '0px'};
+    font-family: ${props => props.font};
 `
 
 export const FitMeNow = styled.span`
+    font-family: ${typography.h5.font};
     color: ${props => props.color};
     font-size: ${typography.h5.size};
     font-weight: ${typography.h5.fontWeight};
@@ -376,6 +390,8 @@ export const Button = styled.button`
 export const ButtonDiv = styled.div`
  display: flex;
  justify-content: center;
+ cursor: pointer;
+ gap: ${(props) => props.gap || 0};
     @media(min-width: ${breakpoint.sm}){
      justify-content: flex-end;
     }
@@ -530,6 +546,7 @@ export const ProcessError = styled.div`
  transform: translate(-50%, -50%);
  z-index: 100;
  padding: 15px;
+ font-family: ${typography.h4.font};
  @media (max-width: ${breakpoint.md}){
   font-size: ${typography.h5.size};
   font-weight: ${typography.h5.fontWeight};
@@ -568,6 +585,7 @@ export const Feature = styled.summary`
   justify-content: space-between;
   cursor: pointer;
   font-size: ${typography.xs.size};
+  font-family: ${typography.h5.font};
   font-weight: ${typography.h5.fontWeight};
   color: ${(props) => props.color};
   @media(min-width: ${breakpoint.md}){
@@ -653,6 +671,8 @@ export const GradeContainer = styled.div`
 
 export const GradeTitle = styled.div`
  color: ${(props) => props.color};
+ display: flex;
+ align-items: center;
  font-size: ${typography.label.size};
  font-weight: ${typography.sm.fontWeight};
  @media(min-width: ${breakpoint.md}){
@@ -682,7 +702,7 @@ position: absolute;
      width: 35px;
      height: 35px;
      font-size: ${typography.sm.size};
-     left: 30%;
+     left: 40%;
      transform: translateY(-50%);
    }
   @media(min-width: ${breakpoint.lg}){
@@ -700,14 +720,16 @@ export const ScoreContainer = styled.div`
  display: flex;
  align-items: center;
  justify-content: right;
+ gap: ${(props) => props.gap || 0};
 `
 
 export const Score = styled.span`
  color: ${(props) => props.color};
- font-size: ${typography.h5.size};
- font-weight: ${typography.h5.size};
+ font-family: ${typography.h3.font};
+ font-size: ${typography.h4.size};
+ font-weight: ${typography.h3.fontWeight};
  @media(min-width: ${breakpoint.lg}){
-  font-size: ${typography.h4.size};
+  font-size: ${typography.h3.size};
  }
 `
 
@@ -831,16 +853,16 @@ export const ResultContainer = styled.div`
     max-width: 1204px;
     margin: auto;
     flex-direction: row;
-    padding: 100px 30px;
+    padding: 0px 30px 100px 30px;
     display: flex;
     position: relative;
     gap: 20px;
     @media (max-width: ${breakpoint.sm}) {
-        padding: 30px 10px;
+        padding: 0px 10px 30px 10px;
    }
    @media (max-width: ${breakpoint.md}) {
     margin: auto;
-    padding: 30px 30px;
+    padding: 0px 30px 30px 30px;
     flex-direction: column;
    }
 
@@ -861,5 +883,29 @@ export const ResultSubContainer = styled.div`
     width: 40%;
     @media(max-width: ${breakpoint.md}){
      width: 100%;
+    }
+`
+
+export const ResultTitleContainer = styled.div`
+  @media (min-width: ${breakpoint.md}) {
+    margin: auto;
+    padding: 30px 30px 20px 30px;
+   }
+   @media (min-width: ${breakpoint.lg}) {
+    max-width: 1204px;
+    margin: auto;
+    
+    padding: 100px 30px 20px 30px;
+   }
+   padding: 30px 10px 20px 10px;
+   position: relative;
+`
+
+export const Formimage = styled.img`
+    width: 100%;
+    height: auto;
+    src: url(${PitchImageMobile});
+    @media(min-width: ${breakpoint.sm}){
+        src: url(${PitchImage});
     }
 `

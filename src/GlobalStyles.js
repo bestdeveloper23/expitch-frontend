@@ -1,16 +1,18 @@
 import { createGlobalStyle } from "styled-components";
+import TitleFont from "./assets/fonts/DarkerGrotesque-Regular.ttf"
+import ContentsFont from "./assets/fonts/DMSans_Regular.ttf"
 
 export const GlobalStyles = createGlobalStyle`
 
   @font-face {
     font-family: 'Darker Grotesque';
-    src: url('../fonts/DarkerGrotesque-Regular.ttf') format('truetype');
+    src: url(${TitleFont}) format('truetype');
     /* Add more src declarations for other file formats if needed */
   }
 
   @font-face {
     font-family: 'DM Sans';
-    src: url('../fonts/DMSans_Regular.ttf') format('truetype');
+    src: url(${ContentsFont}) format('truetype');
     /* Add more src declarations for other file formats if needed */
     font-weight: normal;
     font-style: normal;

@@ -61,26 +61,46 @@ export const Features = styled.div`
    }
 `
 
-export const F = styled.div`
-    margin: 50px 0px;
-
-    @media (min-width: ${breakpoint.lg}) {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10%;
-        margin: 100px 0px;
-       }
+export const Freverse = styled.div`
+    
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10%;
+    margin: 100px 0px;
+    @media (max-width: ${breakpoint.md}) {
+        margin: 50px 0px;
+        display: flex;
+        flex-direction: column-reverse;
+    }
 `
+
+export const F = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10%;
+    margin: 100px 0px;
+    @media (max-width: ${breakpoint.md}) {
+        margin: 50px 0px;
+        display: block;
+    }
+`
+
 export const PitchForm = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    padding-bottom: ${props => props.custompb};
     gap: 8px;
+    position: relative;
+    height: fit-content;
     @media (max-width: 1024px){
         margin: 50px 0px;
     }
-    position: relative;
-    height: fit-content;
+`
+
+export const Formimage = styled.img`
+    width: 100%;
+    height: auto;
 `
 
 export const ShadowpitchForm = styled.div`
@@ -202,6 +222,7 @@ export const PitchTextFormBottomBar = styled.div`
     border-top: none;
 `
 export const Title = styled.span`
+    font-family: ${typography.h4.font};
     font-weight: ${typography.h3.fontWeight};
     color: white;
     font-size: ${typography.h5.size};
@@ -232,6 +253,7 @@ export const BigTitle = styled.span`
        };
 `
 export const MidTitle = styled.span`
+    font-family: ${typography.h4.font};
     font-weight: ${typography.h2.fontWeight};
     color: ${props => props.color};
     font-size: ${typography.h4.size};
@@ -246,6 +268,7 @@ export const MidTitle = styled.span`
        };
 `
 export const FitMeNow = styled.span`
+    font-family: ${typography.h4.font};
     color: ${props => props.color};
     font-size: ${typography.h4.size};
     @media (min-width: ${breakpoint.md}) {
@@ -260,9 +283,6 @@ export const FitMeNow = styled.span`
 export const GridRows = styled.div`
     display: grid;
     grid-template-rows: repeat(${props => props.rows}, minmax(0, 1fr));
-    @media (max-width: 1024px){
-        margin-top: 100px
-    }
 `
 export const GridColumns = styled.div`
     display: grid;

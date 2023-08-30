@@ -18,7 +18,6 @@ export default function Workflow() {
  const [buttonVisible, setButtonVisible] = useState(true);
  const handleClick = () => {
   setButtonVisible(!buttonVisible);   
-  // Perform any desired logic or state updates here
  };
  const MouseEnter = () => {
   setIconVisible(true);

@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { i18n } from "./../../translate/i18n";
 import { useTheme } from "styled-components";
+import LogoImage from "../../assets/images/expitchLogo.svg"
 
 export default function Header() {
 
@@ -40,7 +41,7 @@ export default function Header() {
         </svg>
       </CloseButton>
       <NavBar>
-        <Links href="/"><Logo src="./images/expitchLogo.svg" /></Links>
+        <Links href="/"><Logo src={LogoImage} /></Links>
         <LinkDiv>
           <Links href={"/workflow"} color={theme.colors.gray900}>{i18n.t("routes.workflow")}</Links>
           <Links href={"/about"} color={theme.colors.gray900}>{i18n.t("routes.about")}</Links>

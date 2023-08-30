@@ -18,6 +18,7 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.h2`
+ font-family: ${typography.h2.font};
  font-size: ${typography.h2.size};
  font-weight: ${typography.h2.fontWeight};
  color: ${(props)=> props.color};
@@ -61,8 +62,8 @@ export const Play = styled.div`
 `
 
 export const PlayButton = styled.button`
-  display: ${(props) => props.isvisible === true ? "block" : "none"};
-  opacity: ${(props) => props.iconvisible === true ? 1: 0};
+  display: ${(props) => props.isvisible ? "block" : "none"};
+  opacity: ${(props) => props.iconvisible ? 1: 0};
  background: transparent;
  width: 100px;
  height: 100px;
@@ -104,6 +105,7 @@ export const CardTextDiv = styled.p`
 `
 export const CardNumber = styled.h4`
  width: 5%;
+ font-family: ${typography.h4.font};
  font-size: ${typography.h4.size};
  font-weight: ${typography.h4.fontWeight};
  color: ${(props)=> props.color};

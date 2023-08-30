@@ -72,7 +72,6 @@ export const Link = styled.a`
   display: flex;
   align-items: center;
   font-size: ${typography.sm_bold.size};
-  font-style: normal;
   font-weight: ${typography.sm_bold.fontWeight};
   color: ${(props) => props.color};
 `;
@@ -106,25 +105,24 @@ export const MemberWrapper = styled.div`
 `;
 
 export const Member = styled.div`
-
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   row-gap: 32px;
-  width: 100%;
-  @media (min-width: ${breakpoint.md}) {
+  width: 24%;
+  @media (max-width: ${breakpoint.md}) {
     width: 50%;
     margin-bottom: 30px;
-  }  
-  @media (min-width: ${breakpoint.lg}) {
-    width: 24%;
-    margin-bottom: 20px;
   }
 `;
 export const MemberAvatar = styled.img`
   width: 200px;
   height: 200px;
+  @media(max-width: ${breakpoint.sm}){
+    width: 120px;
+    height: 120px;
+  }
 `;
 export const MemberContent = styled.div`
   display: flex;
@@ -133,26 +131,20 @@ export const MemberContent = styled.div`
   row-gap: 12px;
 `;
 export const MemberName = styled.div`
-  font-family: "Darker Grotesque";
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 32px;
+  font-family: ${typography.h4.font};
+  font-size: ${typography.h4.size};
+  font-weight: ${typography.h4.fontWeight};
   color: ${(props) => props.color};
 `;
 export const MemberTitle = styled.div`
-  font-family: 'DM Sans', sans-serif;
-  font-size: 18px;
+  font-size: ${typography.sm.size};
   font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
+  font-weight: ${typography.sm.fontWeight};
   color: ${(props) => props.color};
 `;
 export const MemberDescription = styled.div`
-  font-family: 'DM Sans', sans-serif;
-  font-size: 18px;
+  font-size: ${typography.sm.size};
   font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
+  font-weight: ${typography.sm.fontWeight};
   color: ${(props) => props.color};
 `;
