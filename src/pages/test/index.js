@@ -67,6 +67,71 @@ const Test = () => {
     handleSubmit(pitchfile);
   };
 
+  let mediaRecorder;
+  let chunks = [];
+  let mediaStream;
+  const startRecording = () => {
+    console.log('Started the recording');
+    chunks = [];
+    document.getElementById('stopButton').style.display = 'block';
+    document.getElementById('startButton').style.display = 'none';
+      
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then(function (stream) {
+          mediaStream = stream;
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.start();
+          setIsRunning(true);
+          setLoadingStatus('recording');
+          mediaRecorder.addEventListener('dataavailable', function (e) {
+            chunks.push(e.data);
+          });
+          
+          const stopRecording = () => {
+            console.log('Stopped the recording');
+            mediaRecorder.stop();
+            document.getElementById('stopButton').style.display = 'none';
+            document.getElementById('startButton').style.display = 'none';
+            setIsRunning(false);
+            setLoadingStatus('completed');
+          };
+
+          document.getElementById('stopButton').addEventListener('click', stopRecording);
+
+          mediaRecorder.addEventListener('stop', function () {
+            const blob = new Blob(chunks, { type: 'audio/mpeg' });
+            console.log(blob)
+            dispatch(setFile(blob));
+            const fileName = 'expitch.mp3';
+            const file = convertBlobToFile(blob, fileName);
+            setPItchFile(file);
+            setPitchURL(URL.createObjectURL(blob));
+            document.getElementById("recordingAudio").src = URL.createObjectURL(blob);
+            mediaStream.getTracks().forEach((track) => {
+              track.stop(); // Stop each media track
+            });
+            mediaStream = null; // Reset the media stream
+          });
+        })
+        .catch(function (error) {
+          console.error('Error accessing microphone:', error);
+        });
+    } else {
+      console.log('getUserMedia is not supported in this browser');
+    }
+    
+  };
+
+  // document.getElementById('startButton').addEventListener('click', startRecording);
+
+  // document.getElementById('stopButton').addEventListener('click', stopRecording);
+
+
+
+
   useEffect(() => {
     let intervalId;
 
@@ -88,58 +153,6 @@ const Test = () => {
     }
     setWizardIndex(index);
 
-    let mediaRecorder;
-    let chunks = [];
-
-    const startRecording = () => {
-      console.log('Started the recording');
-      chunks = [];
-      document.getElementById('stopButton').style.display = 'block';
-      document.getElementById('startButton').style.display = 'none';
-      mediaRecorder.start();
-      setIsRunning(true);
-      setLoadingStatus('recording');
-    };
-
-    const stopRecording = () => {
-      console.log('Stopped the recording');
-      mediaRecorder.stop();
-      document.getElementById('stopButton').style.display = 'none';
-      document.getElementById('startButton').style.display = 'none';
-      setIsRunning(false);
-      setLoadingStatus('completed');
-    };
-
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-
-      navigator.mediaDevices
-        .getUserMedia({ audio: true })
-        .then(function (stream) {
-          mediaRecorder = new MediaRecorder(stream);
-          document.getElementById('startButton').addEventListener('click', startRecording);
-
-          document.getElementById('stopButton').addEventListener('click', stopRecording);
-          mediaRecorder.addEventListener('dataavailable', function (e) {
-            chunks.push(e.data);
-          });
-
-          mediaRecorder.addEventListener('stop', function () {
-            const blob = new Blob(chunks, { type: 'audio/mpeg' });
-            console.log(blob)
-            dispatch(setFile(blob));
-            const fileName = 'expitch.mp3';
-            const file = convertBlobToFile(blob, fileName);
-            setPItchFile(file);
-            setPitchURL(URL.createObjectURL(blob));
-            document.getElementById("recordingAudio").src = URL.createObjectURL(blob);
-          });
-        })
-        .catch(function (error) {
-          console.error('Error accessing microphone:', error);
-        });
-    } else {
-      console.log('getUserMedia is not supported in this browser');
-    }
     console.log(wizardIndex)
   };
 
@@ -449,7 +462,7 @@ const Test = () => {
             </UploadingBox>
             <RecordingBox>
               <UploadText color={theme.colors.gray900}>{loadingStatus === "initial" ? i18n.t("uploading.recording.button") : loadingStatus === "recording" ? i18n.t("uploading.status.recording.text") : i18n.t("uploading.status.analysis.text")}</UploadText>
-              <RoundButton width={64} height={64} bordercolor={theme.colors.primary} bgcolor={theme.colors.gray50} id='startButton' >
+              <RoundButton width={64} height={64} bordercolor={theme.colors.primary} bgcolor={theme.colors.gray50} id='startButton' onClick={() => startRecording()}>
                 <CustomSVG src={MicIcon}></CustomSVG>
               </RoundButton>
 
