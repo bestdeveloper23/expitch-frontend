@@ -125,13 +125,6 @@ const Test = () => {
     
   };
 
-  // document.getElementById('startButton').addEventListener('click', startRecording);
-
-  // document.getElementById('stopButton').addEventListener('click', stopRecording);
-
-
-
-
   useEffect(() => {
     let intervalId;
 
