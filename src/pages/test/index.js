@@ -4,8 +4,8 @@ import {
   CustomSVG, UploadText, Button, Button1, RecordingBox, RoundButton, ContainerProcessing, ProcessingProgress, ButtonDiv,
   Collapse, List, Feature, ResponseIcon, Response, Featuredetail, EmailInputContainer, SubForm,
   GradeContainer, GradeTitle, Score, ScoreContainer, GradeResult, PitchTextFormBottomBar, FormText, Audio, Loading,
-  Container3, Card, CardTextDiv, CardText, CardIcon, ProcessingTitle,
-  ResultContainer, ResultMainContainer, ResultSubContainer, ResultTitleContainer, Formimage
+  Container3, Card, CardTextDiv, CardText, CardIcon, ProcessingTitle, FeatureText,
+  ResultContainer, ResultMainContainer, ResultSubContainer, ResultTitleContainer, Formimage, Tooltip
 } from './styled';
 
 import RightArrowIcon from "../../assets/images/arrow-right.svg"
@@ -19,6 +19,7 @@ import GradeA from "../../assets/images/grade_a.svg"
 import GradeB from "../../assets/images/grade_b.svg"
 import GradeC from "../../assets/images/grade_c.svg"
 import PrinterIcon from "../../assets/images/printer.svg"
+import tooltipIcon from "../../assets/images/tooltip-icon.svg"
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -311,8 +312,20 @@ const Test = () => {
       } else {
         e.target.children[1].style.transform = "rotateX(180deg)"
       }
-
+    } else if(e.target.parentElement.children[1]) {
+      if (e.target.parentElement.children[1].style.transform === "rotateX(180deg)") {
+        e.target.parentElement.children[1].style.transform = "rotateX(0deg)"
+      } else {
+        e.target.parentElement.children[1].style.transform = "rotateX(180deg)"
+      }
+    } else if(e.target.parentElement.parentElement.parentElement.children[1]) {
+      if (e.target.parentElement.parentElement.parentElement.children[1].style.transform === "rotateX(180deg)") {
+        e.target.parentElement.parentElement.parentElement.children[1].style.transform = "rotateX(0deg)"
+      } else {
+        e.target.parentElement.parentElement.parentElement.children[1].style.transform = "rotateX(180deg)"
+      }
     }
+    console.log(e)
   }
 
   const CopytoClipboard = (textToCopy) => {
@@ -333,7 +346,7 @@ const Test = () => {
 
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'pitch.txt'; 
+    link.download = 'pitch.txt';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -561,10 +574,7 @@ const Test = () => {
                     </GradeTitle>
                     <ScoreContainer>
                       <Score color={totalScore >= 53 ? theme.colors.green600 : totalScore >= 17 ? theme.colors.orange600 : theme.colors.red600}>
-                        {totalScore}
-                      </Score>
-                      <Score color={theme.colors.gray500}>
-                        /80
+                        {Math.round(totalScore / 0.8) + '%'}
                       </Score>
                     </ScoreContainer>
                   </GradeContainer>
@@ -582,10 +592,12 @@ const Test = () => {
                 <Collapse id='results' bordercolor={theme.colors.gray200}>
                   <List bordercolor={theme.colors.gray200}>
                     <Response>
-                      <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.features.tooltip")}>
-                        {i18n.t("result.features.title")}
-                        {/* <Grade2 color={theme.colors.orange600} bgcolor={theme.colors.orange50} className="grade">{result[0]}</Grade2> */}
-
+                      <Feature color={theme.colors.gray500} onClick={handleClick}>
+                        <FeatureText>{i18n.t("result.features.title")}
+                          <Tooltip tooltip={i18n.t("result.features.tooltip")}>
+                            <CustomSVG src={tooltipIcon} />
+                          </Tooltip>
+                        </FeatureText>
                         {createGradeBadge(result[0] && result[0])}
                         <ResponseIcon src={arrow} alt="arrow" />
                       </Feature>
@@ -599,8 +611,11 @@ const Test = () => {
                   <List bordercolor={theme.colors.gray200}>
                     <Response>
                       <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.readiness.tooltip")}>
-                        {i18n.t("result.readiness.title")}
-                        {/* <Grade2 color={theme.colors.orange600} bgcolor={theme.colors.orange50} className="grade">{result[3]] && result[3]}</Grade2> */}
+                        <FeatureText>{i18n.t("result.readiness.title")}
+                          <Tooltip tooltip={i18n.t("result.readiness.tooltip")}>
+                            <CustomSVG src={tooltipIcon} />
+                          </Tooltip>
+                        </FeatureText>
                         {createGradeBadge(result[3] && result[3])}
                         <ResponseIcon src={arrow} alt="arrow" />
                       </Feature>
@@ -614,7 +629,11 @@ const Test = () => {
                   <List bordercolor={theme.colors.gray200}>
                     <Response>
                       <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.barrier.tooltip")}>
-                        {i18n.t("result.barrier.title")}
+                        <FeatureText>{i18n.t("result.barrier.title")}
+                          <Tooltip tooltip={i18n.t("result.barrier.tooltip")}>
+                            <CustomSVG src={tooltipIcon} />
+                          </Tooltip>
+                        </FeatureText>
                         {createGradeBadge(result[6] && result[6])}
                         <ResponseIcon src={arrow} alt="arrow" />
                       </Feature>
@@ -628,7 +647,11 @@ const Test = () => {
                   <List bordercolor={theme.colors.gray200}>
                     <Response>
                       <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.adoption.tooltip")}>
-                        {i18n.t("result.adoption.title")}
+                        <FeatureText>{i18n.t("result.adoption.title")}
+                          <Tooltip tooltip={i18n.t("result.adoption.tooltip")}>
+                            <CustomSVG src={tooltipIcon} />
+                          </Tooltip>
+                        </FeatureText>
                         {createGradeBadge(result[9] && result[9])}
                         <ResponseIcon src={arrow} alt="arrow" />
                       </Feature>
@@ -642,7 +665,11 @@ const Test = () => {
                   <List bordercolor={theme.colors.gray200}>
                     <Response>
                       <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.supplychain.tooltip")}>
-                        {i18n.t("result.supplychain.title")}
+                        <FeatureText>{i18n.t("result.supplychain.title")}
+                          <Tooltip tooltip={i18n.t("result.supplychain.tooltip")}>
+                            <CustomSVG src={tooltipIcon} />
+                          </Tooltip>
+                        </FeatureText>
                         {createGradeBadge(result[12] && result[12])}
                         <ResponseIcon src={arrow} alt="arrow" />
                       </Feature>
@@ -656,7 +683,11 @@ const Test = () => {
                   <List bordercolor={theme.colors.gray200}>
                     <Response>
                       <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.market.tooltip")}>
-                        {i18n.t("result.market.title")}
+                        <FeatureText>{i18n.t("result.market.title")}
+                          <Tooltip tooltip={i18n.t("result.market.tooltip")}>
+                            <CustomSVG src={tooltipIcon} />
+                          </Tooltip>
+                        </FeatureText>
                         {createGradeBadge(result[15] && result[15])}
                         <ResponseIcon src={arrow} alt="arrow" />
                       </Feature>
@@ -670,7 +701,11 @@ const Test = () => {
                   <List bordercolor={theme.colors.gray200}>
                     <Response>
                       <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.entrepreneur.tooltip")}>
-                        {i18n.t("result.entrepreneur.title")}
+                        <FeatureText>{i18n.t("result.entrepreneur.title")}
+                          <Tooltip tooltip={i18n.t("result.entrepreneur.tooltip")}>
+                            <CustomSVG src={tooltipIcon} />
+                          </Tooltip>
+                        </FeatureText>
                         {createGradeBadge(result[18] && result[18])}
                         <ResponseIcon src={arrow} alt="arrow" />
                       </Feature>
@@ -684,7 +719,11 @@ const Test = () => {
                   <List bordercolor={theme.colors.transparent}>
                     <Response>
                       <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.financial.tooltip")}>
-                        {i18n.t("result.financial.title")}
+                        <FeatureText>{i18n.t("result.financial.title")}
+                          <Tooltip tooltip={i18n.t("result.financial.tooltip")}>
+                            <CustomSVG src={tooltipIcon} />
+                          </Tooltip>
+                        </FeatureText>
                         {createGradeBadge(result[21] && result[21])}
                         <ResponseIcon src={arrow} alt="arrow" />
                       </Feature>

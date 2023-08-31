@@ -325,6 +325,7 @@ export const UploadingBox = styled.div`
         padding: 40px;
     }
 `
+
 export const CustomSVG = styled.img`
     width: ${props => props.width - 20 || 24}px;
     height: ${props => props.height - 20 || 24}px;
@@ -340,6 +341,40 @@ export const CustomSVG = styled.img`
         width:${props => props.width || 24}px;
         height: ${props => props.height || 24}px;
     }
+`
+
+export const FeatureText = styled.div`
+    display: flex;
+    gap: 5px;
+`
+
+export const Tooltip = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &::after {
+    content: attr(tooltip);
+    position: absolute;
+    background-color: #000;
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+    top: -160%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 10;
+    width: 80%;
+    pointer-events: none;
+  }
+
+  &:hover::after {
+    opacity: 1;
+    visibility: visible;
+  }
 `
 
 export const UploadText = styled.div`
@@ -596,27 +631,6 @@ export const Feature = styled.summary`
   }
   &::-webkit-details-marker {
     display: none;
-  }
-  &::after {
-    content: attr(tooltip);
-    position: absolute;
-    background-color: #000;
-    color: #fff;
-    padding: 5px;
-    border-radius: 4px;
-    font-size: 14px;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s, visibility 0.3s;
-    z-index: 10;
-  }
-
-  &:hover::after {
-    opacity: 1;
-    visibility: visible;
   }
 `;
 
