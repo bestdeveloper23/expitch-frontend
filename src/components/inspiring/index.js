@@ -3,6 +3,7 @@ import {
   SectionTitle,
   Card,
   CardContent,
+  // Image,
   Container,
   CardUserName,
   CardGrid,
@@ -30,22 +31,26 @@ export default function Inspiring() {
       </SectionWrap>
       <Container>
         <CardGrid>
-        <Empty/>
+          <Empty/>
           <Card>
+            {/* <Image src={avatar_1} /> */}
             <CardContent color={theme.colors.gray900}>{i18n.t("inspiring.card1.content")}</CardContent>
             <CardUserName color={theme.colors.gray500}>{i18n.t("inspiring.card1.name")}</CardUserName>
           </Card>
           <Card>
+            {/* <Image src={avatar_5} /> */}
             <CardContent color={theme.colors.gray900}>{i18n.t("inspiring.card5.content")}</CardContent>
             <CardUserName color={theme.colors.gray500}>{i18n.t("inspiring.card5.name")}</CardUserName>
           </Card>
         </CardGrid>
         <CardGrid>
           <Card>
+            {/* <Image src={avatar_2} /> */}
             <CardContent color={theme.colors.gray900}>{i18n.t("inspiring.card2.content")}</CardContent>
             <CardUserName color={theme.colors.gray500}>{i18n.t("inspiring.card2.name")}</CardUserName>
           </Card>
           <Card>
+            {/* <Image src={avatar_6} /> */}
             <CardContent color={theme.colors.gray900}>{i18n.t("inspiring.card6.content")}</CardContent>
             <CardUserName color={theme.colors.gray500}>{i18n.t("inspiring.card6.name")}</CardUserName>
           </Card>
@@ -54,20 +59,24 @@ export default function Inspiring() {
         <CardGrid>
           <Empty/>
           <Card>
+            {/* <Image src={avatar_3} /> */}
             <CardContent color={theme.colors.gray900}>{i18n.t("inspiring.card3.content")}</CardContent>
             <CardUserName color={theme.colors.gray500}>{i18n.t("inspiring.card3.name")}</CardUserName>
           </Card>
           <Card>
+            {/* <Image src={avatar_7} /> */}
             <CardContent color={theme.colors.gray900}>{i18n.t("inspiring.card7.content")}</CardContent>
             <CardUserName color={theme.colors.gray500}>{i18n.t("inspiring.card7.name")}</CardUserName>
           </Card>
         </CardGrid>
         <CardGrid>
           <Card>
+            {/* <Image src={avatar_4} /> */}
             <CardContent color={theme.colors.gray900}>{i18n.t("inspiring.card4.content")}</CardContent>
             <CardUserName color={theme.colors.gray500}>{i18n.t("inspiring.card4.name")}</CardUserName>
           </Card>
           <Card>
+            {/* <Image src={avatar_8} /> */}
             <CardContent color={theme.colors.gray900}>{i18n.t("inspiring.card8.content")}</CardContent>
             <CardUserName color={theme.colors.gray500}>{i18n.t("inspiring.card8.name")}</CardUserName>
           </Card>

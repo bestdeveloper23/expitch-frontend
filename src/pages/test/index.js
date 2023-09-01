@@ -312,23 +312,23 @@ const Test = () => {
   };
 
   const handleClick = (e) => {
-    if (e.target.children[1]) {
-      if (e.target.children[1].style.transform === "rotateX(180deg)") {
-        e.target.children[1].style.transform = "rotateX(0deg)"
+    if (e.target.children[2]) {
+      if (e.target.children[2].style.transform === "rotateX(180deg)") {
+        e.target.children[2].style.transform = "rotateX(0deg)"
       } else {
-        e.target.children[1].style.transform = "rotateX(180deg)"
+        e.target.children[2].style.transform = "rotateX(180deg)"
       }
     } else if(e.target.parentElement.children[1]) {
-      if (e.target.parentElement.children[1].style.transform === "rotateX(180deg)") {
-        e.target.parentElement.children[1].style.transform = "rotateX(0deg)"
+      if (e.target.parentElement.children[2].style.transform === "rotateX(180deg)") {
+        e.target.parentElement.children[2].style.transform = "rotateX(0deg)"
       } else {
-        e.target.parentElement.children[1].style.transform = "rotateX(180deg)"
+        e.target.parentElement.children[2].style.transform = "rotateX(180deg)"
       }
     } else if(e.target.parentElement.parentElement.parentElement.children[1]) {
-      if (e.target.parentElement.parentElement.parentElement.children[1].style.transform === "rotateX(180deg)") {
-        e.target.parentElement.parentElement.parentElement.children[1].style.transform = "rotateX(0deg)"
+      if (e.target.parentElement.parentElement.parentElement.children[2].style.transform === "rotateX(180deg)") {
+        e.target.parentElement.parentElement.parentElement.children[2].style.transform = "rotateX(0deg)"
       } else {
-        e.target.parentElement.parentElement.parentElement.children[1].style.transform = "rotateX(180deg)"
+        e.target.parentElement.parentElement.parentElement.children[2].style.transform = "rotateX(180deg)"
       }
     }
     console.log(e)
@@ -567,19 +567,19 @@ const Test = () => {
                     bgcolor={theme.gray50}
                   >
                     <GradeTitle>
-                      <Grade color={totalScore >= 49 ? theme.colors.green600 : totalScore >= 17 ? theme.colors.orange600 : theme.colors.red600}
-                        bordercolor={totalScore >= 49 ? theme.colors.green200 : totalScore >= 17 ? theme.colors.orange200 : theme.colors.red200}
-                        backgroundcolor={totalScore >= 49 ? theme.colors.green50 : totalScore >= 17 ? theme.colors.orange50 : theme.colors.red50}
+                      <Grade color={Math.round(totalScore / 0.8) >= 80 ? theme.colors.green600 : Math.round(totalScore / 0.8) >= 40 ? theme.colors.orange600 : theme.colors.red600}
+                        bordercolor={Math.round(totalScore / 0.8) >= 80 ? theme.colors.green200 : Math.round(totalScore / 0.8) >= 40 ? theme.colors.orange200 : theme.colors.red200}
+                        backgroundcolor={Math.round(totalScore / 0.8) >= 80 ? theme.colors.green50 : Math.round(totalScore / 0.8) >= 40 ? theme.colors.orange50 : theme.colors.red50}
                       >
-                        {totalScore >= 73 ? 'A+' : totalScore >= 65 ? 'A' : totalScore >= 49 ? 'A-' : totalScore >= 41 ? 'B+' : totalScore >= 33 ? 'B' : totalScore >= 17 ? 'B-' : totalScore >= 9 ? 'C+' : totalScore >= 8 ? 'C' : 'C-'}
+                        {Math.round(totalScore / 0.8) >= 100 ? 'A+' : Math.round(totalScore / 0.8) >= 90 ? 'A' : Math.round(totalScore / 0.8) >= 80 ? 'A-' : Math.round(totalScore / 0.8) >= 60 ? 'B+' : Math.round(totalScore / 0.8) >= 50 ? 'B' : Math.round(totalScore / 0.8) >= 40 ? 'B-' : Math.round(totalScore / 0.8) >= 20 ? 'C+' : Math.round(totalScore / 0.8) >= 10 ? 'C' : 'C-'}
                       </Grade>
                       <FormTitle
-                        color={totalScore >= 49 ? theme.colors.green600 : totalScore >= 17 ? theme.colors.orange600 : theme.colors.red600}
+                        color={Math.round(totalScore / 0.8) >= 80 ? theme.colors.green600 : Math.round(totalScore / 0.8) >= 40 ? theme.colors.orange600 : theme.colors.red600}
                         padding='10px'
-                      >{totalScore >= 49 ? i18n.t("result.slogonA") : totalScore >= 17 ? i18n.t("result.slogonB") : i18n.t("result.slogonC")}</FormTitle>
+                      >{Math.round(totalScore / 0.8) >= 80 ? i18n.t("result.slogonA") : Math.round(totalScore / 0.8) >= 40 ? i18n.t("result.slogonB") : i18n.t("result.slogonC")}</FormTitle>
                     </GradeTitle>
                     <ScoreContainer>
-                      <Score color={totalScore >= 53 ? theme.colors.green600 : totalScore >= 17 ? theme.colors.orange600 : theme.colors.red600}>
+                      <Score color={Math.round(totalScore / 0.8) >= 80 ? theme.colors.green600 : Math.round(totalScore / 0.8) >= 40 ? theme.colors.orange600 : theme.colors.red600}>
                         {Math.round(totalScore / 0.8) + '%'}
                       </Score>
                     </ScoreContainer>

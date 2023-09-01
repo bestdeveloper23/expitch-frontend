@@ -359,7 +359,8 @@ export const Tooltip = styled.div`
     color: #fff;
     padding: 5px;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: ${typography.xs.size};
+    font-weight: ${typography.xs.fontWeight};
     top: -160%;
     left: 50%;
     transform: translateX(-50%);
@@ -619,7 +620,7 @@ export const Feature = styled.summary`
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  font-size: ${typography.xs.size};
+  font-size: ${typography.sm.size};
   font-family: ${typography.h5.font};
   font-weight: ${typography.h5.fontWeight};
   color: ${(props) => props.color};
