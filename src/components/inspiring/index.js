@@ -31,7 +31,7 @@ export default function Inspiring() {
       </SectionWrap>
       <Container>
         <CardGrid>
-          <Empty/>
+        <Empty/>
           <Card>
             {/* <Image src={avatar_1} /> */}
             <CardContent color={theme.colors.gray900}>{i18n.t("inspiring.card1.content")}</CardContent>

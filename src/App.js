@@ -7,9 +7,9 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import About from "./components/about";
 import Workflow from "./components/workflow";
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import reducer from './reducers/pitch';
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import reducer from "./reducers/pitch";
 import Test from "./pages/test";
 
 const store = createStore(reducer);
