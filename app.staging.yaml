@@ -1,0 +1,17 @@
+runtime: nodejs16
+instance_class: F1
+service: client-staging
+
+error_handlers:
+- file: redirect.html
+  error_code: over_quota
+
+handlers:
+  - url: /(.*\..+)$
+    static_files: build/\1
+    upload: build/(.*\..+)$
+    secure: always
+
+  - url: /.*
+    static_files: build/index.html
+    upload: build/index.html
