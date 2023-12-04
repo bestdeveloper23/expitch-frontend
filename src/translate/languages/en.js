@@ -3,10 +3,15 @@ const StringsComuns = {
         components: {
 //---------------------------------HEADER---------------------------------------------------//
           routes: {
-            workflow: "",
-            about:"",
+            workflow: "How it works",
+            about:"About",
             test:"Submit your pitch",
             login:"Login",
+            profile: {
+              settings: "Profile settings",
+              pitchlist: "My pitches",
+              logout: "Logout"
+            }
           },
           header: {
             title: "✨ Expitch is free to use and is intended for research and educational purposes only."

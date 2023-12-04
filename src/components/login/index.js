@@ -1,7 +1,7 @@
 import {
-Container, LoginContainer, LoginForm, LoginTitleDiv, Title, RegisterLabel, FormContainer, GrayArea, Form378, Form,
-InputWithLabel, InputField, InputLabel, InputDiv, PasswordDiv, CustomSVG, EmailField, ButtonDiv, Button,
-DContainer, SmallTitle,Label, Required, EmailInput, TermsLink, Text
+  Container, LoginContainer, LoginForm, LoginTitleDiv, Title, RegisterLabel, FormContainer, GrayArea, Form378, Form,
+  InputWithLabel, InputField, InputLabel, InputDiv, PasswordDiv, CustomSVG, EmailField, ButtonDiv, Button,
+  DContainer, SmallTitle, Label, Required, EmailInput, TermsLink, Text
 } from "./styled";
 
 import EyeSlash from "../../assets/images/eye-slash.svg"
@@ -23,7 +23,7 @@ export default function Login() {
   const [stytchStatus, setStytchStatus] = useState('default');
   const { getToken } = useRecaptcha('evaluatePitchRequest')
 
-  
+
 
 
   const handleEmailSubmit = async (event) => {
@@ -40,21 +40,20 @@ export default function Login() {
           body: JSON.stringify({ email: inputEmail, recaptchaToken: recaptcha }),
         });
         if (response.ok) {
-         
+
           const result = await response.json();
-          if (result.message == 'Success')
-          {
+          if (result.message == 'Success') {
             setFinalEmail(inputEmail);
             setStytchStatus('success');
           }
 
-        } else {         
+        } else {
           console.error(response);
         }
       } catch (error) {
         console.error('Error:', error);
       }
-    } 
+    }
   };
   const validateEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -68,9 +67,9 @@ export default function Login() {
 
 
 
-  
 
-  
+
+
 
   return (
     <>
@@ -78,21 +77,21 @@ export default function Login() {
       <Container>
         <LoginContainer>
           <LoginForm>
-              <FormContainer>
-                
-                  <GrayArea>
-                  {stytchStatus === 'default' &&(
-                  <><LoginTitleDiv>
+            <FormContainer>
 
-
-                  </LoginTitleDiv><Form378>
+              <GrayArea>
+                {stytchStatus === 'default' && (
+                  <>
+                    <LoginTitleDiv>
+                    </LoginTitleDiv>
+                    <Form378>
                       <Form>
 
                         <Title color="black">{i18n.t("login.title")}</Title>
                         <InputWithLabel>
-                          <InputField type='email' onChange={(e) => setInputEmail(e.target.value)} placeholder="example@email.com" bordercolor={theme.colors.gray300} bgcolor={theme.colors.white}></InputField>
-                          <Label color='#FF0000'>{emailError}</Label></InputWithLabel>
-
+                          <InputField type='email' onChange={(e) => setInputEmail(e.target.value)} placeholder="example@email.com" bordercolor={theme.colors.gray300} bgcolor={theme.colors.white} ></InputField>
+                          <Label color='#FF0000'>{emailError}</Label>
+                        </InputWithLabel>
 
                         <ButtonDiv>
                           <Button onClick={handleEmailSubmit} isenable={'valid'} bgcolor={theme.colors.primary}
@@ -107,22 +106,22 @@ export default function Login() {
                             </DContainer>
                           </Button>
                         </ButtonDiv>
-                        <Label onClick={() => { window.open('/terms', '_blank'); } }>{i18n.t("email.textbox.terms")}<TermsLink style={{ cursor: 'pointer' }}>{i18n.t("email.textbox.termsLink")}</TermsLink></Label>
+                        <Label onClick={() => { window.open('/terms', '_blank'); }}>{i18n.t("email.textbox.terms")}<TermsLink style={{ cursor: 'pointer' }}>{i18n.t("email.textbox.termsLink")}</TermsLink></Label>
                       </Form>
 
                     </Form378></>
-                  )}
-                   {stytchStatus === 'success' &&(
+                )}
+                {stytchStatus === 'success' && (
                   <>
                     <Form>
-                    <Title color="black">{i18n.t("login.success")}</Title>
+                      <Title color="black">{i18n.t("login.success")}</Title>
                       <Text color="black">{i18n.t("login.checkemail")}<Text color="#E71561">{finalEmail}</Text></Text>
-                      
+
                     </Form>
-                 </>
-                  )}
-                  </GrayArea>
-              </FormContainer>
+                  </>
+                )}
+              </GrayArea>
+            </FormContainer>
 
           </LoginForm>
         </LoginContainer>

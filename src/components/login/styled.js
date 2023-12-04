@@ -60,8 +60,11 @@ width: 586px;
 flex-direction: column;
 align-items: center;
 gap: 32px;
+@media (max-width: ${breakpoint.sm}) {
+    width: 350px;
+   }
 `
-export const GrayArea= styled.span`
+export const GrayArea = styled.span`
 display: flex;
 padding: 32px 0px;
 flex-direction: column;
@@ -72,12 +75,16 @@ align-self: stretch;
 border-radius: 24px;
 background: var(--gray-100, #F3F4F6);
 `
-export const Form378= styled.span`
+export const Form378 = styled.span`
 display: flex;
 width: 378px;
 flex-direction: column;
 
 gap: 32px;
+@media (max-width: ${breakpoint.sm}) {
+    width: 320px;
+   }
+
 `
 
 export const Form = styled.span`
