@@ -1,3 +1,4 @@
+import React, {useEffect, useState} from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyles } from "./GlobalStyles";
@@ -20,7 +21,6 @@ import Processing from "./pages/processing";
 import Waiting from "./pages/waiting";
 import Privacy from "./pages/privacy";
 import TermsAndConditions from "./pages/terms";
-import { useEffect, useState } from "react";
 import { htmlScripts } from "./core/services/htmlScripts";
 // import PrivateRoute from "./components/privateRoute/privateroute";
 
@@ -35,13 +35,18 @@ function App() {
     userInfo ? setUser(userInfo) : setUser(null);
   }, []);
 
-  const PrivateRoute = ({ element: Children, ...rest }) => {
-    // return user ? children : <Navigate replace to="/login" />
+  const PrivateRoute = ({ children, ...rest }) => {
+    const userInfo = localStorage.getItem('user_info');
+  
     return (
-      user ? Children : <Navigate replace to="/login"/>
-    )
+      userInfo ? (
+        React.cloneElement(children, { ...rest })
+      ) : (
+        <Navigate replace to="/login" />
+      )
+    );
+  };
 
-  }
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>

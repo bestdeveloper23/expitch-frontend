@@ -35,7 +35,7 @@ export default function Header() {
   useEffect(() => {
     const userInfo = localStorage.getItem('user_info');
     userInfo ? setUser(userInfo) : setUser(null);
-    console.log(userInfo)
+    console.log(user)
   }, []);
 
   const handleClick = () => {

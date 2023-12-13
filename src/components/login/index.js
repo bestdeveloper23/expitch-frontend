@@ -42,7 +42,7 @@ export default function Login() {
         if (response.ok) {
 
           const result = await response.json();
-          if (result.message == 'Success') {
+          if (result.message === 'Success') {
             setFinalEmail(inputEmail);
             setStytchStatus('success');
           }
