@@ -201,6 +201,8 @@ export const Item = styled.div`
   color: ${(props) => props.color};
   padding: 12px 12px;
   border: ${(props) => props.bordercolor ? "1px solid" + props.bordercolor : "none"};
+  border-left: none;
+  border-right: none;
   cursor: pointer;
   font-size: ${typography.sm_bold.size};
   font-weight: ${typography.sm_bold.fontWeight};

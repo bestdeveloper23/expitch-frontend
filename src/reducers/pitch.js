@@ -1,16 +1,18 @@
+import { SET_EMAIL, SET_FILE } from "../actions/types";
+
 const initialState = {
  email: '',
  file: null,
 };
 
-const reducer = (state = initialState, action) => {
+const pitchReducer = (state = initialState, action) => {
  switch (action.type) {
-   case 'SET_EMAIL':
+   case SET_EMAIL:
      return {
        ...state,
        email: action.payload,
      };
-   case 'SET_FILE':
+   case SET_FILE:
      return {
        ...state,
        file: action.payload,
@@ -20,4 +22,4 @@ const reducer = (state = initialState, action) => {
  }
 };
 
-export default reducer;
+export default pitchReducer;
