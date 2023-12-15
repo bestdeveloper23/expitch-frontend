@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@heroicons/react": "^2.0.18",
     "@stytch/vanilla-js": "^3.0.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -11,6 +12,7 @@
     "html2canvas": "^1.4.1",
     "i18next": "^23.4.4",
     "i18next-browser-languagedetector": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
     "jspdf": "^2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
