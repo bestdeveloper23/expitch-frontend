@@ -4,7 +4,7 @@ import { Container, Title, Container2, VideoDiv, Video, Play, PlayButton, Playta
 import { i18n } from "./../../translate/i18n";
 import { useTheme } from "styled-components";
 import { useState, useEffect } from "react";
-import Videolink from "../../assets/video/Render.mp4";
+import Videolink from "../../assets/video/demonew.mp4";
 import Emoji_mike from "../../assets/images/emoji-mike.svg";
 import Emoji_document from "../../assets/images/emoji-document.svg";
 import Emoji_robot from "../../assets/images/emoji-robot.svg";
@@ -37,7 +37,7 @@ export default function Workflow() {
    <Container2>
     <VideoDiv>
      {/* <Video muted autoPlay loop controls> */}
-     <Video src={Videolink} muted alt="test" id="video"></Video>
+     <Video src={Videolink} controls controlsList="nodownload" muted alt="test" id="video"></Video>
 
      <Play>
       <PlayButton isvisible={buttonVisible} iconvisible={iconVisible} onClick={handleClick} onMouseEnter={MouseEnter} onMouseLeave={MouseLeave}><img src={PlayButtonIcon} alt="play"></img></PlayButton>

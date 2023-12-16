@@ -1,15 +1,12 @@
 import {
-  Links, Container, TestButton, RightColumn, Paragraph, Paragraph2, Title, Line, Texts,
-  PlayButton, Formimage, CardContainer, Card, CardIcon, CardTitle, CardParagraph, TrustedContainer, TrustedsubContainer,
+  Links, Container, TestButton, RightColumn, Paragraph, Title, Line, Texts,
+   Formimage, CardContainer, Card, CardIcon, CardTitle, CardParagraph, TrustedContainer, TrustedsubContainer,
    Trusted, Gridbackground
 } from "./styled";
 import { useTheme } from "styled-components";
 import { i18n } from "./../../translate/i18n";
-import arrow from "../../assets/images/arrow.svg";
 import React from "react";
 import Grid from "../../assets/images/grid.svg";
-import Play_circle from "../../assets/images/play-circle.svg";
-import Audio from "../../assets/images/loading.svg";
 import Emoji_Speech from "../../assets/images/emoji-speech.svg";
 import Emoji_muscle from "../../assets/images/emoji-muscle.svg";
 import Emoji_okay from "../../assets/images/emoji-okay.svg";
@@ -45,9 +42,9 @@ export default function About() {
             <Title color={theme.colors.primary} >{i18n.t("about.title2")}</Title>
             <Paragraph color={theme.colors.gray900} >{i18n.t("about.paragraph")}</Paragraph>
             <Links >
-              <TestButton href={"/test"} color={theme.colors.white} bgcolor={theme.colors.primary}>{i18n.t("routes.test")}</TestButton>
-              <Paragraph2>{i18n.t("about.paragraph2")}</Paragraph2>
-              <PlayButton src={Play_circle} alt="play"></PlayButton>
+              <TestButton href={"/email"} color={theme.colors.white} bgcolor={theme.colors.primary}>{i18n.t("routes.test")}</TestButton>
+             {/* <Paragraph2>{i18n.t("about.paragraph2")}</Paragraph2>
+              <PlayButton src={Play_circle} alt="play"></PlayButton> */}
             </Links>
           </Texts>
           <RightColumn>

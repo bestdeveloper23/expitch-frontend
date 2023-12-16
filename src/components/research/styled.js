@@ -69,6 +69,7 @@ export const Span = styled.span`
 `;
 
 export const Link = styled.a`
+  text-decoration: none;
   display: flex;
   align-items: center;
   font-size: ${typography.sm_bold.size};

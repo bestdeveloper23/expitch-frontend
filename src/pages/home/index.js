@@ -1,4 +1,3 @@
-
 import { Container } from "./styled";
 import About from "./../../components/about";
 import Workflow from "../../components/workflow";
@@ -10,12 +9,12 @@ import Experiment from "../../components/experiment";
 export default function Home() {
   return (
     <Container>
-     <About/>
-     <GetStart/>
-     {/* <Inspiring/> */}
-     <Workflow/>
-     <Research/>
-     <Experiment/>
+      <About />
+      <GetStart />
+      {/* <Inspiring/> */}
+      <Workflow />
+      <Research />
+      <Experiment />
     </Container>
   );
 }

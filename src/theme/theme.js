@@ -44,7 +44,7 @@ export const theme = {
     h4: {
       font: 'Darker Grotesque',
       fontWeight: '600',
-      size: '32px'
+      size: '32px',
     },
     h5: {
       font: 'Darker Grotesque',

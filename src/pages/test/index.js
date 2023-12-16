@@ -5,7 +5,7 @@ import {
   Collapse, List, Feature, ResponseIcon, Response, Featuredetail, EmailInputContainer, SubForm,
   GradeContainer, GradeTitle, Score, ScoreContainer, GradeResult, PitchTextFormBottomBar, FormText, Audio, Loading,
   Container3, Card, CardTextDiv, CardText, CardIcon, ProcessingTitle, FeatureText,
-  ResultContainer, ResultMainContainer, ResultSubContainer, ResultTitleContainer, Formimage, Tooltip
+  ResultContainer, ResultMainContainer, ResultSubContainer, ResultTitleContainer, Formimage, Tooltip, Paragraph2, PlayButton, Links, TermsLink
 } from './styled';
 
 import RightArrowIcon from "../../assets/images/arrow-right.svg"
@@ -20,6 +20,8 @@ import GradeB from "../../assets/images/grade_b.svg"
 import GradeC from "../../assets/images/grade_c.svg"
 import PrinterIcon from "../../assets/images/printer.svg"
 import tooltipIcon from "../../assets/images/tooltip-icon.svg"
+import Emoji_robot from "../../assets/images/emoji-robot.svg"
+import Play_circle from "../../assets/images/play-circle.svg";
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,6 +32,7 @@ import { useTheme } from 'styled-components';
 import { i18n } from "./../../translate/i18n";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { useRecaptcha } from '../../core/hooks/useRecaptcha';
 
 const Test = () => {
   const theme = useTheme();
@@ -39,12 +42,13 @@ const Test = () => {
   const [loadingStatus, setLoadingStatus] = useState('initial');
   const [processstatus, setProcessstatus] = useState(i18n.t("process.status"));
   const [result, setResult] = useState([]);
-  const [pitchcontent, setPicthcontent] = useState('');
+  const [pitchcontent, setPitchContent] = useState('');
   const [totalScore, setTotalScore] = useState('');
   const [pitchURL, setPitchURL] = useState('');
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [pitchfile, setPItchFile] = useState(null);
+  const { getToken } = useRecaptcha('evaluatePitchRequest')
 
   const contentRef = useRef(null);
 
@@ -75,7 +79,7 @@ const Test = () => {
     chunks = [];
     document.getElementById('stopButton').style.display = 'block';
     document.getElementById('startButton').style.display = 'none';
-      
+
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
       navigator.mediaDevices
@@ -89,7 +93,7 @@ const Test = () => {
           mediaRecorder.addEventListener('dataavailable', function (e) {
             chunks.push(e.data);
           });
-          
+
           const stopRecording = () => {
             console.log('Stopped the recording');
             mediaRecorder.stop();
@@ -122,7 +126,7 @@ const Test = () => {
     } else {
       console.log('getUserMedia is not supported in this browser');
     }
-    
+
   };
 
   useEffect(() => {
@@ -133,17 +137,15 @@ const Test = () => {
         setSeconds((prevSeconds) => prevSeconds + 1);
       }, 1000);
     }
-
-    return () => {
-      clearInterval(intervalId);
-    };
   }, [isRunning]);
+
 
   const handleWizardIndex = (index) => {
     if (!validateEmail()) {
       console.log(emailError)
       return;
     }
+
     setWizardIndex(index);
 
     console.log(wizardIndex)
@@ -179,16 +181,25 @@ const Test = () => {
     return blob.size === 0;
   }
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: 'audio/*', multiple: false, noClick: true, });
-  const handleSubmit = (file) => {
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop, accept: {
+      'audio/mp3': ['.mp3'],
+      'video/mp4': ['.mp4'],
+    }, multiple: false, noClick: true, maxSize: 50 * 1024 * 1024
+  });
+  const handleSubmit = async (file) => {
+    console.log('Environment:', process.env.REACT_APP_NODE_ENV);
+    const recaptchaToken = process.env.REACT_APP_NODE_ENV === 'development' ? '' : await getToken()
+
     const formData = new FormData();
     formData.append('email', email);
+    formData.append('modelName', 'main');
+    formData.append('recaptchaToken', recaptchaToken);
     console.log(file);
     formData.append('pitchFile', file);
     const fileUrl = URL.createObjectURL(file);
-    console.log(email, file)
     axios
-      .post(`${process.env.REACT_APP_API_ENDPOINTS}/pitch/getPitchEvalForAudio`, formData, {
+      .post(`${process.env.REACT_APP_API_ENDPOINTS}/pitch/admin/getPitchEvalForAudioNEW`, formData, {
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
@@ -202,82 +213,59 @@ const Test = () => {
       })
       .then((response) => {
         // Handle the successful response
-        if (typeof (response.data) === 'string') {
+        if (response.data && typeof response.data === 'object') {
+          setPitchContent(response.data.pitch.pitchText);
+          const evaluationSections = response.data.evaluation;
+          let scores = 0;
+          let valuesArray = [];
+          window.history.pushState({}, '', '/test?success=true');
 
-          var json_data = response.data.split("}{")
+          // Loop through each section of the evaluation
+          Object.keys(evaluationSections).forEach(section => {
+            const currentSection = evaluationSections[section];
 
-          var first_json = JSON.parse(json_data[0] + "}")
-          var second_json = JSON.parse("{" + json_data[1])
-          setPicthcontent(first_json['pitch']);
-          console.log(second_json.evaluation.featureBenefits.letterGrade);
-          var i = 0;
-          let item = [];
-          var scores = 0;
-          const valuesArray = [
-            second_json.evaluation.featureBenefits.letterGrade,
-            second_json.evaluation.featureBenefits.evaluation,
-            second_json.evaluation.featureBenefits.recommendations,
-            second_json.evaluation.readiness.letterGrade,
-            second_json.evaluation.readiness.evaluation,
-            second_json.evaluation.readiness.recommendations,
-            second_json.evaluation.barrierToEntry.letterGrade,
-            second_json.evaluation.barrierToEntry.evaluation,
-            second_json.evaluation.barrierToEntry.recommendations,
-            second_json.evaluation.adoption.letterGrade,
-            second_json.evaluation.adoption.evaluation,
-            second_json.evaluation.adoption.recommendations,
-            second_json.evaluation.supplyChain.letterGrade,
-            second_json.evaluation.supplyChain.evaluation,
-            second_json.evaluation.supplyChain.recommendations,
-            second_json.evaluation.marketSize.letterGrade,
-            second_json.evaluation.marketSize.evaluation,
-            second_json.evaluation.marketSize.recommendations,
-            second_json.evaluation.entrepreneurExperience.letterGrade,
-            second_json.evaluation.entrepreneurExperience.evaluation,
-            second_json.evaluation.entrepreneurExperience.recommendations,
-            second_json.evaluation.financialExpectations.letterGrade,
-            second_json.evaluation.financialExpectations.evaluation,
-            second_json.evaluation.financialExpectations.recommendations
-          ];
-          valuesArray.forEach(element => {
-            item.push(element)
-            i++;
-            if (i % 3 === 1) {
-              switch (element) {
-                case 'A+':
-                  scores += 10;
-                  break;
-                case 'A':
-                  scores += 9;
-                  break;
-                case 'A-':
-                  scores += 8;
-                  break;
-                case 'B+':
-                  scores += 6;
-                  break;
-                case 'B':
-                  scores += 5;
-                  break;
-                case 'B-':
-                  scores += 4;
-                  break;
-                case 'C+':
-                  scores += 2;
-                  break;
-                case 'C':
-                  scores += 1;
-                  break;
-                default:
-                  break;
-              }
+            valuesArray.push(
+              currentSection.LetterGrade,
+              currentSection.Evaluation,
+              currentSection.Recommendations,
+            );
+
+            // Add scores based on letter grades
+            switch (currentSection.LetterGrade) {
+              case 'A+':
+                scores += 10;
+                break;
+              case 'A':
+                scores += 9;
+                break;
+              case 'A-':
+                scores += 8;
+                break;
+              case 'B+':
+                scores += 6;
+                break;
+              case 'B':
+                scores += 5;
+                break;
+              case 'B-':
+                scores += 4;
+                break;
+              case 'C+':
+                scores += 2;
+                break;
+              case 'C':
+                scores += 1;
+                break;
+              default:
+                break;
             }
           });
-
+          setWizardIndex("result");
           setResult(valuesArray);
+          setTotalScore(scores);
+        } else {
+          console.log('Unexpected data format:', JSON.stringify(response, null, 2));
         }
-        setTotalScore(scores);
-        setWizardIndex("result")
       })
       .catch((error) => {
         console.error('Error:', error.message, formData);
@@ -295,7 +283,7 @@ const Test = () => {
     } else if (grade[0] === 'B') {
       color = 'orange';
     } else if (grade[0] === 'C') {
-      color = 'orange';
+      color = 'red';
     } else {
       color = 'red';
     }
@@ -318,13 +306,13 @@ const Test = () => {
       } else {
         e.target.children[2].style.transform = "rotateX(180deg)"
       }
-    } else if(e.target.parentElement.children[1]) {
+    } else if (e.target.parentElement.children[1]) {
       if (e.target.parentElement.children[2].style.transform === "rotateX(180deg)") {
         e.target.parentElement.children[2].style.transform = "rotateX(0deg)"
       } else {
         e.target.parentElement.children[2].style.transform = "rotateX(180deg)"
       }
-    } else if(e.target.parentElement.parentElement.parentElement.children[1]) {
+    } else if (e.target.parentElement.parentElement.parentElement.children[1]) {
       if (e.target.parentElement.parentElement.parentElement.children[2].style.transform === "rotateX(180deg)") {
         e.target.parentElement.parentElement.parentElement.children[2].style.transform = "rotateX(0deg)"
       } else {
@@ -360,18 +348,46 @@ const Test = () => {
   }
 
   const saveAsPdf = () => {
-    const content = contentRef.current;
+    window.scrollTo(0, 0);
 
-    html2canvas(content).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save('document.pdf');
+    const accordions = document.querySelectorAll('details');
+    accordions.forEach((accordion) => {
+      accordion.setAttribute('open', '');
     });
+
+    setTimeout(() => {
+      html2canvas(document.body, {
+        windowWidth: document.body.scrollWidth,
+        windowHeight: document.body.scrollHeight,
+        scale: 1,
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        const pages = Math.ceil(pdfHeight / pdf.internal.pageSize.getHeight());
+
+        for (let i = 0; i < pages; i++) {
+          if (i > 0) pdf.addPage();
+
+          pdf.addImage(
+            imgData,
+            'PNG',
+            0,
+            -i * pdf.internal.pageSize.getHeight(),
+            pdfWidth, // Adjusted width to fit the pdf page width
+            pdfHeight // Adjusted height to maintain aspect ratio
+          );
+        }
+
+        pdf.save('Expitch-CFA-Analysis.pdf');
+
+        accordions.forEach((accordion) => {
+          accordion.removeAttribute('open');
+        });
+      });
+    }, 0);
   };
 
   const handlePrint = () => {
@@ -405,8 +421,8 @@ const Test = () => {
                   <Label color={theme.colors.gray900}>{i18n.t("email.textbox.label")}<Required>*</Required> </Label>
                   <EmailInput type='email' onChange={handleEmailChange} bordercolor={theme.colors.gray300} bgcolor={theme.colors.white}></EmailInput>
                   <Label color='#FF0000'>{emailError}</Label>
-                  <ButtonDiv
-                  >
+                  <Label onClick={() => { window.open('/terms', '_blank') }}>{i18n.t("email.textbox.terms")}<TermsLink style={{ cursor: 'pointer' }}>{i18n.t("email.textbox.termsLink")}</TermsLink></Label>
+                  <ButtonDiv>
                     <Button onClick={() => handleWizardIndex("uploading")} isenable={emailEnable} bgcolor={theme.colors.primary}
                       bordercolor={theme.colors.primary} color={theme.colors.white}>
                       <DContainer
@@ -428,9 +444,9 @@ const Test = () => {
         {wizardIndex === "uploading" &&
           <ContainerUploading>
             <UploadingBox {...getRootProps()} className={`dropzone ${isDragActive ? 'active' : ''}`}
-              bordercolor={theme.colors.gray300} bgcolor={theme.colors.white}>
+              bordercolor={theme.colors.gray300} bgcolor={theme.colors.white} accept='.mp3, .mp4' maxSize='50 * 1024 * 1024' >
               <input {...getInputProps()} />
-              <input id="fileInput" type="file" onChange={(e) => onDrop(e.target.files)} style={{ display: 'none' }} accept=".mp3, .mp4, .wav" />
+              <input id="fileInput" type="file" onChange={(e) => onDrop(e.target.files)} style={{ display: 'none' }} accept='.mp3, .mp4' maxSize='50 * 1024 * 1024' />
               <CustomSVG src={UploadIcon} width={64} height={64}></CustomSVG>
 
               {
@@ -452,6 +468,11 @@ const Test = () => {
               </UploadText>
               <Button1 onClick={() => document.getElementById('fileInput').click()} bordercolor={theme.colors.primary}
                 bgcolor={theme.colors.white} color={theme.colors.gray900}>{i18n.t("uploading.submit.button")}</Button1>
+
+              <Links>
+                <Paragraph2 onClick={() => { window.open('/workflow', '_blank') }} style={{ cursor: 'pointer' }}>{i18n.t("test.paragraph1")}</Paragraph2>
+                <PlayButton onClick={() => { window.open('/workflow', '_blank') }} style={{ cursor: 'pointer' }} src={Play_circle} alt="play"></PlayButton>
+              </Links>
             </UploadingBox>
             <RecordingBox>
               <UploadText color={theme.colors.gray900}>{loadingStatus === "initial" ? i18n.t("uploading.recording.button") : loadingStatus === "recording" ? i18n.t("uploading.status.recording.text") : i18n.t("uploading.status.analysis.text")}</UploadText>
@@ -493,7 +514,7 @@ const Test = () => {
 
         {wizardIndex === "processing" &&
           <ContainerProcessing>
-            <SmallTitle color='black'>🤖 {processstatus}</SmallTitle>
+            <SmallTitle color='black'> <CardIcon src={Emoji_robot} /> {processstatus}</SmallTitle>
             <ProcessingProgress>
               <Loading bordercolor={theme.colors.primary} />
             </ProcessingProgress>
@@ -567,19 +588,19 @@ const Test = () => {
                     bgcolor={theme.gray50}
                   >
                     <GradeTitle>
-                      <Grade color={Math.round(totalScore / 0.8) >= 80 ? theme.colors.green600 : Math.round(totalScore / 0.8) >= 40 ? theme.colors.orange600 : theme.colors.red600}
-                        bordercolor={Math.round(totalScore / 0.8) >= 80 ? theme.colors.green200 : Math.round(totalScore / 0.8) >= 40 ? theme.colors.orange200 : theme.colors.red200}
-                        backgroundcolor={Math.round(totalScore / 0.8) >= 80 ? theme.colors.green50 : Math.round(totalScore / 0.8) >= 40 ? theme.colors.orange50 : theme.colors.red50}
+                      <Grade color={totalScore >= 64 ? theme.colors.green600 : totalScore >= 32 ? theme.colors.orange600 : theme.colors.red600}
+                        bordercolor={totalScore >= 64 ? theme.colors.green200 : totalScore >= 32 ? theme.colors.orange200 : theme.colors.red200}
+                        backgroundcolor={totalScore >= 64 ? theme.colors.green50 : totalScore >= 32 ? theme.colors.orange50 : theme.colors.red50}
                       >
-                        {Math.round(totalScore / 0.8) >= 100 ? 'A+' : Math.round(totalScore / 0.8) >= 90 ? 'A' : Math.round(totalScore / 0.8) >= 80 ? 'A-' : Math.round(totalScore / 0.8) >= 60 ? 'B+' : Math.round(totalScore / 0.8) >= 50 ? 'B' : Math.round(totalScore / 0.8) >= 40 ? 'B-' : Math.round(totalScore / 0.8) >= 20 ? 'C+' : Math.round(totalScore / 0.8) >= 10 ? 'C' : 'C-'}
+                        {totalScore >= 80 ? 'A+' : totalScore >= 72 ? 'A' : totalScore >= 64 ? 'A-' : totalScore >= 48 ? 'B+' : totalScore >= 40 ? 'B' : totalScore >= 32 ? 'B-' : totalScore >= 16 ? 'C+' : totalScore >= 8 ? 'C' : 'C-'}
                       </Grade>
                       <FormTitle
-                        color={Math.round(totalScore / 0.8) >= 80 ? theme.colors.green600 : Math.round(totalScore / 0.8) >= 40 ? theme.colors.orange600 : theme.colors.red600}
+                        color={totalScore >= 64 ? theme.colors.green600 : totalScore >= 32 ? theme.colors.orange600 : theme.colors.red600}
                         padding='10px'
-                      >{Math.round(totalScore / 0.8) >= 80 ? i18n.t("result.slogonA") : Math.round(totalScore / 0.8) >= 40 ? i18n.t("result.slogonB") : i18n.t("result.slogonC")}</FormTitle>
+                      >{totalScore >= 64 ? i18n.t("result.slogonA") : totalScore >= 32 ? i18n.t("result.slogonB") : i18n.t("result.slogonC")}</FormTitle>
                     </GradeTitle>
                     <ScoreContainer>
-                      <Score color={Math.round(totalScore / 0.8) >= 80 ? theme.colors.green600 : Math.round(totalScore / 0.8) >= 40 ? theme.colors.orange600 : theme.colors.red600}>
+                      <Score color={totalScore >= 64 ? theme.colors.green600 : totalScore >= 32 ? theme.colors.orange600 : theme.colors.red600}>
                         {Math.round(totalScore / 0.8) + '%'}
                       </Score>
                     </ScoreContainer>
