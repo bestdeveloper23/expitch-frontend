@@ -40,7 +40,7 @@ export default function Research() {
             <SectionDescription color={theme.colors.gray700}>
               {i18n.t("research.paragraph")}
             </SectionDescription>
-            <Link color={theme.colors.gray900}>
+            <Link href="https://scholar.google.ca/citations?view_op=view_citation&hl=en&user=cp-F6agAAAAJ&citation_for_view=cp-F6agAAAAJ:u5HHmVD_uO8C" color={theme.colors.gray900}>
               <Span>{i18n.t("research.link")}</Span>
               <Image src={arrowIcon} alt="arrowIcon" />
             </Link>

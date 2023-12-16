@@ -6,8 +6,9 @@ import {
   Nav,
   NavLink,
   Image,
-  Content,
+  Content, 
 } from "./styled";
+
 
 import { useTheme } from "styled-components";
 import { i18n } from "./../../translate/i18n";
@@ -23,31 +24,36 @@ export default function Footer() {
     <Section bg={theme.colors.gray900} color={theme.colors.white}>
       <Container>
         <Navs color={theme.colors.white}>
-          <Nav>
-            <NavLink>{i18n.t("footer.links.link_1")}</NavLink>
+          <Nav >
+            <NavLink to={"/About"}>{i18n.t("footer.links.link_4")}</NavLink>
           </Nav>
           <Nav>
-            <NavLink>{i18n.t("footer.links.link_2")}</NavLink>
+            <NavLink to={"/privacy"}>{i18n.t("footer.links.link_5")}</NavLink>
           </Nav>
           <Nav>
-            <NavLink>{i18n.t("footer.links.link_3")}</NavLink>
-          </Nav>
-          <Nav>
-            <NavLink>{i18n.t("footer.links.link_4")}</NavLink>
+            <NavLink to={"/terms"}>{i18n.t("footer.links.link_6")}</NavLink>
           </Nav>
         </Navs>
         <SocialLinks>
-          <Nav>
+          <Nav >
+          <a href="https://www.linkedin.com/company/expitch" target="_blank" rel="noopener noreferrer">
             <Image src={LinkedIn} alt="social" />
+            </a>
           </Nav>
           <Nav>
+          <a href="https://www.instagram.com/expitchai/" target="_blank" rel="noopener noreferrer">
             <Image src={Instagram} alt="social" />
+            </a>
           </Nav>
           <Nav>
+          <a href="https://www.youtube.com/channel/UCf6kGr8aodilvNpS_qy8xBQ" target="_blank" rel="noopener noreferrer">
             <Image src={Youtube} alt="social" />
+            </a>
           </Nav>
           <Nav>
+          <a href="https://twitter.com/expitchai" target="_blank" rel="noopener noreferrer">
             <Image src={Twitter} alt="social" />
+            </a>
           </Nav>
         </SocialLinks>
         <Content>{i18n.t("footer.content")}</Content>

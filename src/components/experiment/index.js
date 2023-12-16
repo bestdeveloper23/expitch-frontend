@@ -9,7 +9,7 @@ export default function Experiment() {
     <Section>
       <Container>
         <Title color={theme.colors.white}>{i18n.t("experiment.title")}</Title>
-        <Button href={"/test"} bg={theme.colors.primary} color={theme.colors.white}>{i18n.t("experiment.button")}</Button>
+        <Button href={"/email"} bg={theme.colors.primary} color={theme.colors.white}>{i18n.t("experiment.button")}</Button>
         <Content color={theme.colors.white}>{i18n.t("experiment.content")}</Content>
       </Container>
     </Section>

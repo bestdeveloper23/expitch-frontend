@@ -3,9 +3,15 @@ const StringsComuns = {
         components: {
 //---------------------------------HEADER---------------------------------------------------//
           routes: {
-            workflow: "How it works?",
-            about:"About us",
-            test:"Test my pitch",
+            workflow: "How it works",
+            about:"About",
+            test:"Submit your pitch",
+            login:"Login",
+            profile: {
+              settings: "Profile settings",
+              pitchlist: "My pitches",
+              logout: "Logout"
+            }
           },
           header: {
             title: "✨ Expitch is free to use and is intended for research and educational purposes only."
@@ -15,9 +21,9 @@ const StringsComuns = {
 
 //---------------------------------HOME-ABOUT---------------------------------------------------//
           about: {
-            title1: "Craft Your Startup Success story with ",
-            title2: "AI Pitch Assessment Technology",
-            paragraph:"Pitch to the world's #1 Research-based AI statup anaylzer and get a comprehensive assessment",
+            title1: "Accelerate Your Venture's Growth Through",
+            title2: " Research-Driven Insights",
+            paragraph:"Pitch to the world’s #1 AI startup evaluation tool and get an academic, data-driven report. ",
             paragraph2: "See how it works",
             pitch: {
               title: "Your pitch",
@@ -119,17 +125,17 @@ const StringsComuns = {
 //---------------------------------HOME-GETSTARAT---------------------------------------------------//
 
           getstart: {
-            title: "Get started",
-            paragraph: "Make your pitch perfect",
+            title: "",
+            paragraph: "Boost Your Startup",
             pitch: {
               title: "Pitch",
-              paragraph: "Grow your statupwith",
-              highlight: "interactive pitching and A/B testing"
+              paragraph: "Grow your startup with",
+              highlight: "iterative pitching and A/B testing"
             },
             analysis: {
-              title: "Ananlysis",
+              title: "Analysis",
               paragraph1: "Get comprehensive ",
-              paragraph2: " and export ",
+              paragraph2: " and expert ",
               paragraph3: " for pitch improvement",
               highlight1: "evaluations",
               highlight2: "recommendations",
@@ -241,16 +247,38 @@ const StringsComuns = {
             member_4: {
               name: "Ron Tal",
               responsible: "ML Advisor",
-              university: "Ph.D - Engineering YorkU, Ex-Uber, Coinbase",
+              university: "M.A.Sc - Engineering YorkU, Ex-Uber, Coinbase",
             },
           },
           experiment: {
-            title: "Grow your pitch perfect startup today!",
-            button: "Test my pitch",
+            title: "Ready to take your startup to the next level?",
+            button: "Submit your pitch",
             content: "It's totally free!",
           },
     
 //---------------------------------HOME-RESEARCH---------------------------------------------------//
+
+
+//---------------------------------PITCHES-LIST---------------------------------------------------//
+
+pitches: {
+  title: "Your pitches",
+},
+
+//---------------------------------PITCHES-LIST---------------------------------------------------//
+
+
+//--------- Login ------//
+
+login:{
+  title:"Welcome back to Expitch!",
+  registerlabel:"I don't have an account",
+  email:"Email address",
+  password:"Password",
+  loginbutton:"Login or Register ✨",
+  success:"Check your email 📨",
+  checkemail:"We sent a magic link to: "
+},
 
 
 //---------------------------------TEST---------------------------------------------------//
@@ -274,20 +302,29 @@ const StringsComuns = {
             textbox: {
              download: "Download" ,
              copy: "Copy",
-             paragraph: "Please enter your email address to which we will send the results",
+             paragraph: "Please enter your email address where we will send the results",
              label: "Your email address ",
-             button: "Uploader"
+             button: "Uploader",
+             terms: "By using this service you agree to the ",
+             termsLink: "Terms & Conditions",
             }
           },
-
+          
+          tabs: {
+            tab1: "Upload a file",
+            tab2: "Enter text",
+            tab3: "Record your voice",
+          },
           uploading: {
+            title: "Ready to pitch? ✨",
             uploadingbox: {
              hint: "Drag & drop or choose file to upload",
              drop: "Drop file..."
             },
             recording:{
-              paragraph1: "Upload a 2-5 minute pitch of your startup.",
-              paragraph2: "MP3, MP4, WAV, up to 20MB, up to  MIN",
+              title: 'Click to start recording',
+              paragraph1: "Upload a pitch of your startup.",
+              paragraph2: "MP3 & MP4 up to 50 MB",
               button: "Or record your voice",
               hint1: "Just click on the button and start talking.",
               hint2: "You have 5 minutes."
@@ -301,18 +338,41 @@ const StringsComuns = {
               },
               analysis: {
                 text: "Your recording",
-                button: "Analyze"
+                button: "Analyze",
+                button2: "Upload again",
+                button3: "Record again",
+                submit: "Submit"
+
               }
             }
             
           },
 
+          pasting: {
+            textbox: {
+              label: "Your pitch"
+            },
+            button: "Analyze"
+          },
+
+          pitchexamples: {
+            title: "Don’t have a pitch?",
+            subtitle: "See how it works on famous pitches",
+            pitches: {
+              pitch1: "GitLab at YCombinator 2015",
+              pitch2: "DoorDash at YCombinator 2013",
+              pitch3: "Coinbase at YCombinator 2012"
+            },
+            button: "Test"
+          },
+
           process: {
-            status: "Processing... Just a moment!",
+            status_processing: "Processing... Just a moment!",
+            status_waiting: "Waiting for results...",
             title: "The possible ratings for the CFA-AI report include:",
-            paragraph1: "Golden Opportunity: This factor is a tailwind propelling you to success. Keep up the excellent work and ride this momentum.",
-            paragraph2: "Pivotal Potential: Attention needed! A tweak or adjustment here could significantly elevate your chances of success.",
-            paragraph3: "Critical Hurdle: Immediate action required! This factor is a red flag that could derail your venture if not addressed."
+            paragraph1: "Golden Opportunity (80-100%): This factor is a tailwind propelling you to success. Keep up the excellent work and ride this momentum.",
+            paragraph2: "Pivotal Potential (40-79%): Attention needed! A tweak or adjustment here could significantly elevate your chances of success.",
+            paragraph3: "Critical Hurdle (0-39%): Immediate action required! This factor is a red flag that could derail your venture if not addressed."
           },
           result:{
             title: "Your grade",
@@ -360,15 +420,20 @@ const StringsComuns = {
 
 //---------------------------------TEST---------------------------------------------------//
 
+test:{
+  paragraph1: "No pitch? View demo"
+},
 
 //---------------------------------FOOTER---------------------------------------------------//
 
           footer: {
             links: {
-              link_1: "How it works?",
-              link_2: "About us",
-              link_3: "Login",
-              link_4: "Test my pitch",
+              link_1: "",
+              link_2: "",
+              link_3: "",
+              link_4: "About",
+              link_5: "Privacy Policy",
+              link_6: "Terms & Conditions",
             },
             content: "© 2023 Expitch, Inc. All rights reserved.",
           },
