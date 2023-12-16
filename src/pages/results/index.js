@@ -1,184 +1,179 @@
 import {
-  Wrapper, F, Player,
-  TextBox, Title, FormTitle, Grade, DContainer, CustomSVG, ButtonDiv,
-  Collapse, List, Feature, ResponseIcon, Response, Featuredetail, Featuredetailtitle,
-  GradeContainer, GradeTitle, Score, ScoreContainer, GradeResult, PitchTextFormBottomBar, FormText, Audio,
-  Container3, Card, CardTextDiv, CardText, CardIcon, ProcessingTitle, FeatureText, SectionContainer,
-  ResultContainer, ResultMainContainer, ResultSubContainer, ResultTitleContainer, Tooltip, SectionTitle
-} from './styled';
+  Wrapper,
+  F,
+  Player,
+  TextBox,
+  Title,
+  FormTitle,
+  Grade,
+  DContainer,
+  CustomSVG,
+  ButtonDiv,
+  Collapse,
+  List,
+  Feature,
+  ResponseIcon,
+  Response,
+  Featuredetail,
+  Featuredetailtitle,
+  GradeContainer,
+  GradeTitle,
+  Score,
+  ScoreContainer,
+  GradeResult,
+  PitchTextFormBottomBar,
+  FormText,
+  Audio,
+  Container3,
+  Card,
+  CardTextDiv,
+  CardText,
+  CardIcon,
+  ProcessingTitle,
+  FeatureText,
+  SectionContainer,
+  ResultContainer,
+  ResultMainContainer,
+  ResultSubContainer,
+  ResultTitleContainer,
+  Tooltip,
+  SectionTitle,
+} from "./styled";
 
-import arrow from "../../assets/images/arrowprimary.svg"
-import DownloadIcon from "../../assets/images/download_result.svg"
-import CopyIcon from "../../assets/images/copy_result.svg"
-import GradeA from "../../assets/images/grade_a.svg"
-import GradeB from "../../assets/images/grade_b.svg"
-import GradeC from "../../assets/images/grade_c.svg"
-import PrinterIcon from "../../assets/images/printer.svg"
-import tooltipIcon from "../../assets/images/tooltip-icon.svg"
+import arrow from "../../assets/images/arrowprimary.svg";
+import DownloadIcon from "../../assets/images/download_result.svg";
+import CopyIcon from "../../assets/images/copy_result.svg";
+import GradeA from "../../assets/images/grade_a.svg";
+import GradeB from "../../assets/images/grade_b.svg";
+import GradeC from "../../assets/images/grade_c.svg";
+import PrinterIcon from "../../assets/images/printer.svg";
+import tooltipIcon from "../../assets/images/tooltip-icon.svg";
 
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import { useDropzone } from 'react-dropzone';
-import { useTheme } from 'styled-components';
+import React, { useState, useEffect, useRef } from "react";
+import { useTheme } from "styled-components";
 import { i18n } from "./../../translate/i18n";
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import { useRecaptcha } from '../../core/hooks/useRecaptcha';
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { useRecaptcha } from "../../core/hooks/useRecaptcha";
+import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Results = () => {
   const theme = useTheme();
-  const [wizardIndex, setWizardIndex] = useState('results');
   const [result, setResult] = useState([]);
-  const [pitchcontent, setPicthcontent] = useState('');
-  const [processstatus, setProcessstatus] = useState(i18n.t("process.status"));
-  const [pitchURL, setPitchURL] = useState('');
-  const [totalScore, setTotalScore] = useState('');
-  const { getToken } = useRecaptcha('evaluatePitchRequest')
+  const [pitchcontent, setPicthcontent] = useState("");
+  const [totalScore, setTotalScore] = useState("");
+  const [pitchTitle, setPitchTitle] = useState("Pitch title");
 
   const contentRef = useRef(null);
 
-  const { email } = useSelector((state) => ({
-    email: state.email,
-    file: state.file
-  }));
+  const location = useLocation();
+  const PitchesList = useSelector((state) => state.pitch.pitchesList);
+  // const { responseData } = location.state || {};
 
+  const showResults = () => {
+    if (PitchesList && PitchesList.length > 0) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+      const responseData = PitchesList.find((item) => item._id === id);
+    
+      setPicthcontent(responseData.pitchText);
+      setPitchTitle(responseData.fileName);
 
-  const convertBlobToFile = (blob, fileName) => {
-    const file = new File([blob], fileName, { type: blob.type });
-    return file;
-  }
-
-  const isBlobEmpty = (blob) => {
-    return blob.size === 0;
-  }
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ accept: 'audio/*', multiple: false, noClick: true, });
-  const handleSubmit = async (file) => {
-
-    const recaptchaToken = process.env.REACT_APP_NODE_ENV === 'development' ? '' : await getToken()
-
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('recaptchaToken', recaptchaToken);
-    console.log(file);
-    formData.append('pitchFile', file);
-    const fileUrl = URL.createObjectURL(file);
-    axios
-      .post(`${process.env.REACT_APP_API_ENDPOINTS}/pitch/getPitchEvalForAudio`, formData, {
-        onUploadProgress: (progressEvent) => {
-          const progress = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-        },
-
-      })
-      .then((response) => {
-        // Handle the successful response
-        if (typeof (response.data) === 'string') {
-
-          var json_data = response.data.split("}{")
-
-          var first_json = JSON.parse(json_data[0] + "}")
-          var second_json = JSON.parse("{" + json_data[1])
-          setPicthcontent(first_json['pitch']);
-          console.log(second_json.evaluation.featureBenefits.letterGrade);
-          var i = 0;
-          let item = [];
-          var scores = 0;
-          const valuesArray = [
-            second_json.evaluation.featureBenefits.letterGrade,
-            second_json.evaluation.featureBenefits.evaluation,
-            second_json.evaluation.featureBenefits.recommendations,
-            second_json.evaluation.readiness.letterGrade,
-            second_json.evaluation.readiness.evaluation,
-            second_json.evaluation.readiness.recommendations,
-            second_json.evaluation.barrierToEntry.letterGrade,
-            second_json.evaluation.barrierToEntry.evaluation,
-            second_json.evaluation.barrierToEntry.recommendations,
-            second_json.evaluation.adoption.letterGrade,
-            second_json.evaluation.adoption.evaluation,
-            second_json.evaluation.adoption.recommendations,
-            second_json.evaluation.supplyChain.letterGrade,
-            second_json.evaluation.supplyChain.evaluation,
-            second_json.evaluation.supplyChain.recommendations,
-            second_json.evaluation.marketSize.letterGrade,
-            second_json.evaluation.marketSize.evaluation,
-            second_json.evaluation.marketSize.recommendations,
-            second_json.evaluation.entrepreneurExperience.letterGrade,
-            second_json.evaluation.entrepreneurExperience.evaluation,
-            second_json.evaluation.entrepreneurExperience.recommendations,
-            second_json.evaluation.financialExpectations.letterGrade,
-            second_json.evaluation.financialExpectations.evaluation,
-            second_json.evaluation.financialExpectations.recommendations
-          ];
-          valuesArray.forEach(element => {
-            item.push(element)
-            i++;
-            if (i % 3 === 1) {
-              switch (element) {
-                case 'A+':
-                  scores += 10;
-                  break;
-                case 'A':
-                  scores += 9;
-                  break;
-                case 'A-':
-                  scores += 8;
-                  break;
-                case 'B+':
-                  scores += 6;
-                  break;
-                case 'B':
-                  scores += 5;
-                  break;
-                case 'B-':
-                  scores += 4;
-                  break;
-                case 'C+':
-                  scores += 2;
-                  break;
-                case 'C':
-                  scores += 1;
-                  break;
-                default:
-                  break;
-              }
-            }
-          });
-
-          setResult(valuesArray);
+      let i = 0;
+      let item = [];
+      let scores = 0;
+      const valuesArray = [
+        responseData.featureBenefits.letterGrade,
+        responseData.featureBenefits.evaluation,
+        responseData.featureBenefits.recommendations,
+        responseData.readiness.letterGrade,
+        responseData.readiness.evaluation,
+        responseData.readiness.recommendations,
+        responseData.barrierToEntry.letterGrade,
+        responseData.barrierToEntry.evaluation,
+        responseData.barrierToEntry.recommendations,
+        responseData.adoption.letterGrade,
+        responseData.adoption.evaluation,
+        responseData.adoption.recommendations,
+        responseData.supplyChain.letterGrade,
+        responseData.supplyChain.evaluation,
+        responseData.supplyChain.recommendations,
+        responseData.marketSize.letterGrade,
+        responseData.marketSize.evaluation,
+        responseData.marketSize.recommendations,
+        responseData.entrepreneurExperience.letterGrade,
+        responseData.entrepreneurExperience.evaluation,
+        responseData.entrepreneurExperience.recommendations,
+        responseData.financialExpectations.letterGrade,
+        responseData.financialExpectations.evaluation,
+        responseData.financialExpectations.recommendations,
+      ];
+      valuesArray.forEach((element) => {
+        item.push(element);
+        i++;
+        if (i % 3 === 1) {
+          switch (element) {
+            case "A+":
+              scores += 10;
+              break;
+            case "A":
+              scores += 9;
+              break;
+            case "A-":
+              scores += 8;
+              break;
+            case "B+":
+              scores += 6;
+              break;
+            case "B":
+              scores += 5;
+              break;
+            case "B-":
+              scores += 4;
+              break;
+            case "C+":
+              scores += 2;
+              break;
+            case "C":
+              scores += 1;
+              break;
+            default:
+              break;
+          }
         }
-        setTotalScore(scores);
-        setWizardIndex("result")
-      })
-      .catch((error) => {
-        console.error('Error:', error.message, formData);
-        setProcessstatus(error.message);
-        console.log(process.env.REACT_APP_API_ENDPOINTS)
       });
+
+      setResult(valuesArray);
+      setTotalScore(scores);
+    } else {
+      console.log("Can not find the pitch:");
+    }
   };
 
   const createGradeBadge = (grade) => {
-    var color = '';
-    if (grade === undefined)
-      return null;
-    if (grade[0] === 'A') {
-      color = 'green';
-    } else if (grade[0] === 'B') {
-      color = 'orange';
-    } else if (grade[0] === 'C') {
-      color = 'red';
+    var color = "";
+    if (grade === undefined) return null;
+    if (grade[0] === "A") {
+      color = "green";
+    } else if (grade[0] === "B") {
+      color = "orange";
+    } else if (grade[0] === "C") {
+      color = "red";
     } else {
-      color = 'red';
+      color = "red";
     }
 
-    const gradeColor = theme.colors[color + '600'];
-    const gradeBorderColor = theme.colors[color + '200'];
-    const gradeBgColor = theme.colors[color + '50'];
+    const gradeColor = theme.colors[color + "600"];
+    const gradeBorderColor = theme.colors[color + "200"];
+    const gradeBgColor = theme.colors[color + "50"];
 
     return (
-      <GradeResult color={gradeColor} bordercolor={gradeBorderColor} bgcolor={gradeBgColor}>
+      <GradeResult
+        color={gradeColor}
+        bordercolor={gradeBorderColor}
+        bgcolor={gradeBgColor}
+      >
         {grade}
       </GradeResult>
     );
@@ -187,63 +182,70 @@ const Results = () => {
   const handleClick = (e) => {
     if (e.target.children[2]) {
       if (e.target.children[2].style.transform === "rotateX(180deg)") {
-        e.target.children[2].style.transform = "rotateX(0deg)"
+        e.target.children[2].style.transform = "rotateX(0deg)";
       } else {
-        e.target.children[2].style.transform = "rotateX(180deg)"
+        e.target.children[2].style.transform = "rotateX(180deg)";
       }
-    } else if(e.target.parentElement.children[1]) {
-      if (e.target.parentElement.children[2].style.transform === "rotateX(180deg)") {
-        e.target.parentElement.children[2].style.transform = "rotateX(0deg)"
+    } else if (e.target.parentElement.children[1]) {
+      if (
+        e.target.parentElement.children[2].style.transform === "rotateX(180deg)"
+      ) {
+        e.target.parentElement.children[2].style.transform = "rotateX(0deg)";
       } else {
-        e.target.parentElement.children[2].style.transform = "rotateX(180deg)"
+        e.target.parentElement.children[2].style.transform = "rotateX(180deg)";
       }
-    } else if(e.target.parentElement.parentElement.parentElement.children[1]) {
-      if (e.target.parentElement.parentElement.parentElement.children[2].style.transform === "rotateX(180deg)") {
-        e.target.parentElement.parentElement.parentElement.children[2].style.transform = "rotateX(0deg)"
+    } else if (e.target.parentElement.parentElement.parentElement.children[1]) {
+      if (
+        e.target.parentElement.parentElement.parentElement.children[2].style
+          .transform === "rotateX(180deg)"
+      ) {
+        e.target.parentElement.parentElement.parentElement.children[2].style.transform =
+          "rotateX(0deg)";
       } else {
-        e.target.parentElement.parentElement.parentElement.children[2].style.transform = "rotateX(180deg)"
+        e.target.parentElement.parentElement.parentElement.children[2].style.transform =
+          "rotateX(180deg)";
       }
     }
-    console.log(e)
-  }
+    console.log(e);
+  };
 
   const CopytoClipboard = (textToCopy) => {
-    navigator.clipboard.writeText(textToCopy)
+    navigator.clipboard
+      .writeText(textToCopy)
       .then(function () {
-        console.log('Text copied to clipboard successfully');
+        console.log("Text copied to clipboard successfully");
       })
       .catch(function (error) {
-        console.error('Error copying text to clipboard:', error);
+        console.error("Error copying text to clipboard:", error);
       });
-  }
+  };
 
   const downloadTextAsWordFile = (text) => {
-
-    const blob = new Blob([text], { type: 'text/plain' });
+    const blob = new Blob([text], { type: "text/plain" });
 
     const url = URL.createObjectURL(blob);
 
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.download = 'pitch.txt';
+    link.download = "pitch.txt";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-  }
+  };
 
   const saveAsPdf = () => {
     const content = contentRef.current;
 
     html2canvas(content).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF();
       const imgProps = pdf.getImageProperties(imgData);
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save('document.pdf');
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("document.pdf");
     });
   };
 
@@ -251,317 +253,498 @@ const Results = () => {
     window.print();
   };
 
+  useEffect(() => {
+    showResults();
+  }, []);
+
+  useEffect(() => {
+    function noBack() {
+      // Push the start page onto the history stack twice
+      window.history.pushState({ page: "startPage" }, "", window.location.href);
+      window.history.pushState({ page: "startPage" }, "", window.location.href);
+
+      window.onpopstate = function (event) {
+        if (event.state && event.state.page === "startPage") {
+          // If we are on the start page, push it again onto the stack
+          window.history.pushState(
+            { page: "startPage" },
+            "",
+            window.location.href
+          );
+        }
+      };
+    }
+
+    noBack();
+    return () => {
+      window.onpopstate = null;
+    };
+  });
+
   return (
     <>
       <Wrapper bgcolor={theme.colors.gray50}>
-
-        {wizardIndex === "results" &&
-          <>
-            <ResultTitleContainer>
-              <GradeContainer
-                bgcolor='transparent'
+        <ResultTitleContainer>
+          <GradeContainer bgcolor="transparent">
+            <GradeTitle bgcolor={theme.colors.white}>
+              <FormTitle
+                fontsizes={theme.typography.h4.size}
+                color={theme.colors.gray900}
+                fontweights={theme.typography.h4.fontWeight}
+                font={theme.typography.h4.font}
               >
-                <GradeTitle bgcolor={theme.colors.white}>
+                {pitchTitle}
+              </FormTitle>
+            </GradeTitle>
+            <ScoreContainer gap="20px">
+              <ButtonDiv
+                bghover={theme.colors.gray100}
+                gap="5px"
+                onClick={() => saveAsPdf()}
+              >
+                <CustomSVG src={DownloadIcon}></CustomSVG>
+                <FormTitle color={theme.colors.gray500}>Save PDF</FormTitle>
+              </ButtonDiv>
+              <ButtonDiv
+                bghover={theme.colors.gray100}
+                gap="5px"
+                onClick={() => handlePrint()}
+              >
+                <CustomSVG src={PrinterIcon}></CustomSVG>
+                <FormTitle color={theme.colors.gray500}>Print</FormTitle>
+              </ButtonDiv>
+            </ScoreContainer>
+          </GradeContainer>
+        </ResultTitleContainer>
+
+        <ResultContainer ref={contentRef}>
+          <ResultMainContainer gap="32px">
+            <TextBox
+              borderradius="15px"
+              width="calc(100% - 40px)"
+              bgcolor={theme.colors.white}
+              color={theme.colors.gray500}
+              bordercolor={theme.colors.gray200}
+            >
+              <GradeContainer bgcolor={theme.colors.white}>
+                <GradeTitle>
+                  <Grade
+                    color={
+                      totalScore >= 64
+                        ? theme.colors.green600
+                        : totalScore >= 32
+                        ? theme.colors.orange600
+                        : theme.colors.red600
+                    }
+                    bordercolor={
+                      totalScore >= 64
+                        ? theme.colors.green200
+                        : totalScore >= 32
+                        ? theme.colors.orange200
+                        : theme.colors.red200
+                    }
+                    backgroundcolor={
+                      totalScore >= 64
+                        ? theme.colors.green50
+                        : totalScore >= 32
+                        ? theme.colors.orange50
+                        : theme.colors.red50
+                    }
+                  >
+                    {totalScore >= 80
+                      ? "A+"
+                      : totalScore >= 72
+                      ? "A"
+                      : totalScore >= 64
+                      ? "A-"
+                      : totalScore >= 48
+                      ? "B+"
+                      : totalScore >= 40
+                      ? "B"
+                      : totalScore >= 32
+                      ? "B-"
+                      : totalScore >= 16
+                      ? "C+"
+                      : totalScore >= 8
+                      ? "C"
+                      : "C-"}
+                  </Grade>
                   <FormTitle
-                    fontsizes={theme.typography.h4.size}
-                    color={theme.colors.gray900}
-                    fontweights={theme.typography.h4.fontWeight}
-                    font={theme.typography.h4.font}
-                  >{i18n.t("result.title")}</FormTitle>
+                    color={
+                      totalScore >= 64
+                        ? theme.colors.green600
+                        : totalScore >= 32
+                        ? theme.colors.orange600
+                        : theme.colors.red600
+                    }
+                    padding="10px"
+                  >
+                    {totalScore >= 64
+                      ? i18n.t("result.slogonA")
+                      : totalScore >= 32
+                      ? i18n.t("result.slogonB")
+                      : i18n.t("result.slogonC")}
+                  </FormTitle>
                 </GradeTitle>
-                <ScoreContainer gap='20px'>
-                  <ButtonDiv bghover={theme.colors.gray100}  gap='5px' onClick={() => saveAsPdf()}>
-                    <CustomSVG src={DownloadIcon}></CustomSVG>
-                    <FormTitle color={theme.colors.gray500}>Save PDF</FormTitle>
-                  </ButtonDiv>
-                  <ButtonDiv bghover={theme.colors.gray100} gap='5px' onClick={() => handlePrint()}>
-                    <CustomSVG src={PrinterIcon}></CustomSVG>
-                    <FormTitle color={theme.colors.gray500}>Print</FormTitle>
-                  </ButtonDiv>
+                <ScoreContainer>
+                  <Score
+                    color={
+                      totalScore >= 64
+                        ? theme.colors.green600
+                        : totalScore >= 32
+                        ? theme.colors.orange600
+                        : theme.colors.red600
+                    }
+                  >
+                    {Math.round(totalScore / 0.8) + "%"}
+                  </Score>
                 </ScoreContainer>
               </GradeContainer>
+            </TextBox>
 
-            </ResultTitleContainer>
+            <SectionContainer>
+              <SectionTitle>
+                <Title color={theme.colors.gray900}>
+                  {i18n.t("result.titleL")}
+                </Title>
+                <Title color={theme.colors.gray500}>
+                  {i18n.t("result.titleR")}
+                </Title>
+              </SectionTitle>
 
-            <ResultContainer ref={contentRef}>
-              <ResultMainContainer
-                gap='32px'
-              >
+              <Collapse id="results" bordercolor={theme.colors.gray200}>
+                <List bordercolor={theme.colors.gray200}>
+                  <Response>
+                    <Feature color={theme.colors.gray500} onClick={handleClick}>
+                      <FeatureText>
+                        {i18n.t("result.features.title")}
+                        <Tooltip tooltip={i18n.t("result.features.tooltip")}>
+                          <CustomSVG src={tooltipIcon} />
+                        </Tooltip>
+                      </FeatureText>
+                      {createGradeBadge(result[0] && result[0])}
+                      <ResponseIcon src={arrow} alt="arrow" />
+                    </Feature>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.evaluation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[1] && result[1]}
+                    </Featuredetail>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.recommendation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[2] && result[2]}
+                    </Featuredetail>
+                  </Response>
+                </List>
+
+                <List bordercolor={theme.colors.gray200}>
+                  <Response>
+                    <Feature
+                      color={theme.colors.gray500}
+                      onClick={handleClick}
+                      tooltip={i18n.t("result.readiness.tooltip")}
+                    >
+                      <FeatureText>
+                        {i18n.t("result.readiness.title")}
+                        <Tooltip tooltip={i18n.t("result.readiness.tooltip")}>
+                          <CustomSVG src={tooltipIcon} />
+                        </Tooltip>
+                      </FeatureText>
+                      {createGradeBadge(result[3] && result[3])}
+                      <ResponseIcon src={arrow} alt="arrow" />
+                    </Feature>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.evaluation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[4] && result[4]}
+                    </Featuredetail>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.recommendation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[5] && result[5]}
+                    </Featuredetail>
+                  </Response>
+                </List>
+
+                <List bordercolor={theme.colors.gray200}>
+                  <Response>
+                    <Feature
+                      color={theme.colors.gray500}
+                      onClick={handleClick}
+                      tooltip={i18n.t("result.barrier.tooltip")}
+                    >
+                      <FeatureText>
+                        {i18n.t("result.barrier.title")}
+                        <Tooltip tooltip={i18n.t("result.barrier.tooltip")}>
+                          <CustomSVG src={tooltipIcon} />
+                        </Tooltip>
+                      </FeatureText>
+                      {createGradeBadge(result[6] && result[6])}
+                      <ResponseIcon src={arrow} alt="arrow" />
+                    </Feature>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.evaluation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[7] && result[7]}
+                    </Featuredetail>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.recommendation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[8] && result[8]}
+                    </Featuredetail>
+                  </Response>
+                </List>
+
+                <List bordercolor={theme.colors.gray200}>
+                  <Response>
+                    <Feature
+                      color={theme.colors.gray500}
+                      onClick={handleClick}
+                      tooltip={i18n.t("result.adoption.tooltip")}
+                    >
+                      <FeatureText>
+                        {i18n.t("result.adoption.title")}
+                        <Tooltip tooltip={i18n.t("result.adoption.tooltip")}>
+                          <CustomSVG src={tooltipIcon} />
+                        </Tooltip>
+                      </FeatureText>
+                      {createGradeBadge(result[9] && result[9])}
+                      <ResponseIcon src={arrow} alt="arrow" />
+                    </Feature>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.evaluation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[10] && result[10]}
+                    </Featuredetail>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.recommendation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[11] && result[11]}
+                    </Featuredetail>
+                  </Response>
+                </List>
+
+                <List bordercolor={theme.colors.gray200}>
+                  <Response>
+                    <Feature
+                      color={theme.colors.gray500}
+                      onClick={handleClick}
+                      tooltip={i18n.t("result.supplychain.tooltip")}
+                    >
+                      <FeatureText>
+                        {i18n.t("result.supplychain.title")}
+                        <Tooltip tooltip={i18n.t("result.supplychain.tooltip")}>
+                          <CustomSVG src={tooltipIcon} />
+                        </Tooltip>
+                      </FeatureText>
+                      {createGradeBadge(result[12] && result[12])}
+                      <ResponseIcon src={arrow} alt="arrow" />
+                    </Feature>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.evaluation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[13] && result[13]}
+                    </Featuredetail>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.recommendation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[14] && result[14]}
+                    </Featuredetail>
+                  </Response>
+                </List>
+
+                <List bordercolor={theme.colors.gray200}>
+                  <Response>
+                    <Feature
+                      color={theme.colors.gray500}
+                      onClick={handleClick}
+                      tooltip={i18n.t("result.market.tooltip")}
+                    >
+                      <FeatureText>
+                        {i18n.t("result.market.title")}
+                        <Tooltip tooltip={i18n.t("result.market.tooltip")}>
+                          <CustomSVG src={tooltipIcon} />
+                        </Tooltip>
+                      </FeatureText>
+                      {createGradeBadge(result[15] && result[15])}
+                      <ResponseIcon src={arrow} alt="arrow" />
+                    </Feature>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.evaluation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[16] && result[16]}
+                    </Featuredetail>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.recommendation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[17] && result[17]}
+                    </Featuredetail>
+                  </Response>
+                </List>
+
+                <List bordercolor={theme.colors.gray200}>
+                  <Response>
+                    <Feature
+                      color={theme.colors.gray500}
+                      onClick={handleClick}
+                      tooltip={i18n.t("result.entrepreneur.tooltip")}
+                    >
+                      <FeatureText>
+                        {i18n.t("result.entrepreneur.title")}
+                        <Tooltip
+                          tooltip={i18n.t("result.entrepreneur.tooltip")}
+                        >
+                          <CustomSVG src={tooltipIcon} />
+                        </Tooltip>
+                      </FeatureText>
+                      {createGradeBadge(result[18] && result[18])}
+                      <ResponseIcon src={arrow} alt="arrow" />
+                    </Feature>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.evaluation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[19] && result[19]}
+                    </Featuredetail>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.recommendation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[20] && result[20]}
+                    </Featuredetail>
+                  </Response>
+                </List>
+
+                <List bordercolor={theme.colors.transparent}>
+                  <Response>
+                    <Feature
+                      color={theme.colors.gray500}
+                      onClick={handleClick}
+                      tooltip={i18n.t("result.financial.tooltip")}
+                    >
+                      <FeatureText>
+                        {i18n.t("result.financial.title")}
+                        <Tooltip tooltip={i18n.t("result.financial.tooltip")}>
+                          <CustomSVG src={tooltipIcon} />
+                        </Tooltip>
+                      </FeatureText>
+                      {createGradeBadge(result[21] && result[21])}
+                      <ResponseIcon src={arrow} alt="arrow" />
+                    </Feature>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.evaluation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[22] && result[22]}
+                    </Featuredetail>
+                    <Featuredetailtitle color={theme.colors.gray700}>
+                      {i18n.t("about.analysis.readiness.recommendation.title")}
+                    </Featuredetailtitle>
+                    <Featuredetail color={theme.colors.gray500}>
+                      {result[23] && result[23]}
+                    </Featuredetail>
+                  </Response>
+                </List>
+              </Collapse>
+            </SectionContainer>
+
+            <SectionContainer>
+              <Title color={theme.colors.gray900}>
+                {i18n.t("email.pitch.title")}
+              </Title>
+
+              <FormText>
                 <TextBox
-                  borderradius="15px"
-                  width="calc(100% - 40px)"
+                  height="200px"
+                  borderradius="15px 15px 0 0"
                   bgcolor={theme.colors.white}
-                  color={theme.colors.gray500}
+                  color={theme.colors.gray900}
                   bordercolor={theme.colors.gray200}
+                  borderbottom="none"
                 >
-                  <GradeContainer
-                    bgcolor={theme.colors.white}
-                  >
-                    <GradeTitle>
-                      <Grade color={totalScore >= 64 ? theme.colors.green600 : totalScore >= 32 ? theme.colors.orange600 : theme.colors.red600}
-                        bordercolor={totalScore >= 64 ? theme.colors.green200 : totalScore >= 32 ? theme.colors.orange200 : theme.colors.red200}
-                        backgroundcolor={totalScore >= 64 ? theme.colors.green50 : totalScore >= 32 ? theme.colors.orange50 : theme.colors.red50}
-                      >
-                        {totalScore >= 80 ? 'A+' : totalScore >= 72 ? 'A' : totalScore >= 64 ? 'A-' : totalScore >= 48 ? 'B+' : totalScore >= 40 ? 'B' : totalScore >= 32 ? 'B-' : totalScore >= 16 ? 'C+' : totalScore >= 8 ? 'C' : 'C-'}
-                      </Grade>
-                      <FormTitle
-                        color={totalScore >= 64 ? theme.colors.green600 : totalScore >= 32 ? theme.colors.orange600 : theme.colors.red600}
-                        padding='10px'
-                      >{totalScore >= 64 ? i18n.t("result.slogonA") : totalScore >= 32 ? i18n.t("result.slogonB") : i18n.t("result.slogonC")}</FormTitle>
-                    </GradeTitle>
-                    <ScoreContainer>
-                      <Score color={totalScore >= 64 ? theme.colors.green600 : totalScore >= 32 ? theme.colors.orange600 : theme.colors.red600}>
-                        {Math.round(totalScore / 0.8) + '%'}
-                      </Score>
-                    </ScoreContainer>
-                  </GradeContainer>
+                  {pitchcontent}
                 </TextBox>
-
-                <SectionContainer>
-                  <SectionTitle>
-                    <Title color={theme.colors.gray900}>
-                      {i18n.t("result.titleL")}
-                    </Title>
-                    <Title color={theme.colors.gray500}>
-                      {i18n.t("result.titleR")}
-                    </Title>
-                  </SectionTitle>
-
-                  <Collapse id='results' bordercolor={theme.colors.gray200}>
-                    <List bordercolor={theme.colors.gray200}>
-                      <Response>
-                        <Feature color={theme.colors.gray500} onClick={handleClick}>
-                          <FeatureText>{i18n.t("result.features.title")}
-                            <Tooltip tooltip={i18n.t("result.features.tooltip")}>
-                              <CustomSVG src={tooltipIcon} />
-                            </Tooltip>
-                          </FeatureText>
-                          {createGradeBadge(result[0] && result[0])}
-                          <ResponseIcon src={arrow} alt="arrow" />
-                        </Feature>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[1] && result[1]}</Featuredetail>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[2] && result[2]}</Featuredetail>
-                      </Response>
-                    </List>
-
-                    <List bordercolor={theme.colors.gray200}>
-                      <Response>
-                        <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.readiness.tooltip")}>
-                          <FeatureText>{i18n.t("result.readiness.title")}
-                            <Tooltip tooltip={i18n.t("result.readiness.tooltip")}>
-                              <CustomSVG src={tooltipIcon} />
-                            </Tooltip>
-                          </FeatureText>
-                          {createGradeBadge(result[3] && result[3])}
-                          <ResponseIcon src={arrow} alt="arrow" />
-                        </Feature>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[4] && result[4]}</Featuredetail>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[5] && result[5]}</Featuredetail>
-                      </Response>
-                    </List>
-
-                    <List bordercolor={theme.colors.gray200}>
-                      <Response>
-                        <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.barrier.tooltip")}>
-                          <FeatureText>{i18n.t("result.barrier.title")}
-                            <Tooltip tooltip={i18n.t("result.barrier.tooltip")}>
-                              <CustomSVG src={tooltipIcon} />
-                            </Tooltip>
-                          </FeatureText>
-                          {createGradeBadge(result[6] && result[6])}
-                          <ResponseIcon src={arrow} alt="arrow" />
-                        </Feature>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[7] && result[7]}</Featuredetail>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[8] && result[8]}</Featuredetail>
-                      </Response>
-                    </List>
-
-                    <List bordercolor={theme.colors.gray200}>
-                      <Response>
-                        <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.adoption.tooltip")}>
-                          <FeatureText>{i18n.t("result.adoption.title")}
-                            <Tooltip tooltip={i18n.t("result.adoption.tooltip")}>
-                              <CustomSVG src={tooltipIcon} />
-                            </Tooltip>
-                          </FeatureText>
-                          {createGradeBadge(result[9] && result[9])}
-                          <ResponseIcon src={arrow} alt="arrow" />
-                        </Feature>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[10] && result[10]}</Featuredetail>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[11] && result[11]}</Featuredetail>
-                      </Response>
-                    </List>
-
-                    <List bordercolor={theme.colors.gray200}>
-                      <Response>
-                        <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.supplychain.tooltip")}>
-                          <FeatureText>{i18n.t("result.supplychain.title")}
-                            <Tooltip tooltip={i18n.t("result.supplychain.tooltip")}>
-                              <CustomSVG src={tooltipIcon} />
-                            </Tooltip>
-                          </FeatureText>
-                          {createGradeBadge(result[12] && result[12])}
-                          <ResponseIcon src={arrow} alt="arrow" />
-                        </Feature>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[13] && result[13]}</Featuredetail>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[14] && result[14]}</Featuredetail>
-                      </Response>
-                    </List>
-
-                    <List bordercolor={theme.colors.gray200}>
-                      <Response>
-                        <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.market.tooltip")}>
-                          <FeatureText>{i18n.t("result.market.title")}
-                            <Tooltip tooltip={i18n.t("result.market.tooltip")}>
-                              <CustomSVG src={tooltipIcon} />
-                            </Tooltip>
-                          </FeatureText>
-                          {createGradeBadge(result[15] && result[15])}
-                          <ResponseIcon src={arrow} alt="arrow" />
-                        </Feature>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[16] && result[16]}</Featuredetail>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[17] && result[17]}</Featuredetail>
-                      </Response>
-                    </List>
-
-                    <List bordercolor={theme.colors.gray200}>
-                      <Response>
-                        <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.entrepreneur.tooltip")}>
-                          <FeatureText>{i18n.t("result.entrepreneur.title")}
-                            <Tooltip tooltip={i18n.t("result.entrepreneur.tooltip")}>
-                              <CustomSVG src={tooltipIcon} />
-                            </Tooltip>
-                          </FeatureText>
-                          {createGradeBadge(result[18] && result[18])}
-                          <ResponseIcon src={arrow} alt="arrow" />
-                        </Feature>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[19] && result[19]}</Featuredetail>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[20] && result[20]}</Featuredetail>
-                      </Response>
-                    </List>
-
-                    <List bordercolor={theme.colors.transparent}>
-                      <Response>
-                        <Feature color={theme.colors.gray500} onClick={handleClick} tooltip={i18n.t("result.financial.tooltip")}>
-                          <FeatureText>{i18n.t("result.financial.title")}
-                            <Tooltip tooltip={i18n.t("result.financial.tooltip")}>
-                              <CustomSVG src={tooltipIcon} />
-                            </Tooltip>
-                          </FeatureText>
-                          {createGradeBadge(result[21] && result[21])}
-                          <ResponseIcon src={arrow} alt="arrow" />
-                        </Feature>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.evaluation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[22] && result[22]}</Featuredetail>
-                        <Featuredetailtitle color={theme.colors.gray700}>{i18n.t("about.analysis.readiness.recommendation.title")}</Featuredetailtitle>
-                        <Featuredetail color={theme.colors.gray500}>{result[23] && result[23]}</Featuredetail>
-                      </Response>
-                    </List>
-                  </Collapse>
-                </SectionContainer>
-
-                <SectionContainer>
-                  <Title color={theme.colors.gray900}>
-                    {i18n.t("email.pitch.title")}
-                  </Title>
-                  <Player
-                    color={theme.colors.gray900}
-                    bgcolor={theme.colors.white}
-                    bordercolor={theme.colors.gray200}
-                    padding='0px'
+                <PitchTextFormBottomBar
+                  bgcolor={theme.colors.gray100}
+                  bordercolor={theme.colors.gray100}
+                >
+                  <DContainer
+                    display="flex"
+                    justifycontent="flex-end"
+                    alignitems="center"
+                    gap="20px"
                   >
-                    <Audio controls id="myAudio">
-                      <source src={pitchURL}></source>
-                    </Audio>
-                  </Player>
-                  <FormText>
-                    <TextBox
-                      height="200px"
-                      borderradius="15px 15px 0 0"
-                      bgcolor={theme.colors.white}
-                      color={theme.colors.gray900}
-                      bordercolor={theme.colors.gray200}
-                      borderbottom='none'
+                    <ButtonDiv
+                      bghover={theme.colors.gray200}
+                      gap="5px"
+                      onClick={() => downloadTextAsWordFile(pitchcontent)}
+                      style={{ cursor: "pointer" }}
                     >
-                      {pitchcontent}
+                      <CustomSVG
+                        src={DownloadIcon}
+                        alt="downloadIcon"
+                      ></CustomSVG>
+                      <FormTitle color={theme.colors.gray500}>
+                        {i18n.t("getstart.analysis.button.download")}
+                      </FormTitle>
+                    </ButtonDiv>
 
-                    </TextBox>
-                    <PitchTextFormBottomBar
-                      bgcolor={theme.colors.gray100}
-                      bordercolor={theme.colors.gray100}
+                    <ButtonDiv
+                      bghover={theme.colors.gray200}
+                      gap="5px"
+                      onClick={() => CopytoClipboard(pitchcontent)}
+                      style={{ cursor: "pointer" }}
                     >
-                      <DContainer
-                        display="flex"
-                        justifycontent="flex-end"
-                        alignitems="center"
-                        gap="20px"
-                      >
-                        <ButtonDiv
-                          bghover={theme.colors.gray200}
-                          gap="5px"
-                          onClick={() => downloadTextAsWordFile(pitchcontent)}
-                          style={{ cursor: 'pointer' }}
-                        >
-                          <CustomSVG src={DownloadIcon} alt="downloadIcon"></CustomSVG>
-                          <FormTitle color={theme.colors.gray500}>{i18n.t("getstart.analysis.button.download")}</FormTitle>
-                        </ButtonDiv>
-
-                        <ButtonDiv
-                          bghover={theme.colors.gray200}
-                          gap="5px"
-                          onClick={() => CopytoClipboard(pitchcontent)}
-                          style={{ cursor: 'pointer' }}
-                        >
-                          <CustomSVG src={CopyIcon} alt={CopyIcon}></CustomSVG>
-                          <FormTitle color={theme.colors.gray500}>{i18n.t("getstart.analysis.button.copy")}</FormTitle>
-                        </ButtonDiv>
-
-                      </DContainer>
-                    </PitchTextFormBottomBar>
-                  </FormText>
-                </SectionContainer>
-              </ResultMainContainer>
-              <ResultSubContainer>
-                <Container3 bordercolor={theme.colors.gray200} bgcolor={theme.colors.white}>
-                  <ProcessingTitle>{i18n.t("process.title")}</ProcessingTitle>
-                  <Card>
-                    <CardIcon src={GradeA}></CardIcon>
-                    <CardTextDiv>
-                      <CardText>{i18n.t("process.paragraph1")}</CardText>
-                    </CardTextDiv>
-                  </Card>
-                  <Card>
-                    <CardIcon src={GradeB}></CardIcon>
-                    <CardTextDiv>
-                      <CardText>{i18n.t("process.paragraph2")}</CardText>
-                    </CardTextDiv>
-                  </Card>
-                  <Card>
-                    <CardIcon src={GradeC}></CardIcon>
-                    <CardTextDiv>
-                      <CardText>{i18n.t("process.paragraph3")}</CardText>
-                    </CardTextDiv>
-                  </Card>
-                </Container3>
-              </ResultSubContainer>
-            </ResultContainer>
-          </>
-
-        }
+                      <CustomSVG src={CopyIcon} alt={CopyIcon}></CustomSVG>
+                      <FormTitle color={theme.colors.gray500}>
+                        {i18n.t("getstart.analysis.button.copy")}
+                      </FormTitle>
+                    </ButtonDiv>
+                  </DContainer>
+                </PitchTextFormBottomBar>
+              </FormText>
+            </SectionContainer>
+          </ResultMainContainer>
+          <ResultSubContainer>
+            <Container3
+              bordercolor={theme.colors.gray200}
+              bgcolor={theme.colors.white}
+            >
+              <ProcessingTitle>{i18n.t("process.title")}</ProcessingTitle>
+              <Card>
+                <CardIcon src={GradeA}></CardIcon>
+                <CardTextDiv>
+                  <CardText>{i18n.t("process.paragraph1")}</CardText>
+                </CardTextDiv>
+              </Card>
+              <Card>
+                <CardIcon src={GradeB}></CardIcon>
+                <CardTextDiv>
+                  <CardText>{i18n.t("process.paragraph2")}</CardText>
+                </CardTextDiv>
+              </Card>
+              <Card>
+                <CardIcon src={GradeC}></CardIcon>
+                <CardTextDiv>
+                  <CardText>{i18n.t("process.paragraph3")}</CardText>
+                </CardTextDiv>
+              </Card>
+            </Container3>
+          </ResultSubContainer>
+        </ResultContainer>
       </Wrapper>
     </>
   );

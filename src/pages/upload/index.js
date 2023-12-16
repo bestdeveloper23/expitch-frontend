@@ -18,11 +18,12 @@ import { useDropzone } from 'react-dropzone';
 import { useTheme } from 'styled-components';
 import { i18n } from "./../../translate/i18n";
 import { useRecaptcha } from '../../core/hooks/useRecaptcha';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 const Upload = () => {
   const theme = useTheme();
+  const location = useLocation();
   const [wizardIndex, setWizardIndex] = useState('uploading');
   const [loadingStatus, setLoadingStatus] = useState('initial');
   const [emailEnable, setEmailEnable] = useState('failed');
@@ -38,9 +39,8 @@ const Upload = () => {
   const [pitchTextUpload, setPitchTextUpload] = useState(''); 
   const navigate = useNavigate();
 
-  const { email } = useSelector((state) => ({
-    email: state.pitch.email,
-  }));
+  // const { email } = useSelector((state) => state.pitch.email);
+  const email = location.state.email || {};
   console.log(email)
   const dispatch = useDispatch();
 

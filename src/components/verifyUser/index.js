@@ -74,14 +74,12 @@ export default function VerifyUser() {
 
             dispatch(setEmail(result.data.email));
             dispatch(
-              setCurrentUser(
-                {
-                  email: result.data.email,
-                  session_token: result.data.sessionToken,
-                  sessionJwt: result.data.sessionJwt,
-                  user_id: result.data.user_id,
-                }
-              )
+              setCurrentUser({
+                email: result.data.email,
+                session_token: result.data.sessionToken,
+                sessionJwt: result.data.sessionJwt,
+                user_id: result.data.user_id,
+              })
             );
             setVerifyMessage("Success");
             navigate("/upload", { state: { email: result.data.email } });

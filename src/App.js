@@ -25,6 +25,7 @@ import Privacy from "./pages/privacy";
 import TermsAndConditions from "./pages/terms";
 import { htmlScripts } from "./core/services/htmlScripts";
 import { logoutUser, setCurrentUser } from "./actions/auth";
+import { setEmail } from "./actions/pitch";
 import PrivateRoute from "./components/privateRoute/privateroute";
 
 // import PrivateRoute from "./components/privateRoute/privateroute";
@@ -36,7 +37,7 @@ if (localStorage.userInfo) {
   const token = localStorage.userInfo;
 
   store.dispatch(setCurrentUser(JSON.parse(localStorage.userInfo)))
-
+  store.dispatch(setEmail(JSON.parse(localStorage.userInfo).email));
   // Check for expired token
 }
 

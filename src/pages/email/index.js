@@ -18,25 +18,23 @@ import {
     const [wizardIndex, setWizardIndex] = useState('email');
     const [emailError, setEmailError] = useState('');
     const [emailEnable, setEmailEnable] = useState('failed');
+    const [inputEmail, setInputEmail] = useState('');
     const navigate = useNavigate();
   
-    const { email, file } = useSelector((state) => ({
-      email: state.email,
-      file: state.file
-    }));
+    const email = useSelector((state) => state.pitch.email);
     const dispatch = useDispatch();
   
     const handleEmailChange = (event) => {
-      if (validateEmail()) {
+      if (validateEmail(event.target.value)) {
         setEmailEnable('valid')
       } else setEmailEnable('failed')
   
-      dispatch(setEmail(event.target.value));
+      setInputEmail(event.target.value);
     };
   
-    const validateEmail = () => {
+    const validateEmail = (emaildata) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
+      if (!emailRegex.test(emaildata)) {
         setEmailError('Invalid email address');
         return false;
       }
@@ -51,12 +49,11 @@ import {
     }, [])
 
     const handleWizardIndex = (index) => {
-      if (!validateEmail()) {
+      if (!validateEmail(inputEmail)) {
         console.log(emailError)
         return;
       }
-
-      navigate('/upload', { state: { email } });
+      navigate('/upload', { state: { email: inputEmail } });
       setWizardIndex(index);
   
       console.log(wizardIndex)

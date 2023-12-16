@@ -23,18 +23,21 @@ import LogoImage from "../../assets/images/expitchLogo.svg";
 import { DContainer } from "../login/styled";
 import { useRecaptcha } from "../../core/hooks/useRecaptcha";
 import { logoutUser } from "../../actions/auth";
-import { setEmail } from "../../actions/pitch";
+import { setEmail, setPitchesList } from "../../actions/pitch";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [menuopened, setMenuopened] = useState(false);
   const [isOpen_notice, setIsOpennotice] = useState("yes");
   const { getToken } = useRecaptcha("evaluatePitchRequest");
 
   const auth = useSelector((state) => state.auth.isAuthenticated);
   const userInfo = useSelector((state) => state.auth.user);
-
+  const email = useSelector((state) => state.pitch.email);
+  
   const handleClick = () => {
     console.log("Button clicked!", isOpen_notice);
     setIsOpennotice("no");
@@ -65,11 +68,47 @@ export default function Header() {
           localStorage.removeItem("userInfo");
           dispatch(logoutUser());
           dispatch(setEmail(null));
-          console.log("Success");
-          window.location.href = "/";
+          navigate("/");
         }
       } else {
         console.error(response);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handlePitchesList = async () => {
+    console.log(email)
+    if(!email) return;
+    const recaptchaToken =
+      process.env.REACT_APP_NODE_ENV === "development" ? "" : await getToken();
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_ENDPOINTS}/pitch/getPitchlistforUser`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            recaptchaToken: recaptchaToken,
+          }),
+        }
+      );
+      if (response.ok) {
+        const result = await response.json();
+        if (result.message === "Success") {
+          dispatch(setPitchesList(result.data));
+          console.log("Success");
+          navigate("/pitches-list", { state: { responseData: result.data } });
+        }
+      } else {
+        console.error(response);
+        // navigate("/pitches-list", { state: { responseData: [] } });
+        navigate("/pitches-list", { state: { responseData: [{fileName: 'My test link1', _id:'1234asdf', createdAt: "12/15/2023"}, {fileName: 'My test link2', _id:'3424sdfds2', createdAt: "12/16/2023"}] } });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -203,43 +242,42 @@ export default function Header() {
                       </svg>
                     </Item>
 
-                    <Links href="/pitches-list">
-                      <Item
-                        bordercolor={theme.colors.gray200}
-                        bgcolor={theme.colors.white}
-                        color={theme.colors.gray900}
-                        Link="/pitch-list"
-                        onClick={() => {
-                          setMenuopened(!menuopened);
-                        }}
+                    <Item
+                      bordercolor={theme.colors.gray200}
+                      bgcolor={theme.colors.white}
+                      color={theme.colors.gray900}
+                      Link="/pitch-list"
+                      onClick={() => {
+                        setMenuopened(!menuopened);
+                        handlePitchesList();
+                      }}
+                    >
+                      {i18n.t("routes.profile.pitchlist")}
+                      <svg
+                        width="20"
+                        height="21"
+                        viewBox="0 0 20 21"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        {i18n.t("routes.profile.pitchlist")}
-                        <svg
-                          width="20"
-                          height="21"
-                          viewBox="0 0 20 21"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M2 4.65625C2 3.27554 3.11929 2.15625 4.5 2.15625H15.5C16.8807 2.15625 18 3.27554 18 4.65625C18 6.03696 16.8807 7.15625 15.5 7.15625H4.5C3.11929 7.15625 2 6.03696 2 4.65625Z"
-                            fill="#6B7280"
-                          />
-                          <path
-                            d="M2.75 9.23962C2.33579 9.23962 2 9.57541 2 9.98962C2 10.4038 2.33579 10.7396 2.75 10.7396H17.25C17.6642 10.7396 18 10.4038 18 9.98962C18 9.57541 17.6642 9.23962 17.25 9.23962H2.75Z"
-                            fill="#6B7280"
-                          />
-                          <path
-                            d="M2.75 12.8196C2.33579 12.8196 2 13.1554 2 13.5696C2 13.9838 2.33579 14.3196 2.75 14.3196H17.25C17.6642 14.3196 18 13.9838 18 13.5696C18 13.1554 17.6642 12.8196 17.25 12.8196H2.75Z"
-                            fill="#6B7280"
-                          />
-                          <path
-                            d="M2.75 16.4063C2.33579 16.4063 2 16.7421 2 17.1563C2 17.5705 2.33579 17.9063 2.75 17.9063H17.25C17.6642 17.9063 18 17.5705 18 17.1563C18 16.7421 17.6642 16.4063 17.25 16.4063H2.75Z"
-                            fill="#6B7280"
-                          />
-                        </svg>
-                      </Item>
-                    </Links>
+                        <path
+                          d="M2 4.65625C2 3.27554 3.11929 2.15625 4.5 2.15625H15.5C16.8807 2.15625 18 3.27554 18 4.65625C18 6.03696 16.8807 7.15625 15.5 7.15625H4.5C3.11929 7.15625 2 6.03696 2 4.65625Z"
+                          fill="#6B7280"
+                        />
+                        <path
+                          d="M2.75 9.23962C2.33579 9.23962 2 9.57541 2 9.98962C2 10.4038 2.33579 10.7396 2.75 10.7396H17.25C17.6642 10.7396 18 10.4038 18 9.98962C18 9.57541 17.6642 9.23962 17.25 9.23962H2.75Z"
+                          fill="#6B7280"
+                        />
+                        <path
+                          d="M2.75 12.8196C2.33579 12.8196 2 13.1554 2 13.5696C2 13.9838 2.33579 14.3196 2.75 14.3196H17.25C17.6642 14.3196 18 13.9838 18 13.5696C18 13.1554 17.6642 12.8196 17.25 12.8196H2.75Z"
+                          fill="#6B7280"
+                        />
+                        <path
+                          d="M2.75 16.4063C2.33579 16.4063 2 16.7421 2 17.1563C2 17.5705 2.33579 17.9063 2.75 17.9063H17.25C17.6642 17.9063 18 17.5705 18 17.1563C18 16.7421 17.6642 16.4063 17.25 16.4063H2.75Z"
+                          fill="#6B7280"
+                        />
+                      </svg>
+                    </Item>
 
                     <Item
                       color={theme.colors.gray900}

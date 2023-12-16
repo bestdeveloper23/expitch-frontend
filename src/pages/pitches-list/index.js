@@ -23,19 +23,78 @@ import {
   IconActionPrint,
 } from "./styled";
 import { i18n } from "./../../translate/i18n";
+import axios from "axios";
 import { useTheme } from "styled-components";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import isEmpty from "lodash/isEmpty";
+import { useLocation } from "react-router-dom";
+import { useRecaptcha } from "../../core/hooks/useRecaptcha";
+import { useNavigate } from "react-router-dom";
 
-export default function PitchesList(props) {
+export default function PitchesList() {
   const theme = useTheme();
-  const { prop1, prop2, prop3 } = props;
-  const userInfo = useSelector((state) => state.auth.user);
-
+  const navigate = useNavigate();
+  const email = useSelector((state) => state.pitch.email);
   const [totalScore, setTotalScore] = useState("");
+  const [pitchesData, setPitchesData] = useState([]);
 
-   // the datas from database
+  const location = useLocation();
+  const responseData = location.state.responseData;
+  // the datas from database
+  // Begin POST call
+  const immediateFunction = () => {
+    if (responseData && responseData.length > 0) {
+      const pitches = [];
+      responseData.map((pitch, index) => {
+        let pitchData = {};
+        pitchData.fileName = pitch.fileName;
+        let scores = 0;
+        Object.keys(pitch).forEach((section) => {
+          const currentSection = pitch[section];
+          switch (currentSection.LetterGrade) {
+            case "A+":
+              scores += 10;
+              break;
+            case "A":
+              scores += 9;
+              break;
+            case "A-":
+              scores += 8;
+              break;
+            case "B+":
+              scores += 6;
+              break;
+            case "B":
+              scores += 5;
+              break;
+            case "B-":
+              scores += 4;
+              break;
+            case "C+":
+              scores += 2;
+              break;
+            case "C":
+              scores += 1;
+              break;
+            default:
+              break;
+          }
+        });
+        pitchData.totalScore = scores;
+        pitchData.date = pitch.createdAt;
+        pitches.push(pitchData);
+      });
+      console.log(pitches);
+      setPitchesData({
+        pitches,
+      });
+    }
+  };
+
+  useEffect(() => {
+    immediateFunction();
+  }, []);
 
   return (
     <Container>
@@ -55,130 +114,78 @@ export default function PitchesList(props) {
             </HeaderRow>
           </thead>
           <tbody>
-            <BodyRow color={theme.colors.gray200}>
-              <BodyCellNum color={theme.colors.gray500}>1</BodyCellNum>
-              <BodyCellName>
-                <NameLink color={theme.colors.primary} href="/results">
-                  Link 1
-                </NameLink>
-              </BodyCellName>
-              <BodyCellScore>
-                <Grade
-                  color={
-                    totalScore >= 64
-                      ? theme.colors.green600
-                      : totalScore >= 32
-                      ? theme.colors.orange600
-                      : theme.colors.red600
-                  }
-                  bordercolor={
-                    totalScore >= 64
-                      ? theme.colors.green200
-                      : totalScore >= 32
-                      ? theme.colors.orange200
-                      : theme.colors.red200
-                  }
-                  backgroundcolor={
-                    totalScore >= 64
-                      ? theme.colors.green50
-                      : totalScore >= 32
-                      ? theme.colors.orange50
-                      : theme.colors.red50
-                  }
-                >
-                  {totalScore >= 80
-                    ? "A+"
-                    : totalScore >= 72
-                    ? "A"
-                    : totalScore >= 64
-                    ? "A-"
-                    : totalScore >= 48
-                    ? "B+"
-                    : totalScore >= 40
-                    ? "B"
-                    : totalScore >= 32
-                    ? "B-"
-                    : totalScore >= 16
-                    ? "C+"
-                    : totalScore >= 8
-                    ? "C"
-                    : "C-"}
-                </Grade>
-              </BodyCellScore>
-              <BodyCellDate color={theme.colors.gray500}>
-                15 Mar 2023
-              </BodyCellDate>
-              <BodyCellActions>
-                <IconActionDownload bgcolor={theme.colors.gray200}>
-                  <DownloadIcon color={theme.colors.gray700} />
-                </IconActionDownload>
-                <IconActionPrint bgcolor={theme.colors.gray200}>
-                  <PrintIcon color={theme.colors.gray700} />
-                </IconActionPrint>
-              </BodyCellActions>
-            </BodyRow>
-            <BodyRow color={theme.colors.gray200}>
-              <BodyCellNum color={theme.colors.gray500}>2</BodyCellNum>
-              <BodyCellName>
-                <NameLink color={theme.colors.primary} href="/results">
-                  Link 2
-                </NameLink>
-              </BodyCellName>
-              <BodyCellScore>
-                <Grade
-                  color={
-                    totalScore >= 64
-                      ? theme.colors.green600
-                      : totalScore >= 32
-                      ? theme.colors.orange600
-                      : theme.colors.red600
-                  }
-                  bordercolor={
-                    totalScore >= 64
-                      ? theme.colors.green200
-                      : totalScore >= 32
-                      ? theme.colors.orange200
-                      : theme.colors.red200
-                  }
-                  backgroundcolor={
-                    totalScore >= 64
-                      ? theme.colors.green50
-                      : totalScore >= 32
-                      ? theme.colors.orange50
-                      : theme.colors.red50
-                  }
-                >
-                  {totalScore >= 80
-                    ? "A+"
-                    : totalScore >= 72
-                    ? "A"
-                    : totalScore >= 64
-                    ? "A-"
-                    : totalScore >= 48
-                    ? "B+"
-                    : totalScore >= 40
-                    ? "B"
-                    : totalScore >= 32
-                    ? "B-"
-                    : totalScore >= 16
-                    ? "C+"
-                    : totalScore >= 8
-                    ? "C"
-                    : "C-"}
-                </Grade>
-              </BodyCellScore>
-              <BodyCellDate color={theme.colors.gray500}>
-                12 Mar 2023
-              </BodyCellDate>
-              <BodyCellActions>
-                <IconActionDownload bgcolor={theme.colors.gray200}>
-                  <DownloadIcon color={theme.colors.gray700} />
-                </IconActionDownload>
-                <IconActionPrint bgcolor={theme.colors.gray200}>
-                  <PrintIcon color={theme.colors.gray700} />
-                </IconActionPrint>
-              </BodyCellActions>
-            </BodyRow>
+            {console.log(typeof(pitchesData.pitches))}
+            {pitchesData.pitches && pitchesData.pitches.map((pitch, index) => {
+              return (
+                <BodyRow color={theme.colors.gray200} key={pitch._id}>
+                  <BodyCellNum color={theme.colors.gray500}>1</BodyCellNum>
+                  <BodyCellName>
+                    <NameLink
+                      color={theme.colors.primary}
+                      href={`/results?id=${pitch._id}`}
+                      key={pitch._id}
+                    >
+                      {pitch.fileName}
+                    </NameLink>
+                  </BodyCellName>
+                  <BodyCellScore>
+                    <Grade
+                      key={pitch._id}
+                      color={
+                        pitch.totalScore >= 64
+                          ? theme.colors.green600
+                          : totalScore >= 32
+                          ? theme.colors.orange600
+                          : theme.colors.red600
+                      }
+                      bordercolor={
+                        pitch.totalScore >= 64
+                          ? theme.colors.green200
+                          : pitch.totalScore >= 32
+                          ? theme.colors.orange200
+                          : theme.colors.red200
+                      }
+                      backgroundcolor={
+                        pitch.totalScore >= 64
+                          ? theme.colors.green50
+                          : pitch.totalScore >= 32
+                          ? theme.colors.orange50
+                          : theme.colors.red50
+                      }
+                    >
+                      {pitch.totalScore >= 80
+                        ? "A+"
+                        : pitch.totalScore >= 72
+                        ? "A"
+                        : pitch.totalScore >= 64
+                        ? "A-"
+                        : pitch.totalScore >= 48
+                        ? "B+"
+                        : pitch.totalScore >= 40
+                        ? "B"
+                        : pitch.totalScore >= 32
+                        ? "B-"
+                        : pitch.totalScore >= 16
+                        ? "C+"
+                        : pitch.totalScore >= 8
+                        ? "C"
+                        : "C-"}
+                    </Grade>
+                  </BodyCellScore>
+                  <BodyCellDate color={theme.colors.gray500} key={pitch._id}>
+                    {pitch.date}
+                  </BodyCellDate>
+                  <BodyCellActions>
+                    <IconActionDownload bgcolor={theme.colors.gray200}>
+                      <DownloadIcon color={theme.colors.gray700} />
+                    </IconActionDownload>
+                    <IconActionPrint bgcolor={theme.colors.gray200}>
+                      <PrintIcon color={theme.colors.gray700} />
+                    </IconActionPrint>
+                  </BodyCellActions>
+                </BodyRow>
+              );
+            })}
           </tbody>
         </Table>
       </Container2>
