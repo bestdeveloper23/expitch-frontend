@@ -107,8 +107,8 @@ export default function Header() {
         }
       } else {
         console.error(response);
-        // navigate("/pitches-list", { state: { responseData: [] } });
-        navigate("/pitches-list", { state: { responseData: [{fileName: 'My test link1', _id:'1234asdf', createdAt: "12/15/2023"}, {fileName: 'My test link2', _id:'3424sdfds2', createdAt: "12/16/2023"}] } });
+        navigate("/pitches-list", { state: { responseData: [] } });
+        // navigate("/pitches-list", { state: { responseData: [{fileName: 'My test link1', _id:'1234asdf', createdAt: "12/15/2023"}, {fileName: 'My test link2', _id:'3424sdfds2', createdAt: "12/16/2023"}] } });
       }
     } catch (error) {
       console.error("Error:", error);
