@@ -28,9 +28,8 @@ import { useTheme } from "styled-components";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import isEmpty from "lodash/isEmpty";
-import { useLocation } from "react-router-dom";
 import { useRecaptcha } from "../../core/hooks/useRecaptcha";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function PitchesList() {
   const theme = useTheme();
@@ -40,7 +39,7 @@ export default function PitchesList() {
   const [pitchesData, setPitchesData] = useState([]);
 
   const location = useLocation();
-  const responseData = location.state.responseData || [];
+  const responseData = useSelector((state) => state.pitch.pitchesList);
   // the datas from database
   // Begin POST call
   const immediateFunction = () => {
@@ -92,13 +91,26 @@ export default function PitchesList() {
     }
   };
 
+  const convertToDayMonthNameYear = (isoString) => {
+    const date = new Date(isoString);
+
+    const day = date.getUTCDate();
+    const year = date.getUTCFullYear();
+
+    // Array of month names
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const monthName = monthNames[date.getUTCMonth()]; // getUTCMonth returns 0 for January, 1 for February, etc.
+
+    return `${day} ${monthName} ${year}`;
+}
+  
   useEffect(() => {
     immediateFunction();
   }, []);
 
   return (
     <Container>
-      <Title>{i18n.t("pitches.title")}</Title>
+      <Title>{i18n.t("pitcheslist.title")}</Title>
       <Container2>
         <Table color={theme.colors.gray200}>
           <thead>
@@ -107,17 +119,17 @@ export default function PitchesList() {
               color={theme.colors.gray200}
             >
               <HeaderCellNum>#</HeaderCellNum>
-              <HeaderCellName>Name</HeaderCellName>
-              <HeaderCellScore>Score</HeaderCellScore>
-              <HeaderCellDate>Date</HeaderCellDate>
-              <HeaderCellActions>Actions</HeaderCellActions>
+              <HeaderCellName>{i18n.t("pitcheslist.name")}</HeaderCellName>
+              <HeaderCellScore>{i18n.t("pitcheslist.score")}</HeaderCellScore>
+              <HeaderCellDate>{i18n.t("pitcheslist.date")}</HeaderCellDate>
+              <HeaderCellActions>{i18n.t("pitcheslist.actions")}</HeaderCellActions>
             </HeaderRow>
           </thead>
           <tbody>
             {pitchesData.pitches && pitchesData.pitches.map((pitch, index) => {
               return (
                 <BodyRow color={theme.colors.gray200} key={pitch._id}>
-                  <BodyCellNum color={theme.colors.gray500}>1</BodyCellNum>
+                  <BodyCellNum color={theme.colors.gray500}>{index+1}</BodyCellNum>
                   <BodyCellName>
                     <NameLink
                       color={theme.colors.primary}
@@ -172,7 +184,7 @@ export default function PitchesList() {
                     </Grade>
                   </BodyCellScore>
                   <BodyCellDate color={theme.colors.gray500} key={pitch._id}>
-                    {pitch.date}
+                    {convertToDayMonthNameYear(pitch.date)}
                   </BodyCellDate>
                   <BodyCellActions>
                     <IconActionDownload bgcolor={theme.colors.gray200}>
