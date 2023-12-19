@@ -100,10 +100,11 @@ export default function Header() {
       );
       if (response.ok) {
         const result = await response.json();
-        if (result.message === "Success") {
-          dispatch(setPitchesList(result.data));
+        if (result && result.length > 0) {
+          dispatch(setPitchesList(result));
+          localStorage.setItem('pitches', JSON.stringify(result));
           console.log("Success");
-          navigate("/pitches-list", { state: { responseData: result.data } });
+          navigate("/pitches-list", { state: { responseData: result } });
         }
       } else {
         console.error(response);

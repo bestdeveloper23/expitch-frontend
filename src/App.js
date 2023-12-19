@@ -25,7 +25,7 @@ import Privacy from "./pages/privacy";
 import TermsAndConditions from "./pages/terms";
 import { htmlScripts } from "./core/services/htmlScripts";
 import { logoutUser, setCurrentUser } from "./actions/auth";
-import { setEmail } from "./actions/pitch";
+import { setEmail, setPitchesList } from "./actions/pitch";
 import PrivateRoute from "./components/privateRoute/privateroute";
 
 // import PrivateRoute from "./components/privateRoute/privateroute";
@@ -35,10 +35,12 @@ const store = createStore(reducers);
 if (localStorage.userInfo) {
   // Set auth token header auth
   const token = localStorage.userInfo;
-
-  store.dispatch(setCurrentUser(JSON.parse(localStorage.userInfo)))
-  store.dispatch(setEmail(JSON.parse(localStorage.userInfo).email));
+  store.dispatch(setCurrentUser(JSON.parse(localStorage.userInfo)));  
+  store.dispatch(setEmail(JSON.parse(localStorage.userInfo).email))
   // Check for expired token
+}
+if(localStorage.pitches){
+  store.dispatch(setPitchesList(JSON.parse(localStorage.pitches)));
 }
 
 function App() {
