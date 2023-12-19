@@ -83,6 +83,7 @@ export default function PitchesList() {
         });
         pitchData.totalScore = scores;
         pitchData.date = pitch.createdAt;
+        pitchData.pitchText = pitch.pitchText;
         pitches.push(pitchData);
       });
       setPitchesData({
@@ -102,8 +103,27 @@ export default function PitchesList() {
     const monthName = monthNames[date.getUTCMonth()]; // getUTCMonth returns 0 for January, 1 for February, etc.
 
     return `${day} ${monthName} ${year}`;
-}
-  
+  }
+
+
+  const downloadTextAsWordFile = (text) => {
+    const blob = new Blob([text], { type: "text/plain" });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "pitch.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
   useEffect(() => {
     immediateFunction();
   }, []);
@@ -129,7 +149,7 @@ export default function PitchesList() {
             {pitchesData.pitches && pitchesData.pitches.map((pitch, index) => {
               return (
                 <BodyRow color={theme.colors.gray200} key={pitch._id}>
-                  <BodyCellNum color={theme.colors.gray500}>{index+1}</BodyCellNum>
+                  <BodyCellNum color={theme.colors.gray500}>{index + 1}</BodyCellNum>
                   <BodyCellName>
                     <NameLink
                       color={theme.colors.primary}
@@ -146,51 +166,51 @@ export default function PitchesList() {
                         pitch.totalScore >= 64
                           ? theme.colors.green600
                           : totalScore >= 32
-                          ? theme.colors.orange600
-                          : theme.colors.red600
+                            ? theme.colors.orange600
+                            : theme.colors.red600
                       }
                       bordercolor={
                         pitch.totalScore >= 64
                           ? theme.colors.green200
                           : pitch.totalScore >= 32
-                          ? theme.colors.orange200
-                          : theme.colors.red200
+                            ? theme.colors.orange200
+                            : theme.colors.red200
                       }
                       backgroundcolor={
                         pitch.totalScore >= 64
                           ? theme.colors.green50
                           : pitch.totalScore >= 32
-                          ? theme.colors.orange50
-                          : theme.colors.red50
+                            ? theme.colors.orange50
+                            : theme.colors.red50
                       }
                     >
                       {pitch.totalScore >= 80
                         ? "A+"
                         : pitch.totalScore >= 72
-                        ? "A"
-                        : pitch.totalScore >= 64
-                        ? "A-"
-                        : pitch.totalScore >= 48
-                        ? "B+"
-                        : pitch.totalScore >= 40
-                        ? "B"
-                        : pitch.totalScore >= 32
-                        ? "B-"
-                        : pitch.totalScore >= 16
-                        ? "C+"
-                        : pitch.totalScore >= 8
-                        ? "C"
-                        : "C-"}
+                          ? "A"
+                          : pitch.totalScore >= 64
+                            ? "A-"
+                            : pitch.totalScore >= 48
+                              ? "B+"
+                              : pitch.totalScore >= 40
+                                ? "B"
+                                : pitch.totalScore >= 32
+                                  ? "B-"
+                                  : pitch.totalScore >= 16
+                                    ? "C+"
+                                    : pitch.totalScore >= 8
+                                      ? "C"
+                                      : "C-"}
                     </Grade>
                   </BodyCellScore>
                   <BodyCellDate color={theme.colors.gray500} key={pitch._id}>
                     {convertToDayMonthNameYear(pitch.date)}
                   </BodyCellDate>
                   <BodyCellActions>
-                    <IconActionDownload bgcolor={theme.colors.gray200}>
+                    <IconActionDownload bgcolor={theme.colors.gray200} onClick={() => downloadTextAsWordFile(pitch.pitchText)}>
                       <DownloadIcon color={theme.colors.gray700} />
                     </IconActionDownload>
-                    <IconActionPrint bgcolor={theme.colors.gray200}>
+                    <IconActionPrint bgcolor={theme.colors.gray200} onClick={() => handlePrint()}>
                       <PrintIcon color={theme.colors.gray700} />
                     </IconActionPrint>
                   </BodyCellActions>
