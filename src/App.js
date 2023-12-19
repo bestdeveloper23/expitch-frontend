@@ -35,8 +35,9 @@ const store = createStore(reducers);
 if (localStorage.userInfo) {
   // Set auth token header auth
   const token = localStorage.userInfo;
-  store.dispatch(setCurrentUser(JSON.parse(localStorage.userInfo)));  
-  store.dispatch(setEmail(JSON.parse(localStorage.userInfo).email))
+
+  store.dispatch(setCurrentUser(JSON.parse(localStorage.userInfo)));
+  store.dispatch(setEmail(JSON.parse(localStorage.userInfo).email));
   // Check for expired token
 }
 if(localStorage.pitches){
