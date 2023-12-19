@@ -40,7 +40,7 @@ export default function PitchesList() {
   const [pitchesData, setPitchesData] = useState([]);
 
   const location = useLocation();
-  const responseData = location.state.responseData;
+  const responseData = location.state.responseData || [];
   // the datas from database
   // Begin POST call
   const immediateFunction = () => {
@@ -48,11 +48,12 @@ export default function PitchesList() {
       const pitches = [];
       responseData.map((pitch, index) => {
         let pitchData = {};
+        pitchData._id = pitch._id;
         pitchData.fileName = pitch.fileName;
         let scores = 0;
         Object.keys(pitch).forEach((section) => {
           const currentSection = pitch[section];
-          switch (currentSection.LetterGrade) {
+          switch (currentSection.letterGrade) {
             case "A+":
               scores += 10;
               break;
@@ -85,7 +86,6 @@ export default function PitchesList() {
         pitchData.date = pitch.createdAt;
         pitches.push(pitchData);
       });
-      console.log(pitches);
       setPitchesData({
         pitches,
       });
@@ -114,7 +114,6 @@ export default function PitchesList() {
             </HeaderRow>
           </thead>
           <tbody>
-            {console.log(typeof(pitchesData.pitches))}
             {pitchesData.pitches && pitchesData.pitches.map((pitch, index) => {
               return (
                 <BodyRow color={theme.colors.gray200} key={pitch._id}>

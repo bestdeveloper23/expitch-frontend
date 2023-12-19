@@ -56,10 +56,11 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useRecaptcha } from "../../core/hooks/useRecaptcha";
 import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Results = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const [result, setResult] = useState([]);
   const [pitchcontent, setPicthcontent] = useState("");
   const [totalScore, setTotalScore] = useState("");
@@ -69,7 +70,6 @@ const Results = () => {
 
   const location = useLocation();
   const PitchesList = useSelector((state) => state.pitch.pitchesList);
-  // const { responseData } = location.state || {};
 
   const showResults = () => {
     if (PitchesList && PitchesList.length > 0) {
@@ -78,8 +78,10 @@ const Results = () => {
       const responseData = PitchesList.find((item) => item._id === id);
     
       setPicthcontent(responseData.pitchText);
-      setPitchTitle(responseData.fileName);
-
+      if(responseData.fileName !== 'noFile'){
+        setPitchTitle(responseData.fileName);  
+      }
+      
       let i = 0;
       let item = [];
       let scores = 0;
