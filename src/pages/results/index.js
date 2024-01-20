@@ -73,6 +73,7 @@ import jsPDF from "jspdf";
 import { useRecaptcha } from "../../core/hooks/useRecaptcha";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const Results = () => {
   const theme = useTheme();
@@ -82,6 +83,7 @@ const Results = () => {
   const [totalScore, setTotalScore] = useState("");
   const [pitchTitle, setPitchTitle] = useState("Pitch title");
   const [showModal, setShowModal] = useState(false);
+  const [pitchId, setPitchId] = useState("");
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
@@ -96,7 +98,7 @@ const Results = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const id = urlParams.get("id");
       const responseData = PitchesList.find((item) => item._id === id);
-    
+      setPitchId(id);
       setPicthcontent(responseData.pitchText);
       if(responseData.fileName !== 'noFile'){
         setPitchTitle(responseData.fileName);  
@@ -308,12 +310,24 @@ const Results = () => {
     console.log('Key:', key);
   }
 
-  const submitChangeName = () => {
+  const submitChangeName = async () => {
     const changedFileName = document.querySelector("#pitchfileName").value;
-    setPitchTitle(changedFileName);
-    setShowModal(false);
+    axios
+      .post(
+        `${process.env.REACT_APP_API_ENDPOINTS}/pitch/updatePitchFileName`,
+        {_id:pitchId, fileName: changedFileName},
+        {}
+      )
+      .then((response) => {
+        // Handle the successful response
+        
+        setPitchTitle(changedFileName);
+        setShowModal(false);
+      })
+      .catch((error) => {
+        console.log(error.response.data.message);
+      });
   }
-
   
 
   useEffect(() => {
@@ -358,12 +372,8 @@ const Results = () => {
               >
                 {pitchTitle}
               </FormTitle>
-              {/* <EditButton onClick={openModal}> */}
-              <div>
-                <img src={EditIcon} onClick={openModal}></img>  
-              </div>
-              
-              {/* </EditButton> */}
+                            
+                <EditButton src={EditIcon} onClick={openModal}></EditButton>  
 
 {/* Modal part */}
 

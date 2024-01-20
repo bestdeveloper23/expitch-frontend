@@ -319,6 +319,7 @@ export const GradeTitle = styled.div`
  color: ${(props) => props.color};
  display: flex;
  align-items: center;
+ gap: 20px;
  font-size: ${typography.label.size};
  font-weight: ${typography.sm.fontWeight};
  @media(min-width: ${breakpoint.md}){
@@ -705,6 +706,6 @@ export const CloseModalButton = styled.button`
   }
 `
 
-export const EditButton = styled.button`
-  
+export const EditButton = styled.img`
+  cursor: pointer;
 `

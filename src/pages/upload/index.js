@@ -39,8 +39,8 @@ const Upload = () => {
   const [pitchTextUpload, setPitchTextUpload] = useState(''); 
   const navigate = useNavigate();
 
-  // const { email } = useSelector((state) => state.pitch.email);
-  const email = location.state.email || {};
+  const { email } = useSelector((state) => state.pitch);
+  // const email = location.state.email || {};
   console.log(email)
   const dispatch = useDispatch();
 

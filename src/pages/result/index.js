@@ -58,6 +58,21 @@ import {
   PlayButton,
   Links,
   TermsLink,
+  ModalOverlay,
+  ModalBox,
+  CloseModalButton,
+  EditButton,
+  FileNameInput,
+  ModalHeader,
+  ModalTitle,
+  ModalBody,
+  ModalBodyLabel,
+  ModalBodyInput,
+  ModalFooter,
+  ModalFooterCloseButton,
+  ModalFooterSubmitButton,
+  ModalForm,
+  ModalElement
 } from "./styled";
 
 import RightArrowIcon from "../../assets/images/arrow-right.svg";
@@ -74,6 +89,7 @@ import PrinterIcon from "../../assets/images/printer.svg";
 import tooltipIcon from "../../assets/images/tooltip-icon.svg";
 import Emoji_robot from "../../assets/images/emoji-robot.svg";
 import Play_circle from "../../assets/images/play-circle.svg";
+import EditIcon from "../../assets/images/edit_input.svg";
 
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -107,9 +123,43 @@ const Result = () => {
   const [financialExpectationArray, setFinancialExpectationArray] = useState(
     []
   );
+  const [pitchTitle, setPitchTitle] = useState(i18n.t("result.title"));
+  const [pitchId, setPitchId] = useState("");
+
+  const [showModal, setShowModal] = useState(false);
+
+  const openModal = () => setShowModal(true);
+  const closeModal = () => setShowModal(false);
+
+  const pitchNamechanged = (event) => {
+    var key = event.key;
+    console.log('Key:', key);
+  }
+
+  const submitChangeName = async () => {
+    const changedFileName = document.querySelector("#resultpitchfileName").value;
+    axios
+      .post(
+        `${process.env.REACT_APP_API_ENDPOINTS}/pitch/updatePitchFileName`,
+        {_id:pitchId, fileName: changedFileName},
+        {}
+      )
+      .then((response) => {
+        // Handle the successful response
+        
+        setPitchTitle(changedFileName);
+        setShowModal(false);
+      })
+      .catch((error) => {
+        console.log(error.response.data.message);
+      });
+  }
 
   const showResults = () => {
     if (responseData) {
+      const pitchObjectId = responseData.pitch._id;
+      setPitchId(pitchObjectId);
+      console.log(responseData.pitch._id)
       setPitchContent(responseData.pitch.pitchText);
       const evaluationSections = responseData.evaluation;
       let scores = 0;
@@ -396,15 +446,43 @@ const Result = () => {
         <>
           <ResultTitleContainer>
             <GradeContainer bgcolor="transparent">
-              <GradeTitle>
+              <GradeTitle bgcolor={theme.colors.white}>
                 <FormTitle
                   fontsizes={theme.typography.h4.size}
                   color={theme.colors.gray900}
                   fontweights={theme.typography.h4.fontWeight}
                   font={theme.typography.h4.font}
                 >
-                  {i18n.t("result.title")}
+                  {pitchTitle}
                 </FormTitle>
+
+                <EditButton src={EditIcon} onClick={openModal}></EditButton>
+
+                {/* Modal part */}
+
+                <ModalOverlay isOpen={showModal} onClick={closeModal}>
+                  <ModalBox onClick={e => e.stopPropagation()}>
+                    <ModalHeader>
+                      <ModalTitle>Change FileName</ModalTitle>
+                      <CloseModalButton onClick={closeModal}>×</CloseModalButton>
+                    </ModalHeader>
+                    <ModalBody>
+                      <ModalElement>
+                        <ModalBodyLabel>PitchFileName : </ModalBodyLabel>
+                        <ModalBodyInput id="resultpitchfileName" type="text" onKeyDown={pitchNamechanged} />
+                      </ModalElement>
+                    </ModalBody>
+                    <ModalFooter>
+                      <ModalFooterCloseButton onClick={closeModal}>Close</ModalFooterCloseButton>
+                      <ModalFooterSubmitButton onClick={submitChangeName}>Save</ModalFooterSubmitButton>
+                    </ModalFooter>
+
+
+                  </ModalBox>
+                </ModalOverlay>
+
+                {/* Modal part */}
+
               </GradeTitle>
               <ScoreContainer gap="20px">
                 <ButtonDiv gap="5px" onClick={() => saveAsPdf()}>
@@ -435,57 +513,57 @@ const Result = () => {
                         totalScore >= 64
                           ? theme.colors.green600
                           : totalScore >= 32
-                          ? theme.colors.orange600
-                          : theme.colors.red600
+                            ? theme.colors.orange600
+                            : theme.colors.red600
                       }
                       bordercolor={
                         totalScore >= 64
                           ? theme.colors.green200
                           : totalScore >= 32
-                          ? theme.colors.orange200
-                          : theme.colors.red200
+                            ? theme.colors.orange200
+                            : theme.colors.red200
                       }
                       backgroundcolor={
                         totalScore >= 64
                           ? theme.colors.green50
                           : totalScore >= 32
-                          ? theme.colors.orange50
-                          : theme.colors.red50
+                            ? theme.colors.orange50
+                            : theme.colors.red50
                       }
                     >
                       {totalScore >= 80
                         ? "A+"
                         : totalScore >= 72
-                        ? "A"
-                        : totalScore >= 64
-                        ? "A-"
-                        : totalScore >= 48
-                        ? "B+"
-                        : totalScore >= 40
-                        ? "B"
-                        : totalScore >= 32
-                        ? "B-"
-                        : totalScore >= 16
-                        ? "C+"
-                        : totalScore >= 8
-                        ? "C"
-                        : "C-"}
+                          ? "A"
+                          : totalScore >= 64
+                            ? "A-"
+                            : totalScore >= 48
+                              ? "B+"
+                              : totalScore >= 40
+                                ? "B"
+                                : totalScore >= 32
+                                  ? "B-"
+                                  : totalScore >= 16
+                                    ? "C+"
+                                    : totalScore >= 8
+                                      ? "C"
+                                      : "C-"}
                     </Grade>
                     <FormTitle
                       color={
                         totalScore >= 64
                           ? theme.colors.green600
                           : totalScore >= 32
-                          ? theme.colors.orange600
-                          : theme.colors.red600
+                            ? theme.colors.orange600
+                            : theme.colors.red600
                       }
                       padding="10px"
                     >
                       {totalScore >= 64
                         ? i18n.t("result.slogonA")
                         : totalScore >= 32
-                        ? i18n.t("result.slogonB")
-                        : i18n.t("result.slogonC")}
+                          ? i18n.t("result.slogonB")
+                          : i18n.t("result.slogonC")}
                     </FormTitle>
                   </GradeTitle>
                   <ScoreContainer>
@@ -494,8 +572,8 @@ const Result = () => {
                         totalScore >= 64
                           ? theme.colors.green600
                           : totalScore >= 32
-                          ? theme.colors.orange600
-                          : theme.colors.red600
+                            ? theme.colors.orange600
+                            : theme.colors.red600
                       }
                     >
                       {Math.round(totalScore / 0.8) + "%"}
@@ -719,7 +797,7 @@ const Result = () => {
                       </FeatureText>
                       {createGradeBadge(
                         entrepreneurExperienceArray[0] &&
-                          entrepreneurExperienceArray[0]
+                        entrepreneurExperienceArray[0]
                       )}
                       <ResponseIcon src={arrow} alt="arrow" />
                     </Feature>
@@ -755,7 +833,7 @@ const Result = () => {
                       </FeatureText>
                       {createGradeBadge(
                         financialExpectationArray[0] &&
-                          financialExpectationArray[0]
+                        financialExpectationArray[0]
                       )}
                       <ResponseIcon src={arrow} alt="arrow" />
                     </Feature>
