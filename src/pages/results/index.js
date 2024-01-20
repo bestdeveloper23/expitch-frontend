@@ -38,6 +38,21 @@ import {
   ResultTitleContainer,
   Tooltip,
   SectionTitle,
+  ModalOverlay,
+  ModalBox,
+  CloseModalButton,
+  EditButton,
+  FileNameInput,
+  ModalHeader,
+  ModalTitle,
+  ModalBody,
+  ModalBodyLabel,
+  ModalBodyInput,
+  ModalFooter,
+  ModalFooterCloseButton,
+  ModalFooterSubmitButton,
+  ModalForm,
+  ModalElement
 } from "./styled";
 
 import arrow from "../../assets/images/arrowprimary.svg";
@@ -48,6 +63,7 @@ import GradeB from "../../assets/images/grade_b.svg";
 import GradeC from "../../assets/images/grade_c.svg";
 import PrinterIcon from "../../assets/images/printer.svg";
 import tooltipIcon from "../../assets/images/tooltip-icon.svg";
+import EditIcon from "../../assets/images/edit_input.svg";
 
 import React, { useState, useEffect, useRef } from "react";
 import { useTheme } from "styled-components";
@@ -65,6 +81,10 @@ const Results = () => {
   const [pitchcontent, setPicthcontent] = useState("");
   const [totalScore, setTotalScore] = useState("");
   const [pitchTitle, setPitchTitle] = useState("Pitch title");
+  const [showModal, setShowModal] = useState(false);
+
+  const openModal = () => setShowModal(true);
+  const closeModal = () => setShowModal(false);
 
   const contentRef = useRef(null);
 
@@ -237,23 +257,64 @@ const Results = () => {
   };
 
   const saveAsPdf = () => {
-    const content = contentRef.current;
+    window.scrollTo(0, 0);
 
-    html2canvas(content).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("document.pdf");
+    const accordions = document.querySelectorAll("details");
+    accordions.forEach((accordion) => {
+      accordion.setAttribute("open", "");
     });
+
+    setTimeout(() => {
+      html2canvas(document.body, {
+        windowWidth: document.body.scrollWidth,
+        windowHeight: document.body.scrollHeight,
+        scale: 1,
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        const pages = Math.ceil(pdfHeight / pdf.internal.pageSize.getHeight());
+
+        for (let i = 0; i < pages; i++) {
+          if (i > 0) pdf.addPage();
+
+          pdf.addImage(
+            imgData,
+            "PNG",
+            0,
+            -i * pdf.internal.pageSize.getHeight(),
+            pdfWidth, // Adjusted width to fit the pdf page width
+            pdfHeight // Adjusted height to maintain aspect ratio
+          );
+        }
+
+        pdf.save("Expitch-CFA-Analysis.pdf");
+
+        accordions.forEach((accordion) => {
+          accordion.removeAttribute("open");
+        });
+      });
+    }, 0);
   };
 
   const handlePrint = () => {
     window.print();
   };
+
+  const pitchNamechanged = (event) => {
+    var key = event.key;
+    console.log('Key:', key);
+  }
+
+  const submitChangeName = () => {
+    const changedFileName = document.querySelector("#pitchfileName").value;
+    setPitchTitle(changedFileName);
+    setShowModal(false);
+  }
+
+  
 
   useEffect(() => {
     showResults();
@@ -297,6 +358,38 @@ const Results = () => {
               >
                 {pitchTitle}
               </FormTitle>
+              {/* <EditButton onClick={openModal}> */}
+              <div>
+                <img src={EditIcon} onClick={openModal}></img>  
+              </div>
+              
+              {/* </EditButton> */}
+
+{/* Modal part */}
+
+              <ModalOverlay isOpen={showModal} onClick={closeModal}>
+                <ModalBox onClick={e => e.stopPropagation()}>
+                  <ModalHeader>
+                    <ModalTitle>Change FileName</ModalTitle>
+                    <CloseModalButton onClick={closeModal}>×</CloseModalButton>
+                  </ModalHeader>
+                  <ModalBody>
+                    <ModalElement>
+                      <ModalBodyLabel>PitchFileName : </ModalBodyLabel>
+                      <ModalBodyInput id="pitchfileName" type="text" onKeyDown={pitchNamechanged} />
+                    </ModalElement>
+                  </ModalBody>
+                  <ModalFooter>
+                    <ModalFooterCloseButton onClick={closeModal}>Close</ModalFooterCloseButton>
+                    <ModalFooterSubmitButton onClick={submitChangeName}>Save</ModalFooterSubmitButton>
+                  </ModalFooter>
+                
+                  
+                </ModalBox>
+              </ModalOverlay>
+
+{/* Modal part */}
+
             </GradeTitle>
             <ScoreContainer gap="20px">
               <ButtonDiv

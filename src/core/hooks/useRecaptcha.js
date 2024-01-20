@@ -2,8 +2,7 @@
 import { useState } from "react";
 
 /**
- * @typedef {Object} Props
- * @property {string} actionName
+ * @typedef {Object} Prop
  */
 
 /**

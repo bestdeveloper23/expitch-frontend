@@ -555,26 +555,47 @@ navigate('/result', { state: { responseData } });
         )}
   
         {activeTab === 'pasting' && (
+          // <Container>
+          //   <SubForm>
+          //       <Label color={theme.colors.gray900}>{i18n.t("pasting.textbox.label")}<Required>*</Required> </Label>
+          //       <PitchInput type='text' bordercolor={theme.colors.gray300} bgcolor={theme.colors.white}></PitchInput>
+          //       <Label color='#FF0000'></Label>
+          //       <ButtonDiv>
+          //         <Button isenable={emailEnable} bgcolor={theme.colors.primary}
+          //           bordercolor={theme.colors.primary} color={theme.colors.white}>
+          //               <DContainer
+          //                 display="flex"
+          //                 justifycontent="center"
+          //                 alignitems="center"
+          //               >
+          //                 {i18n.t("pasting.button")}
+          //                 <CustomSVG src={RightArrowIcon} alt={RightArrowIcon}></CustomSVG>
+          //               </DContainer>
+          //             </Button>
+          //           </ButtonDiv>
+          //         </SubForm>
+          // </Container>
           <Container>
-            <SubForm>
-                <Label color={theme.colors.gray900}>{i18n.t("pasting.textbox.label")}<Required>*</Required> </Label>
-                <PitchInput type='text' bordercolor={theme.colors.gray300} bgcolor={theme.colors.white}></PitchInput>
-                <Label color='#FF0000'></Label>
-                <ButtonDiv>
-                  <Button isenable={emailEnable} bgcolor={theme.colors.primary}
-                    bordercolor={theme.colors.primary} color={theme.colors.white}>
-                        <DContainer
-                          display="flex"
-                          justifycontent="center"
-                          alignitems="center"
-                        >
-                          {i18n.t("pasting.button")}
-                          <CustomSVG src={RightArrowIcon} alt={RightArrowIcon}></CustomSVG>
-                        </DContainer>
-                      </Button>
-                    </ButtonDiv>
-                  </SubForm>
-          </Container>
+          <SubForm>
+            <Label color={theme.colors.gray900}>{i18n.t("pasting.textbox.label")}<Required>*</Required> </Label>
+            <PitchInput type='text' bordercolor={theme.colors.gray300} bgcolor={theme.colors.white} value={pitchText} onChange={(e) => setPitchText(e.target.value)} ></PitchInput>
+            <CharacterCount style={{ }}> {pitchText.length < 500 ? '❌' : '✅'} Enter at least 500 characters</CharacterCount>
+            <Label color='#FF0000'></Label>
+            <ButtonDivUpload>
+              <Button onClick={handleAnalyze}   isenable={isPitchValid ? 'valid' : 'invalid'} bgcolor={theme.colors.primary}
+                bordercolor={theme.colors.primary} color={theme.colors.white} disabled={!isPitchValid} >
+                    <DContainer
+                      display="flex"
+                      justifycontent="center"
+                      alignitems="center"
+                    >
+                      {i18n.t("uploading.status.analysis.button")}
+                      <CustomSVG src={RightArrowIcon} alt={RightArrowIcon}></CustomSVG>
+                    </DContainer>
+                  </Button>
+                </ButtonDivUpload>
+            </SubForm>
+        </Container>
         )}
 
         {activeTab === 'recording' && (

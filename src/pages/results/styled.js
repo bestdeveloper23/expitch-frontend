@@ -527,3 +527,184 @@ export const ResultTitleContainer = styled.div`
    padding: 30px 10px 20px 10px;
    position: relative;
 `
+
+export const ModalOverlay = styled.div`
+   position: fixed;
+   z-index: 1;
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 100%;
+   background-color: rgba(0,0,0,0.5);
+   display: ${(props) => props.isOpen ? 'flex' : 'none'};
+   justify-content: center;
+   align-items: center;
+`
+
+export const ModalBox = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 0.3rem;
+  outline: 0;
+  width: 80%;
+  max-width: 370px;
+`
+
+export const FileNameInput = styled.input`
+  width: 100%;
+  border: 1px solid #888;
+  border-radius: 5px;
+`
+
+export const ModalHeader = styled.div`
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+  border-top-left-radius: calc(0.3rem - 1px);
+  border-top-right-radius: calc(0.3rem - 1px);
+`
+
+export const ModalTitle = styled.div`
+   color: black;
+   font-size: 20px;
+   font-weight: 600;
+`
+
+export const ModalBody = styled.div`
+  display: block;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+`
+
+export const ModalForm = styled.form`
+
+`
+
+export const ModalElement = styled.div`
+  margin-bottom: 1rem!important;
+  display: flex;
+  flex-direction: column;
+`
+
+export const ModalBodyLabel = styled.label`
+  padding-top: calc(0.375rem + 1px);
+  padding-bottom: calc(0.375rem + 1px);
+  margin-bottom: 0;
+  font-size: inherit;
+  line-height: 1.5;
+`
+
+export const ModalBodyInput = styled.input`
+  display: block;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+`
+
+export const ModalFooter = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.75rem;
+  border-top: 1px solid #dee2e6;
+  border-bottom-right-radius: calc(0.3rem - 1px);
+  border-bottom-left-radius: calc(0.3rem - 1px);
+`
+
+export const ModalFooterCloseButton = styled.button`
+  color: #fff;
+  background-color: #374151;
+  border-color: #374151;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  margin: 0.25rem;
+
+  &:hover {
+    background-color: #111827;
+    border-color: #111827;
+  }
+
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+`
+
+export const ModalFooterSubmitButton = styled.button`
+  color: #fff;
+  background-color: #E71561;
+  border-color: #E71561;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  margin: 0.25rem;
+  font-size: 1rem;
+  
+  &:hover {
+    background-color: #CA054C;
+    border-color: #CA054C;
+  }
+
+  border-radius: 0.25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+`
+
+export const CloseModalButton = styled.button`
+  background: none;
+  border: none;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  padding: 0;
+  cursor: pointer;
+
+  &:hover, &:focus {
+    color: black;
+    text-decoration: none;
+    outline: none; // removes the default focus outline
+  }
+`
+
+export const EditButton = styled.button`
+  
+`

@@ -81,15 +81,15 @@ export const PitchForm = styled.div`
 `
 
 export const SubForm = styled.div`
- display: flex;
- flex-direction: column;
- gap: 16px;
- ${'' /* justify-content: center; */}
- padding: 10px;
- ${'' /* width: 100%; 
- max-width: 100%;
- margin: auto; */}
- margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    ${'' /* justify-content: center; */}
+    padding: 10px;
+    ${'' /* width: 100%; 
+    max-width: 100%;
+    margin: auto; */}
+    margin: auto;
     max-width: 100%;
     overflow: auto;
     white-space: nowrap;

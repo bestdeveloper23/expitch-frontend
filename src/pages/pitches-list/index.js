@@ -95,16 +95,28 @@ export default function PitchesList() {
   const convertToDayMonthNameYear = (isoString) => {
     const date = new Date(isoString);
 
-    const day = date.getUTCDate();
-    const year = date.getUTCFullYear();
+    const day = date.getDate();
+    const year = date.getFullYear();
 
     // Array of month names
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
     const monthName = monthNames[date.getUTCMonth()]; // getUTCMonth returns 0 for January, 1 for February, etc.
 
     return `${day} ${monthName} ${year}`;
-  }
-
+  };
 
   const downloadTextAsWordFile = (text) => {
     const blob = new Blob([text], { type: "text/plain" });
@@ -125,6 +137,11 @@ export default function PitchesList() {
   };
 
   useEffect(() => {
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const userLocalTime = new Date();
+    const formattedTime = userLocalTime.toLocaleString();
+    console.log(formattedTime);
+    console.log(userTimezone);
     immediateFunction();
   }, []);
 
@@ -142,7 +159,9 @@ export default function PitchesList() {
               <HeaderCellName>{i18n.t("pitcheslist.name")}</HeaderCellName>
               <HeaderCellScore>{i18n.t("pitcheslist.score")}</HeaderCellScore>
               <HeaderCellDate>{i18n.t("pitcheslist.date")}</HeaderCellDate>
-              <HeaderCellActions>{i18n.t("pitcheslist.actions")}</HeaderCellActions>
+              <HeaderCellActions>
+                {i18n.t("pitcheslist.actions")}
+              </HeaderCellActions>
             </HeaderRow>
           </thead>
           <tbody>

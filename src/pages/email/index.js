@@ -22,6 +22,7 @@ import {
     const navigate = useNavigate();
   
     const email = useSelector((state) => state.pitch.email);
+    console.log(email);
     const dispatch = useDispatch();
   
     const handleEmailChange = (event) => {
@@ -44,6 +45,10 @@ import {
     };
   
     useEffect(() => {
+      if(email){
+        navigate('/upload', { state: { email: inputEmail } });
+        return;
+      }      
       setWizardIndex("email");
       setEmailEnable('failed');
     }, [])
