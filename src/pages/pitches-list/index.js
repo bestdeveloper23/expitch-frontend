@@ -95,8 +95,8 @@ export default function PitchesList() {
   const convertToDayMonthNameYear = (isoString) => {
     const date = new Date(isoString);
 
-    const day = date.getUTCDate();
-    const year = date.getUTCFullYear();
+    const day = date.getDate();
+    const year = date.getFullYear();
 
     // Array of month names
     const monthNames = [
@@ -137,6 +137,11 @@ export default function PitchesList() {
   };
 
   useEffect(() => {
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const userLocalTime = new Date();
+    const formattedTime = userLocalTime.toLocaleString();
+    console.log(formattedTime);
+    console.log(userTimezone);
     immediateFunction();
   }, []);
 

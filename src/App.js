@@ -75,17 +75,17 @@ function App() {
           <Route path="/verifyuser" element={<VerifyUser />} />
           <Route path="/about" element={<Research />} />
 
-          <Route path="/test" element={<PrivateRoute><Test /></PrivateRoute>} />
-          <Route path="/terms" element={<PrivateRoute><TermsAndConditions /></PrivateRoute>} />
-          <Route path="/privacy" element={<PrivateRoute><Privacy /></PrivateRoute>} />
-          <Route path="/email" element={<PrivateRoute><Email /></PrivateRoute>} />
-          <Route path="/upload" element={<PrivateRoute><Upload /></PrivateRoute>} />
-          <Route path="/processing" element={<PrivateRoute><Processing /></PrivateRoute>} />
-          <Route path="/waiting" element={<PrivateRoute><Waiting /></PrivateRoute>} />
-          <Route path="/result" element={<PrivateRoute><Result /></PrivateRoute>} />
+          <Route path="/test" element={<Test />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/email" element={<Email />} />
+          <Route path="/upload" element={<Upload />} />
+          <Route path="/processing" element={<Processing />} />
+          <Route path="/waiting" element={<Waiting />} />
+          <Route path="/result" element={<Result />} />
 
-          <Route path="/results" element={<Results />} />
-          <Route path="/pitches-list" element={<PitchesList />} />
+          <Route path="/results" element={<PrivateRoute><Results /></PrivateRoute>} />
+          <Route path="/pitches-list" element={<PrivateRoute><PitchesList /></PrivateRoute>} />
         </Routes>
         <Footer />
       </ThemeProvider>
